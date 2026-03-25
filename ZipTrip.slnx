@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="../ZipTrip.Data/ZipTrip.Data.csproj" Id="54418e2b-5da4-493c-93d5-670cf66ced40" />
+  <Project Path="../ZipTrip.Domain/ZipTrip.Domain.csproj" Id="99bfa038-de4e-432a-9600-3a90f870464e" />
+  <Project Path="../ZipTrip.Services/ZipTrip.Services.csproj" Id="1164c4ca-5dbe-46e4-bed4-09a5da48e719" />
   <Project Path="ZipTrip.csproj" />
 </Solution>
