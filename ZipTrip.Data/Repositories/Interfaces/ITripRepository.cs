@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ZipTrip.Domain.Entities;
 
-namespace ZipTrip.Services.Interfaces
+namespace ZipTrip.Data.Repositories.Interfaces
 {
     public interface ITripRepository
     {

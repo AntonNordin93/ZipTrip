@@ -23,9 +23,4 @@
     <ProjectReference Include="..\ZipTrip.Domain\ZipTrip.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\Interfaces\" />
-    <Folder Include="Repositories\Implementations\" />
-  </ItemGroup>
-
 </Project>
