@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ZipTrip.Data;
+using ZipTrip.Data.Repositories.Implementations;
+using ZipTrip.Data.Repositories.Interfaces;
 using ZipTrip.Services.Implementations;
 using ZipTrip.Services.Interfaces;
 using ZipTrip.Services.Mappings;
@@ -18,7 +20,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITripService, TripService>();
         services.AddScoped<IRouteCalculatorService, RouteCalculatorService>();
         services.AddScoped<IAIRecommendationService, AIRecommendationService>();
-
+        services.AddScoped<ITripRepository,TripRepository>();
         services.AddAutoMapper(cfg=>cfg.AddProfile<MappingProfile>());
         services.AddValidatorsFromAssemblyContaining<CreateTripRequestValidator>();
 
