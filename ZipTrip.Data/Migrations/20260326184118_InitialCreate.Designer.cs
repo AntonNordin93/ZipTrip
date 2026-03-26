@@ -12,7 +12,7 @@ using ZipTrip.Data;
 namespace ZipTrip.Data.Migrations
 {
     [DbContext(typeof(ZipTripDbContext))]
-    [Migration("20260326155510_InitialCreate")]
+    [Migration("20260326184118_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

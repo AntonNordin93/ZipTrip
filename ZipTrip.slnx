@@ -1,6 +1,0 @@
-<Solution>
-  <Project Path="ZipTrip.csproj" />
-  <Project Path="ZipTrip.Data/ZipTrip.Data.csproj" />
-  <Project Path="ZipTrip.Domain/ZipTrip.Domain.csproj" />
-  <Project Path="ZipTrip.Services/ZipTrip.Services.csproj" />
-</Solution>
