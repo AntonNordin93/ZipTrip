@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace ZipTrip.Extensions;
 
@@ -21,16 +22,28 @@ public static class WebApplicationExtensions
 
     public static WebApplication UseZipTripMiddleware(this WebApplication app)
     {
-        if (!app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+
+        else
         {
             app.UseExceptionHandler("/Error");
             app.UseHsts();
         }
+        app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
-        if (!app.Environment.IsDevelopment())
+        app.UseSerilogRequestLogging(options=>
+        {
+            options.MessageTemplate ="HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
+        });
+
+        if(!app.Environment.IsDevelopment())
         {
             app.UseHttpsRedirection();
         }
+
         app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthentication();
