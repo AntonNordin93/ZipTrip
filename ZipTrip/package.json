@@ -1,0 +1,22 @@
+{
+  "name": "ziptrip",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i ./wwwroot/css/input.css -o ./wwwroot/css/site.css --minify",
+    "watch:css": "npx @tailwindcss/cli -i ./wwwroot/css/input.css -o ./wwwroot/css/site.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "tailwindcss": "^4.2.2"
+  },
+  "dependencies": {
+    "-": "^0.0.1",
+    "D": "^1.0.0"
+  }
+}
