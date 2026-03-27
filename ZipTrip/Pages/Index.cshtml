@@ -1,10 +1,28 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Hem - ZipTrip";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="max-w-7xl mx-auto px-4 py-10">
+    <div class="text-center mb-12">
+        <h1 class="text-5xl md:text-6xl font-bold tracking-tighter text-gray-900 dark:text-white">
+            Upptäck Sverige på vägen
+        </h1>
+        <p class="mt-6 text-xl text-gray-600 dark:text-gray-400">
+            Planera roadtrips anpassade för vanlig bil, elbil eller husbil/husvagn
+        </p>
+    </div>
+
+    <!-- Kartan -->
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
+
+    <div class="mt-10 flex justify-center">
+        <a href="/Trip/Create"
+               class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-4 rounded-2xl text-lg transition-all">
+            Skapa ny roadtrip →
+        </a>
+    </div>
 </div>

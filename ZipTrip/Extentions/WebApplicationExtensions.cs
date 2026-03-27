@@ -27,7 +27,10 @@ public static class WebApplicationExtensions
             app.UseHsts();
         }
 
-        app.UseHttpsRedirection();
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseHttpsRedirection();
+        }
         app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthentication();

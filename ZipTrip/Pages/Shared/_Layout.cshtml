@@ -2,45 +2,55 @@
 <html lang="sv">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>@ViewData["Title"] - ZipTrip</title>
-    
+
+    <!-- Tailwind CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin="" />
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans antialiased flex flex-col min-h-screen">
-    
-    <header class="bg-white shadow-sm sticky top-0 z-50">
+<body class="bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-gray-100 font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-zinc-900 shadow-sm sticky top-0 z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="text-2xl font-bold text-blue-600 tracking-tight">
-                        ZipTrip
-                    </a>
-                </div>
-                <div class="flex items-center space-x-6">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="text-gray-600 hover:text-blue-600 text-sm font-medium transition-colors">Hem</a>
-                    <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-gray-600 hover:text-blue-600 text-sm font-medium transition-colors">Integritet</a>
-                    
+                <a asp-controller="Home" asp-action="Index" 
+                   class="text-3xl font-bold tracking-tighter text-blue-600 dark:text-blue-500">
+                    ZipTrip
+                </a>
+
+                <div class="flex items-center gap-x-8">
+                    <a asp-controller="Home" asp-action="Index" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Hem</a>
+                    <a asp-controller="Home" asp-action="Privacy" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Integritet</a>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
 
-    <main role="main" class="flex-grow w-full">
+    <main class="flex-1 w-full">
         @RenderBody()
     </main>
 
-    <footer class="bg-white border-t border-gray-200 mt-auto">
-        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-sm text-gray-500">
-                &copy; 2026 - ZipTrip
-            </p>
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 mt-auto">
+        <div class="max-w-7xl mx-auto py-6 px-4 text-center text-sm text-gray-500 dark:text-gray-400">
+            © 2026 ZipTrip - Examensarbete Systemutveckling med AI-kompetens
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+    <script src="~/js/map.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
