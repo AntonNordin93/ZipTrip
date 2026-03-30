@@ -1,14 +1,15 @@
 ﻿@import "tailwindcss";
+/* Vi går upp ett steg för att hitta Pages-mappen */
+@source "../Pages";
 
-@layer base{
+@layer base {
     body {
-        font-feature-settings: "cv02","cv03", "cv04", "cv11";
-        
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
 }
 
 @layer components {
-    trip-card {
+    .trip-card {
         @apply bg-white dark:bg-gray-900 rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300;
     }
 
@@ -31,4 +32,3 @@
         height: 500px;
     }
 }
-
