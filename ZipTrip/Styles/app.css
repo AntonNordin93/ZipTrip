@@ -1,3 +1,6 @@
 ﻿@import "tailwindcss";
 @source "../Pages";
-@source "../wwwroot/js";
+
+@layer base {
+    ...
+}
