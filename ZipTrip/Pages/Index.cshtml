@@ -1,13 +1,9 @@
 ﻿@page
 @model IndexModel
-@{
-    ViewData["Title"] = "ZipTrip - Din väg genom Sverige";
-}
-
 <section class="relative min-h-screen flex items-center overflow-hidden">
     <div class="absolute inset-0 z-0">
-        <img src="~/images/hero-road.jpg" class="w-full h-full object-cover" alt="Väg genom skog" />
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <img src="~/images/hero-road.jpg" class="w-full h-full object-cover" alt="Väg" />
+        <div class="hero-overlay"></div>
     </div>
 
     <div class="relative z-10 container mx-auto px-4">
@@ -15,23 +11,18 @@
             <span class="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">
                 ⚡ Roadtrips genom Sverige
             </span>
-            <h1 class="text-6xl md:text-8xl font-bold text-white mb-6 leading-tight">
+            <h1 class="hero-title text-6xl md:text-8xl font-bold mb-6 leading-tight">
                 Din resa, <br />
                 <span class="text-primary">ditt fordon,</span><br />
                 din väg.
             </h1>
-            <p class="text-gray-400 text-xl mb-10 max-w-lg">
+            <p class="dark:text-gray-400 text-gray-700 text-xl mb-10 max-w-lg transition-colors">
                 Planera roadtrips anpassade efter just ditt fordon. Bil, elbil eller husbil – vi fixar resten.
             </p>
             
-            <div class="flex flex-wrap gap-4">
-                <a href="/Trip/Create" class="btn-hero">
-                    Planera din resa
-                    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                </a>
-            </div>
+            <a href="/Trip/Create" class="btn-primary">
+                Planera din resa
+            </a>
         </div>
     </div>
 </section>

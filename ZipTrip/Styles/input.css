@@ -1,31 +1,41 @@
 ﻿@import "tailwindcss";
 @source "../Pages";
 @source "../Pages/Shared";
-@source "../wwwroot/js";
 
 @theme {
-    --color-background: #13161c;
-    --color-foreground: #edf2f7;
-    --color-primary: #1fd655; /* Neon-grön */
-    --color-primary-foreground: #0f1219;
-    --color-secondary: #9b4dff; /* Neon-lila */
-    --color-accent: #ff9933; /* Neon-orange */
-    --color-muted: #1a1f2c;
-    --color-muted-foreground: #9ca3af;
-    --color-border: #2d3748;
-    --font-display: "Sora", ui-sans-serif, system-ui;
-    --font-sans: "Outfit", ui-sans-serif, system-ui;
+    /* DARK MODE (Standard) */
+    --color-background: #0f1219;
+    --color-foreground: #f0f0f2;
+    --color-primary: #1fd655;
+    --color-card: #161b26;
+    --color-border: rgba(255, 255, 255, 0.1);
 }
 
 @layer base {
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap');
 
-    body {
-        @apply bg-background text-foreground antialiased;
-        font-family: var(--font-sans);
+    /* LIGHT MODE - Modern App Style */
+    html:not(.dark) {
+        --color-background: #f8fafc; /* Ljusgrå/blå ton istället för kritvitt */
+        --color-foreground: #0f172a; /* Djup mörkblå text */
+        --color-primary: #059669; /* Smaragdgrön för läsbarhet */
+        --color-card: #ffffff;
+        --color-border: rgba(0, 0, 0, 0.05);
     }
 
-    h1, h2, h3, h4, .font-display {
-        font-family: var(--font-display);
+    body {
+        @apply bg-background text-foreground transition-colors duration-500;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    /* Fixa Hero-bilden för Light Mode */
+    .hero-overlay {
+        @apply absolute inset-0 transition-all duration-500;
+        background: linear-gradient(to bottom, rgba(15,18,25,0.7), rgba(15,18,25,0.9));
+    }
+
+    html:not(.dark) .hero-overlay {
+        /* I ljust läge gör vi bilden ljus men behåller färgerna */
+        background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(248,250,252,1));
     }
 }
