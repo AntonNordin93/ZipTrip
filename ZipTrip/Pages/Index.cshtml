@@ -26,3 +26,47 @@
         </div>
     </div>
 </section>
+
+<section id="vehicles" class="py-20 bg-background transition-colors duration-500">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <h2 class="text-4xl font-bold mb-2">Välj ditt fordon</h2>
+                <p class="text-muted-foreground">Anpassa din rutt efter räckvidd och fordonshöjd.</p>
+            </div>
+            <a href="/Account/Vehicles/Add" class="text-primary font-bold hover:underline">+ Lägg till fordon</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            @if (Model.UserVehicles != null && Model.UserVehicles.Any())
+            {
+                @foreach (var vehicle in Model.UserVehicles)
+                {
+                    <div class="p-8 rounded-[2rem] bg-card border border-border hover:border-primary/50 transition-all cursor-pointer group">
+                        <div class="text-4xl mb-6 group-hover:scale-110 transition-transform">
+                            @(vehicle.VehicleTypeName == "ElectricCar" ? "⚡" : vehicle.VehicleTypeName == "MotorHome" ? "🚐" : "🚗")
+                        </div>
+                        <h3 class="text-xl font-bold">@vehicle.Name</h3>
+                        <p class="text-sm text-muted-foreground mb-4">@vehicle.VehicleTypeName</p>
+                        
+                        <div class="flex gap-4 text-xs font-mono opacity-70">
+                            <span>@vehicle.MaxRangeKm km</span>
+                            <span>@vehicle.MaxHeightMeters m</span>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                @* Visar mallar om användaren är tom *@
+                @foreach (var spec in Model.StandardSpecs?.Take(3) ?? new List<ZipTrip.Services.DTOs.Vehicle.VehicleResponse>())
+                {
+                    <div class="p-8 rounded-[2rem] border border-dashed border-border opacity-50 hover:opacity-100 transition-all">
+                        <h3 class="font-bold">@spec.Name</h3>
+                        <p class="text-xs">Klicka för att använda mall</p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>

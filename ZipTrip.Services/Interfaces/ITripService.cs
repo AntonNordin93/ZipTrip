@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using ZipTrip.Domain.Enums;
-using ZipTrip.Services.DTOs.Requests;
 using ZipTrip.Services.DTOs.Trip;
 
 

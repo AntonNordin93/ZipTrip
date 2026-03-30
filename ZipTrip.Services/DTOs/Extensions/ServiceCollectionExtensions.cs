@@ -10,6 +10,7 @@ using ZipTrip.Services.Implementations;
 using ZipTrip.Services.Interfaces;
 using ZipTrip.Services.Mappings;
 using ZipTrip.Services.Validators;
+using ZipTrip.Domain.Entities;
 
 namespace ZipTrip.Services.Extensions;
 
@@ -21,6 +22,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IRouteCalculatorService, RouteCalculatorService>();
         services.AddScoped<IAIRecommendationService, AIRecommendationService>();
         services.AddScoped<ITripRepository,TripRepository>();
+        services.AddScoped<IVehicleService, VehicleService>();
         services.AddScoped<IWeatherService, WeatherService>();
         services.AddScoped<IWeatherRepository, WeatherRepository>();
         services.AddHttpClient<IWeatherRepository, WeatherRepository>();
@@ -40,7 +42,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<ZipTripDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddDefaultIdentity<IdentityUser>(options =>
+        services.AddDefaultIdentity<User>(options =>
         {
             options.SignIn.RequireConfirmedAccount = false;
         })
