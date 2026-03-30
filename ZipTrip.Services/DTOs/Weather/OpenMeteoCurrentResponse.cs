@@ -9,7 +9,7 @@ namespace ZipTrip.Services.DTOs.Weather
         [JsonPropertyName("latitude")]
         public double Latitude { get; set; }
         [JsonPropertyName("longitude")]
-        public string Longitude { get; set; }= string.Empty;
+        public double Longitude { get; set; }
         [JsonPropertyName("current")]
         public OpenMeteoCurrent Current { get; set; } = new();
     }
@@ -22,7 +22,7 @@ namespace ZipTrip.Services.DTOs.Weather
         public double Temperature2m { get; set; }
         [JsonPropertyName("wind_speed_10m")]
         public double WindSpeed10m { get; set; }
-        [JsonPropertyName("precipitation_probability")]
+        [JsonPropertyName("precipitation")]
         public double PrecipitationProbability { get; set; }
         [JsonPropertyName("weather_code")]
         public int WeatherCode { get; set; }

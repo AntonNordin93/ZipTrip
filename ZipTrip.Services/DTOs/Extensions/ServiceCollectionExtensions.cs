@@ -21,8 +21,13 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IRouteCalculatorService, RouteCalculatorService>();
         services.AddScoped<IAIRecommendationService, AIRecommendationService>();
         services.AddScoped<ITripRepository,TripRepository>();
+        services.AddScoped<IWeatherService, WeatherService>();
+        services.AddScoped<IWeatherRepository, WeatherRepository>();
+        services.AddHttpClient<IWeatherRepository, WeatherRepository>();
+        services.AddMemoryCache();
         services.AddAutoMapper(cfg=>cfg.AddProfile<MappingProfile>());
         services.AddValidatorsFromAssemblyContaining<CreateTripRequestValidator>();
+        
 
         return services;
     }

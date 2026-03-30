@@ -5,6 +5,7 @@ using System.Text;
 using ZipTrip.Services.Interfaces;
 using ZipTrip.Services.DTOs.Weather;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ZipTrip.Services.Implementations
 {
@@ -20,7 +21,7 @@ namespace ZipTrip.Services.Implementations
             try
             {
                 var url = $"https://api.open-meteo.com/v1/forecast?" +
-                      $"latitude={latitude}&longitude={longitude}" +
+                      $"latitude={latitude.ToString(CultureInfo.InvariantCulture)}&longitude={longitude.ToString(CultureInfo.InvariantCulture)}" +
                       $"&hourly=temperature_2m,wind_speed_10m,precipitation_probability,weather_code" +
                       $"&timezone=Europe%2FStockholm" +
                       $"&start_date={from:yyyy-MM-dd}&end_date={to:yyyy-MM-dd}";
@@ -69,11 +70,18 @@ namespace ZipTrip.Services.Implementations
             try
             {
                 var url = $"https://api.open-meteo.com/v1/forecast?" +
-                      $"latitude={latitude}&longitude={longitude}" +
-                      $"&hourly=temperature_2m,wind_speed_10m,precipitation_probability,weather_code";
+                      $"latitude={latitude.ToString(CultureInfo.InvariantCulture)}&longitude={longitude.ToString(CultureInfo.InvariantCulture)}" +
+                      $"&current=temperature_2m,wind_speed_10m,precipitation,weather_code";
 
-                var response = await _httpClient.GetFromJsonAsync<OpenMeteoResponse>(url);
-
+                var response = await _httpClient.GetFromJsonAsync<OpenMeteoCurrentResponse>(url);
+                if(response==null||response.Current==null)
+                {
+                    return new WeatherResponse
+                    {
+                        Success = false,
+                        ErrorMessage = "Inget svar från Open-Meteo"
+                    };
+                }
                 return new WeatherResponse
                 {
                     Longitude = longitude,
@@ -81,6 +89,15 @@ namespace ZipTrip.Services.Implementations
                     UsedApi = "Open-Meteo",
                     Success = true,
 
+                    Current = new WeatherForecastDto
+                    {
+                        Time = DateTime.UtcNow,
+                        TemperatureC= response.Current.Temperature2m,
+                        WindSpeedMs = response.Current.WindSpeed10m,
+                        WeatherCode = response.Current.WeatherCode,
+                        PrecipitationProbability = response.Current.PrecipitationProbability,
+                        Source = "Open-Meteo"
+                    }
                 };
 
             }

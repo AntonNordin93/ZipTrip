@@ -15,12 +15,12 @@ namespace ZipTrip.Services.DTOs.Weather
         public double PrecipitationProbability { get; set; }
         public string Source { get; set; } = "Unknown";
         
-        public string TempC=> $"{TemperatureC:F1}°C";
-        public string TempF => $"{(TemperatureC * 9 / 5 + 32):F1}°F";
-        public string WindKmh=> $"{(WindSpeedMs * 3.6):F1} km/h";
-        public string WindMs => $"{WindSpeedMs:F1} m/s";
+        public string TempC=> $"{TemperatureC:F0}°C";
+        public string TempF => $"{(TemperatureC * 9 / 5 + 32):F0}°F";
+        public string WindKmh=> $"{(WindSpeedMs * 3.6):F0} km/h";
+        public string WindMs => $"{WindSpeedMs:F0} m/s";
 
-        public string PrecipitationDisplay => $"{PrecipitationProbability:F0}%";
+        public string PrecipitationDisplay => $"{PrecipitationProbability:F1}%";
 
 
     }
