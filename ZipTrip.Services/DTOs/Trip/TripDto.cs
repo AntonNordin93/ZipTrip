@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ZipTrip.Domain.Enums;
 
-namespace ZipTrip.Services.DTOs.Responses
+namespace ZipTrip.Services.DTOs.Trip
 {
     public class TripDto
     {

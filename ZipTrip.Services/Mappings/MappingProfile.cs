@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using ZipTrip.Domain.Entities;
-using ZipTrip.Services.DTOs.Requests;
-using ZipTrip.Services.DTOs.Responses;
+using ZipTrip.Services.DTOs.Trip;
+using ZipTrip.Services.DTOs.Vehicle;
 
 namespace ZipTrip.Services.Mappings
 {
@@ -28,6 +28,21 @@ namespace ZipTrip.Services.Mappings
                 .ForMember(dest => dest.Stops, opt => opt.MapFrom(src => src.Stops));
 
             CreateMap<RouteStop, StopDto>();
+
+            CreateMap<UserVehicle, VehicleResponse>()
+                .ForMember(dest => dest.VehicleTypeName, opt => opt.MapFrom(src => src.VehicleType.ToString()))
+                .ForMember(dest => dest.MaxRangeKm, opt => opt.MapFrom(src => src.RangeKm));
+
+            CreateMap<VehicleRequest, UserVehicle>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.UserId, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore())
+                .ForMember(dest => dest.RangeKm, opt => opt.MapFrom(src => src.MaxRangeKm))
+                .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => (Domain.Enums.VehicleType)src.VehicleType));
+
+            CreateMap<VehicleSpecification,VehicleResponse>()
+                .ForMember(dest => dest.VehicleTypeName, opt => opt.MapFrom(src => src.Type.ToString()))
+                .ForMember(dest => dest.MaxRangeKm, opt => opt.MapFrom(src => src.RangeKm));
         }
 
     }
