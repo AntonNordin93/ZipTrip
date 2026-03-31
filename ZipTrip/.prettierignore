@@ -1,0 +1,10 @@
+wwwroot/lib/
+
+# Ignorera byggfiler
+bin/
+obj/
+node_modules/
+
+# Ignorera minifierade filer
+*.min.css
+*.min.js

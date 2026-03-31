@@ -1,29 +1,22 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
-    {
-        Layout = parentLayout.ToString();
-    }
-    else
-    {
-        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
-    }
+    Layout = "/Pages/Shared/_Layout.cshtml";
 }
+<div class="mx-auto max-w-6xl px-4 py-10 md:px-8">
+    <div class="mb-10">
+        <h1 class="text-4xl font-bold font-bold tracking-tight text-foreground" style="font-family: 'Sora', sans-serif;">Account Settings</h1>
+        <p class="mt-2 text-sm text-foreground/60">Manage Your Account.</p>
+    </div>
 
-<h1>Manage your account</h1>
-
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
+    <div class="flex flex-col gap-8 md:flex-row md:gap-12">
+        <aside class="w-full shrink-0 md:w-64">
             <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
+        </aside>
+
+        <div class="flex-1">
             @RenderBody()
         </div>
     </div>
 </div>
-
 @section Scripts {
     @RenderSection("Scripts", required: false)
 }
