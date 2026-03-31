@@ -15,14 +15,6 @@
         <form id="profile-form" method="post" class="space-y-5">
             <div asp-validation-summary="ModelOnly" class="text-red-400 text-xs p-3 bg-red-500/10 rounded-xl mb-4 text-center"></div>
 
-            <div class="space-y-1">
-                <label asp-for="Username" class="block text-sm font-medium text-foreground">Username (Email)</label>
-                <div class="relative flex items-center">
-                    <svg class="absolute left-3 text-foreground/40 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
-                    <input asp-for="Username" class="w-full h-11 bg-foreground/5 border border-transparent rounded-xl pl-10 pr-4 text-sm text-foreground/50 cursor-not-allowed" disabled />
-                </div>
-            </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-1">
                     <label asp-for="Input.FirstName" class="block text-sm font-medium text-foreground"></label>
@@ -48,6 +40,21 @@
                     <span asp-validation-for="Input.DateOfBirth" class="text-primary text-[10px] ml-1 font-semibold"></span>
                 </div>
             </div>
+
+            <div class="space-y-1">
+                <label asp-for="Input.Email" class="block text-sm font-medium text-foreground">Email Address</label>
+                <div class="relative flex items-center text-foreground/40 focus-within:text-primary">
+                    <svg class="absolute left-3 w-4 h-4 transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                    <input asp-for="Input.Email"
+                           placeholder="name@example.com"
+                           class="w-full h-11 bg-foreground/5 border border-transparent focus:border-primary focus:bg-transparent rounded-xl pl-10 pr-4 text-sm text-foreground outline-none transition-all placeholder:text-foreground/20" />
+                </div>
+                <span asp-validation-for="Input.Email" class="text-primary text-[10px] ml-1 font-semibold italic uppercase tracking-wider"></span>
+            </div>
+
             <div class="flex items-center gap-4 pt-4 pb-2">
                 <div class="h-[1px] flex-1 bg-border/50"></div>
                 <span class="text-xs text-foreground/40 uppercase tracking-widest font-bold">Address Details</span>
