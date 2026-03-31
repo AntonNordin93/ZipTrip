@@ -116,6 +116,10 @@ namespace ZipTrip.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    if(returnUrl != null && returnUrl.Contains("Logout",StringComparison.OrdinalIgnoreCase))
+                    {
+                        returnUrl = Url.Content("~/");
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

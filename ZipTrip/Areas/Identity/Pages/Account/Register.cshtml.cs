@@ -80,15 +80,7 @@ namespace ZipTrip.Areas.Identity.Pages.Account
             [DataType(DataType.Date)]
             public DateOnly DateOfBirth { get; set; }
 
-            [Required(ErrorMessage = "Adress krävs")]
 
-            public string Address { get; set; }
-            [Required(ErrorMessage = "Postnummer krävs")]
-            public string PostalCode { get; set; }
-            [Required(ErrorMessage = "Stad krävs")]
-            public string City { get; set; }
-            [Required(ErrorMessage = "Land krävs")]
-            public string Country { get; set; }
         }
 
 
@@ -111,10 +103,6 @@ namespace ZipTrip.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.DateOfBirth = Input.DateOfBirth; 
-                user.Address = Input.Address;
-                user.PostalCode = Input.PostalCode;
-                user.City = Input.City;
-                user.Country = Input.Country ?? "Sweden";
                 user.CreatedDate = DateTime.UtcNow;
 
                 
