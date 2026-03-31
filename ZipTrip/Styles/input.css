@@ -1,7 +1,7 @@
 ﻿@import "tailwindcss";
 @source "../Pages";
 @source "../Pages/Shared";
-
+@source "../Areas/Identity/Pages";
 @theme {
     /* DARK MODE (Standard) */
     --color-background: #0f1219;

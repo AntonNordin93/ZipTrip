@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - ZipTrip</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script>
-            // Detta skript körs DIREKT för att undvika "vit blixt" vid laddning
+            
             if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
             } else {
