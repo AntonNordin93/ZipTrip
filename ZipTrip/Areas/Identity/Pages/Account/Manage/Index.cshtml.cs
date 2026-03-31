@@ -26,39 +26,34 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string Username { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+            [Display(Name = "Date Of Birth")]
+            public DateOnly? DateOfBirth { get; set; }
+            [Display(Name = "Address")]
+            public string Address { get; set; }
+            [Display(Name= "City")]
+            public string City { get; set; }
+            [Display(Name = "Postal Code")]
+            public string PostalCode { get; set; }
+            [Display(Name = "Country")]
+            public string Country { get; set; }
+
         }
 
         private async Task LoadAsync(User user)
@@ -70,7 +65,14 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth,
+                Address = user.Address,
+                PostalCode = user.PostalCode,
+                City = user.City,
+                Country = user.Country
             };
         }
 
@@ -110,9 +112,22 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+            user.FirstName = Input.FirstName; 
+            user.LastName = Input.LastName;
+            user.DateOfBirth = Input.DateOfBirth;
+            user.Address = Input.Address;
+            user.City = Input.City;
+            user.PostalCode = Input.PostalCode;
+            user.Country = Input.Country;
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                StatusMessage = "An unexpected error";
+                return RedirectToPage();
+            }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Your profile has been updated.";
             return RedirectToPage();
         }
     }
