@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using ZipTrip.Domain.Entities;
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 <div class="flex items-center space-x-4">
     @if (SignInManager.IsSignedIn(User))

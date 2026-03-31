@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using FluentValidation;
-using ZipTrip.Services.DTOs.Requests;
+using ZipTrip.Services.DTOs.Trip;
 
 namespace ZipTrip.Services.Validators
 {

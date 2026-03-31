@@ -6,8 +6,7 @@ using AutoMapper;
 using ZipTrip.Data.Repositories.Interfaces;
 using ZipTrip.Domain.Entities;
 using ZipTrip.Domain.Enums;
-using ZipTrip.Services.DTOs.Requests;
-using ZipTrip.Services.DTOs.Responses;
+using ZipTrip.Services.DTOs.Trip;
 
 
 namespace ZipTrip.Services.Implementations

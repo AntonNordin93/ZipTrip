@@ -2,7 +2,7 @@
 using ZipTrip.Domain.Enums; 
 using ZipTrip.Domain.Entities;
 
-namespace ZipTrip.Services.DTOs.Requests
+namespace ZipTrip.Services.DTOs.Trip
 {
     public class CreateTripRequest
     {
