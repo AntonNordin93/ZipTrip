@@ -25,6 +25,21 @@ builder.Services.AddApplicationServices();
 builder.Services.AddWebServices();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        Log.Information("Försöker seeda databasen med roller och testanvändare...");
+        await ZipTrip.Data.Seeders.UserSeeder.SeedUsersAndRolesAsync(services);
+        Log.Information("Seedning slutförd!");
+    }
+    catch (Exception ex)
+    {
+        // Eftersom du har Serilog uppsatt, loggar vi eventuella fel riktigt snyggt här!
+        Log.Error(ex, "Ett fel uppstod vid seedning av databasen.");
+    }
+}
 
 if (!app.Environment.IsDevelopment())
 {

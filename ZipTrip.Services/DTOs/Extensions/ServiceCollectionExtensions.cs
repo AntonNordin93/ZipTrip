@@ -24,7 +24,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITripRepository,TripRepository>();
         services.AddScoped<IVehicleService, VehicleService>();
         services.AddScoped<IWeatherService, WeatherService>();
-        services.AddScoped<IWeatherRepository, WeatherRepository>();
         services.AddHttpClient<IWeatherRepository, WeatherRepository>();
         services.AddMemoryCache();
         services.AddAutoMapper(cfg=>cfg.AddProfile<MappingProfile>());
@@ -46,6 +45,7 @@ public static class ServiceCollectionExtensions
         {
             options.SignIn.RequireConfirmedAccount = false;
         })
+        .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<ZipTripDbContext>();
 
         return services;
