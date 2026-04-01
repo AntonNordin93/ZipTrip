@@ -1,7 +1,3 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using ZipTrip.Domain.Entities;
+using ZipTrip.Domain.Enums;
 
 namespace ZipTrip.Areas.Identity.Pages.Account
 {
@@ -47,50 +44,54 @@ namespace ZipTrip.Areas.Identity.Pages.Account
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel Input { get; set; }=default!;
 
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
 
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }=default!;
 
         public class InputModel
         {
-            [Required(ErrorMessage ="E-post krävs")]
+            [Required(ErrorMessage = "Email required")]
             [EmailAddress]
             [Display(Name = "Email")]
-            public string Email { get; set; }
+            public string Email { get; set; }=string.Empty;
 
-            [Required(ErrorMessage ="Löserord krävs")]
-            [StringLength(100, ErrorMessage = "{0} måste vara minst {2} och max {1} tecken långt.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Password required")]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
-            public string Password { get; set; }
+            public string Password { get; set; }= string.Empty;
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "Lösenord matcher inte.")]
-            public string ConfirmPassword { get; set; }
+            [Compare("Password", ErrorMessage = "Password do not match.")]
+            public string ConfirmPassword { get; set; }= string.Empty;
 
-            [Required(ErrorMessage = "Förnamn krävs")]
-            public string FirstName { get; set; }
-            [Required(ErrorMessage = "Efternamn krävs")]
+            [Required(ErrorMessage = "First name required")]
+            public string FirstName { get; set; }= string.Empty;
+            [Required(ErrorMessage = "Last name required")]
             
-            public string LastName { get; set; }
-            [Required(ErrorMessage = "Födelsedatum krävs")]
+            public string LastName { get; set; }= string.Empty;
+            [Required(ErrorMessage = "Date of birth required")]
             [DataType(DataType.Date)]
             public DateOnly DateOfBirth { get; set; }
 
+            [Required(ErrorMessage = "Please select vehicle")]
+            [Display(Name = "Vehicle Type")]
+            public VehicleType SelectedVehicleType { get; set; }
+
 
         }
 
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string? returnUrl = null)
         {
-            ReturnUrl = returnUrl;
+            ReturnUrl = returnUrl!;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -104,8 +105,13 @@ namespace ZipTrip.Areas.Identity.Pages.Account
                 user.LastName = Input.LastName;
                 user.DateOfBirth = Input.DateOfBirth; 
                 user.CreatedDate = DateTime.UtcNow;
+                user.Vehicles.Add(new UserVehicle
+                {
+                    Name = $"My {Input.SelectedVehicleType}",
+                    VehicleType = Input.SelectedVehicleType,
+                    IsDefault = true
+                });
 
-                
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
@@ -127,9 +133,9 @@ namespace ZipTrip.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    
-                    await _emailSender.SendEmailAsync(Input.Email, "Bekräfta din e-post - ZipTrip",
-                        $"Välkommen till ZipTrip! Vänligen bekräfta ditt konto genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här</a>.");
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email - ZipTrip",
+                                            $"Welcome to ZipTrip! Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
