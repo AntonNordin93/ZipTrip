@@ -2,14 +2,42 @@
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-<ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
+<ul class="flex flex-col gap-2 p-0 m-0 list-none">
+    <li>
+        <a id="profile"
+            asp-page="./Index"
+            class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all @(ManageNavPages.IndexNavClass(ViewContext)=="active"?"bg-primary text-[#0f1219]":"text-foreground/60 hover:bg-foreground/5 hover:text-foreground")">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+            Profile
+        </a>
+    </li>
+
+    <li>
+        <a id="change-password"
+            asp-page="./ChangePassword"
+            class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all @(ManageNavPages.ChangePasswordNavClass(ViewContext)=="active"?"bg-primary text-[#0f1219]":"text-foreground/60 hover:bg-foreground/5 hover:text-foreground")">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+            Change Password
+        </a>
+    </li>
     @if (hasExternalLogins)
     {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+        <li>
+            <a id="external-logins"
+                asp-page="./ExternalLogins"
+                class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all @(ManageNavPages.ExternalLoginsNavClass(ViewContext)=="active"?"bg-primary text-[#0f1219]":"text-foreground/60 hover:bg-foreground/5 hover:text-foreground")">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><polyline points="10 17 15 12 10 7" /><line x1="15" x2="3" y1="12" y2="12" /></svg>
+                External Logins
+            </a>
+        </li>
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
+
+    <li>
+        <a id="personal-data"
+            asp-page="./PersonalData"
+            class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all @(ManageNavPages.PersonalDataNavClass(ViewContext)=="active"?"bg-primary text-[#0f1219]":"text-foreground/60 hover:bg-foreground/5 hover:text-foreground")">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" /></svg>
+            Personal Data
+        </a>
+    </li>
 </ul>

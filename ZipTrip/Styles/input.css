@@ -1,7 +1,7 @@
 ﻿@import "tailwindcss";
 @source "../Pages";
 @source "../Pages/Shared";
-
+@source "../Areas/Identity/Pages";
 @theme {
     /* DARK MODE (Standard) */
     --color-background: #0f1219;
@@ -12,7 +12,7 @@
 }
 
 @layer base {
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap');
+    @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap");
 
     /* LIGHT MODE - Modern App Style */
     html:not(.dark) {
@@ -25,17 +25,17 @@
 
     body {
         @apply bg-background text-foreground transition-colors duration-500;
-        font-family: 'Outfit', sans-serif;
+        font-family: "Outfit", sans-serif;
     }
 
     /* Fixa Hero-bilden för Light Mode */
     .hero-overlay {
         @apply absolute inset-0 transition-all duration-500;
-        background: linear-gradient(to bottom, rgba(15,18,25,0.7), rgba(15,18,25,0.9));
+        background: linear-gradient(to bottom, rgba(15, 18, 25, 0.7), rgba(15, 18, 25, 0.9));
     }
 
     html:not(.dark) .hero-overlay {
         /* I ljust läge gör vi bilden ljus men behåller färgerna */
-        background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(248,250,252,1));
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(248, 250, 252, 1));
     }
 }

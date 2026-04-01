@@ -10,6 +10,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.Property(u => u.FirstName).HasMaxLength(100);
         builder.Property(u => u.LastName).HasMaxLength(100);
+        builder.Property(u => u.DateOfBirth).HasColumnType("date");
         builder.Property(u => u.Address).HasMaxLength(200);
         builder.Property(u => u.City).HasMaxLength(100);
         builder.Property(u => u.PostalCode).HasMaxLength(20);

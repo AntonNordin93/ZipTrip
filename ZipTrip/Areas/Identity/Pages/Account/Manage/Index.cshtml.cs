@@ -6,10 +6,12 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZipTrip.Domain.Entities;
+using ZipTrip.Domain.Enums;
 
 namespace ZipTrip.Areas.Identity.Pages.Account.Manage
 {
@@ -26,51 +28,91 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string Username { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Phone]
-            [Display(Name = "Phone number")]
+            
+            [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
+            
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+            
+            [Display(Name = "Date Of Birth")]
+            public DateOnly? DateOfBirth { get; set; }
+            
+            [Display(Name = "Address")]
+            public string Address { get; set; }
+            
+            [Display(Name= "City")]
+            public string City { get; set; }
+            
+            [Display(Name = "Postal Code")]
+            public string PostalCode { get; set; }
+            
+            [Display(Name = "Country")]
+            public string Country { get; set; }
+            
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
+
+            [Display(Name= "Vehicle Type")]
+            public VehicleType? SelectedVehicleType { get; set; }
+
+            [Display(Name = "Max height (Meters)")]
+            public decimal? MaxHeightMeters{ get; set; }
+
+            [Display(Name = "Max weight (Kg)")]
+            public decimal? MaxWeightKg { get; set; }
+
+            [Display(Name = "Range (km)")]
+            public decimal? RangeKm { get; set; }
+
         }
 
         private async Task LoadAsync(User user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
+            var userWithVehicles = await _userManager.Users
+                .Include(u => u.Vehicles)
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var email = await _userManager.GetEmailAsync(user);
 
-            Username = userName;
+            var defaultVehicle = userWithVehicles?.Vehicles
+                .FirstOrDefault(v => v.IsDefault)
+                ?? userWithVehicles?.Vehicles.FirstOrDefault();
+                
+            Username = user.UserName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Email = email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth,
+                Address = user.Address,
+                PostalCode = user.PostalCode,
+                City = user.City,
+                Country = user.Country,
+
+                SelectedVehicleType = defaultVehicle?.VehicleType??VehicleType.OrdinaryCar,
+                MaxHeightMeters = defaultVehicle?.MaxHeightMeters,
+                MaxWeightKg = defaultVehicle?.MaxWeightKg,
+                RangeKm = defaultVehicle?.RangeKm
             };
         }
 
@@ -111,8 +153,55 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            var email = await _userManager.GetEmailAsync(user);
+            if (Input.Email != email)
+            {
+                var setEmailResult = await _userManager.SetEmailAsync(user, Input.Email);
+                if (!setEmailResult.Succeeded)
+                { 
+                    StatusMessage = "Unexpected error when trying to set email.";
+                    return RedirectToPage();
+                }
+                var setUserNameResult = await _userManager.SetUserNameAsync(user, Input.Email);
+                if (!setUserNameResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set username.";
+                    return RedirectToPage();
+                }
+            }
+            user.FirstName = Input.FirstName; 
+            user.LastName = Input.LastName;
+            user.DateOfBirth = Input.DateOfBirth;
+            user.Address = Input.Address;
+            user.City = Input.City;
+            user.PostalCode = Input.PostalCode;
+            user.Country = Input.Country;
+
+            var userWithVehicles = await _userManager.Users
+                .Include(u => u.Vehicles)
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
+
+            var vehicle = userWithVehicles?.Vehicles
+                .FirstOrDefault(v => v.IsDefault) ?? userWithVehicles?.Vehicles.FirstOrDefault();
+
+            if(vehicle != null)
+            {
+                vehicle.VehicleType = Input.SelectedVehicleType ?? VehicleType.OrdinaryCar;
+                vehicle.MaxHeightMeters = Input.MaxHeightMeters;
+                vehicle.MaxWeightKg = Input.MaxWeightKg;
+                vehicle.RangeKm = Input.RangeKm;
+                vehicle.Name = $"My {vehicle.VehicleType}";
+            }
+            
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                StatusMessage = "An unexpected error";
+                return RedirectToPage();
+            }
+
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Your profile has been updated.";
             return RedirectToPage();
         }
     }

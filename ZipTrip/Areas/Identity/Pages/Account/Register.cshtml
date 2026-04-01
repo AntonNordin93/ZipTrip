@@ -1,67 +1,114 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    Layout = null;
 }
-
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skapa konto - ZipTrip</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script>
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
             }
-        </section>
-    </div>
-</div>
+    </script>
+    <style>
+            .dark input[type="date"]::-webkit-calendar-picker-indicator {
+                filter: invert(1);
+                opacity: 0.5;
+            }
+    </style>
+</head>
+<body class="bg-background text-foreground min-h-screen font-sans">
+    <div class="min-h-screen flex flex-col items-center justify-center p-4 py-10">
+        
+        <div class="w-full max-w-[420px]">
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+            <a href="/" class="flex items-center gap-2 text-foreground/60 hover:text-foreground mb-8 transition-colors w-fit">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></svg>
+                <span class="text-sm">Go back</span>
+            </a>
+
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f1219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+                </div>
+                <span class="text-3xl font-bold text-primary tracking-tight">ZipTrip</span>
+            </div>
+
+            <div class="bg-card border border-border rounded-2xl p-8 shadow-2xl">
+                <h1 class="text-2xl font-bold mb-2">Creat account</h1>
+                <p class="text-foreground/60 text-sm mb-6">Create an account and start planning your ZipTrip.</p>
+
+                <form method="post" class="space-y-4">
+                    <div asp-validation-summary="ModelOnly" class="text-red-500 text-xs"></div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium">First name</label>
+                            <input asp-for="Input.FirstName" class="w-full h-11 bg-background border border-border rounded-lg px-3 text-sm focus:border-primary focus:outline-none transition-colors" placeholder="Förnamn" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium">Last name</label>
+                            <input asp-for="Input.LastName" class="w-full h-11 bg-background border border-border rounded-lg px-3 text-sm focus:border-primary focus:outline-none transition-colors" placeholder="Efternamn" />
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium">Email</label>
+                        <div class="relative flex items-center">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 text-foreground/50"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
+                            <input asp-for="Input.Email" class="w-full h-11 bg-background border border-border rounded-lg pl-10 pr-4 text-sm focus:border-primary focus:outline-none transition-colors" placeholder="din@email.se" />
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium">Birthdate</label>
+                            <input asp-for="Input.DateOfBirth" type="date" class="w-full h-11 bg-background border border-border rounded-lg px-3 text-sm focus:border-primary focus:outline-none transition-colors text-foreground/80"/>
+                            <span asp-validation-for="Input.DateOfBirth" class="text-red-500 text-xs"></span>
+                    </div>
+                    <div class="space-y-2">
+                            <label class="block text-sm font-medium">Vehicle type</label>
+                            <div class="relative">
+                                <select asp-for="Input.SelectedVehicleType" asp-items="Html.GetEnumSelectList<ZipTrip.Domain.Enums.VehicleType>()" class="w-full h-11 bg-background border border-border rounded-lg px-3 text-sm focus:border-primary focus:outline-none transition-colors appearance-none cursor-pointer">
+                                    <option value="">--Select--</option>
+                                </select>
+                            <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-foreground/50">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Input.SelectedVehicleType" class="text-red-500 text-xs"></span>
+                            </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium">Password</label>
+                            <input asp-for="Input.Password" type="password" class="w-full h-11 bg-background border border-border rounded-lg px-3 text-sm focus:border-primary focus:outline-none transition-colors" placeholder="••••••••" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium">Confirm password</label>
+                            <input asp-for="Input.ConfirmPassword" type="password" class="w-full h-11 bg-background border border-border rounded-lg px-3 text-sm focus:border-primary focus:outline-none transition-colors" placeholder="••••••••" />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full h-11 mt-4 bg-primary text-[#0f1219] font-bold rounded-lg hover:brightness-110 transition-all">
+                        Create account
+                    </button>
+                </form>
+
+                <p class="mt-6 text-center text-sm text-foreground/60">
+                    Already got an account? <a asp-page="./Login" class="text-primary font-bold hover:underline">Login</a>
+                </p>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
