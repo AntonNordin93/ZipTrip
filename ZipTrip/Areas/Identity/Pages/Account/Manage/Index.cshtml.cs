@@ -68,19 +68,6 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
-
-            [Display(Name= "Vehicle Type")]
-            public VehicleType? SelectedVehicleType { get; set; }
-
-            [Display(Name = "Max height (Meters)")]
-            public decimal? MaxHeightMeters{ get; set; }
-
-            [Display(Name = "Max weight (Kg)")]
-            public decimal? MaxWeightKg { get; set; }
-
-            [Display(Name = "Range (km)")]
-            public decimal? RangeKm { get; set; }
-
         }
 
         private async Task LoadAsync(User user)
@@ -90,10 +77,6 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
                 .FirstOrDefaultAsync(u => u.Id == user.Id);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var email = await _userManager.GetEmailAsync(user);
-
-            var defaultVehicle = userWithVehicles?.Vehicles
-                .FirstOrDefault(v => v.IsDefault)
-                ?? userWithVehicles?.Vehicles.FirstOrDefault();
                 
             Username = user.UserName;
 
@@ -109,10 +92,6 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
                 City = user.City,
                 Country = user.Country,
 
-                SelectedVehicleType = defaultVehicle?.VehicleType??VehicleType.OrdinaryCar,
-                MaxHeightMeters = defaultVehicle?.MaxHeightMeters,
-                MaxWeightKg = defaultVehicle?.MaxWeightKg,
-                RangeKm = defaultVehicle?.RangeKm
             };
         }
 
@@ -177,22 +156,6 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
             user.PostalCode = Input.PostalCode;
             user.Country = Input.Country;
 
-            var userWithVehicles = await _userManager.Users
-                .Include(u => u.Vehicles)
-                .FirstOrDefaultAsync(u => u.Id == user.Id);
-
-            var vehicle = userWithVehicles?.Vehicles
-                .FirstOrDefault(v => v.IsDefault) ?? userWithVehicles?.Vehicles.FirstOrDefault();
-
-            if(vehicle != null)
-            {
-                vehicle.VehicleType = Input.SelectedVehicleType ?? VehicleType.OrdinaryCar;
-                vehicle.MaxHeightMeters = Input.MaxHeightMeters;
-                vehicle.MaxWeightKg = Input.MaxWeightKg;
-                vehicle.RangeKm = Input.RangeKm;
-                vehicle.Name = $"My {vehicle.VehicleType}";
-            }
-            
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {

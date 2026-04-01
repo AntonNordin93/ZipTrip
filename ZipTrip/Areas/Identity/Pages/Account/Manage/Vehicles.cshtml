@@ -1,0 +1,124 @@
+﻿@page
+@model VehiclesModel
+@{
+    ViewData["Title"] = "My Garage";
+    ViewData["ActivePage"] = ManageNavPages.Vehicles;
+}
+<div class="max-w-3xl">
+    <div class="mb-8">
+        <h3 class="text-3xl font-bold tracking-tight text-foreground" style="font-family: 'Sora', sans-serif;">@ViewData["Title"]</h3>
+        <p class="text-foreground/60 text-sm mt-1">Manage your vehicles.</p>
+    </div>
+    <partial name="_StatusMessage" for="StatusMessage" />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+        @if (!Model.UserVehicles.Any())
+        {
+            <div class="col-span-full py-10 border-2 border-dashed border-border/30 rounded-[24px] text-center">
+                <p class="text-foreground/40 text-sm italic">You have no vehicles added to your garage.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var vehicle in Model.UserVehicles)
+            {
+                <div class="bg-card border border-border rounded-[24px] p-6 shadow-xl relative group hover:border-primary/40 transition-all">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a2 2 0 002 2h10a2 2 0 002-2z" /></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-foreground">@vehicle.Name</h4>
+                                <p class="text-[10px] text-foreground/40 font-black uppercase tracking-widest">@vehicle.VehicleType</p>
+                            </div>
+                        </div>
+                        <form asp-page-handler="Delete" asp-route-id="@vehicle.Id" method="post" onsubmit="return confirm('Remove this vehicle?');">
+                            <button type="submit" class="text-red-500/20 hover:text-red-500 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
+                        </form>
+                    </div>
+                    @if (vehicle.IsDefault)
+                    {
+                        <span class="absolute bottom-4 right-6 text-[9px] font-black text-primary uppercase tracking-tighter bg-primary/10 px-2 py-0.5 rounded">Primary Vehicle</span>
+                    }
+                </div>
+            }
+        }
+    </div>
+
+    <div class="bg-card border border-border rounded-[32px] p-8 md:p-10 shadow-2xl">
+        <div class="flex items-center gap-3 mb-8">
+            <div class="h-6 w-1 bg-primary rounded-full"></div>
+            <h4 class="text-xl font-bold text-foreground">Add a New Vehicle</h4>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div class="space-y-1">
+                <label class="text-xs font-bold text-foreground/40 uppercase ml-1 tracking-widest">Search Brand</label>
+                <input id="api-brand-search" type="text" placeholder="Ex. Tesla, Volvo, Scania" class="w-full h-12 bg-foreground/5 border-transparent focus:border-primary rounded-xl px-4 text-sm outline-none transition-all" />
+            </div>
+            <div class="space-y-1">
+                <label class="text-xs font-bold text-foreground/40 uppercase ml-1 tracking-widest">Select Model</label>
+                <div class="relative">
+                    <select id="api-model-select" disabled class="w-full h-12 bg-foreground/5 border-transparent focus:border-primary rounded-xl px-4 text-sm outline-none appearance-none peer-disabled\:opacity-30">
+                        <option value="">Search brand first...</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-foreground/20">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6" /></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" class="space-y-6 pt-6 border-t border-border/20">
+            <div asp-validation-summary="ModelOnly" class="text-red-400 text-xs italic"></div>
+
+            <input type="hidden" asp-for="Input.Brand" id="hidden-brand" />
+            <input type="hidden" asp-for="Input.Model" id="hidden-model" />
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label asp-for="Input.Name" class="text-sm font-medium ml-1 text-foreground"></label>
+                    <input asp-for="Input.Name" id="res-nickname" class="w-full h-12 bg-foreground/5 border-transparent focus:border-primary rounded-xl px-4 outline-none transition-all" placeholder="ex. My Car" />
+                    <span asp-validation-for="Input.Name" class="text-primary text-[10px]"></span>
+                </div>
+                <div class="space-y-1">
+                    <label asp-for="Input.SelectedVehicleType" class="text-sm font-medium ml-1 text-foreground"></label>
+                    <div class="relative">
+                        <select asp-for="Input.SelectedVehicleType" id="res-type" asp-items="Html.GetEnumSelectList<ZipTrip.Domain.Enums.VehicleType>()" class="w-full h-12 bg-foreground/5 border-transparent focus:border-primary rounded-xl px-4 text-sm outline-none appearance-none cursor-pointer"></select>
+                        <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-foreground/20">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6" /></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                <div class="space-y-1">
+                    <label asp-for="Input.MaxHeightMeters" class="text-xs font-bold text-foreground/40 uppercase ml-1"></label>
+                    <input asp-for="Input.MaxHeightMeters" id="res-height" type="number" step="0.01" class="w-full h-12 bg-foreground/5 border-transparent focus:border-primary rounded-xl px-4 text-sm outline-none transition-all" placeholder="0.00" />
+                </div>
+                <div class="space-y-1">
+                    <label asp-for="Input.MaxWeightKg" class="text-xs font-bold text-foreground/40 uppercase ml-1"></label>
+                    <input asp-for="Input.MaxWeightKg" id="res-weight" type="number" step="1" class="w-full h-12 bg-foreground/5 border-transparent focus:border-primary rounded-xl px-4 text-sm outline-none transition-all" placeholder="0.00" />
+                </div>
+                <div class="space-y-1">
+                    <label asp-for="Input.RangeKm" class="text-xs font-bold text-foreground/40 uppercase ml-1"></label>
+                    <input asp-for="Input.RangeKm" id="res-range" type="number" step="1" class="w-full h-12 bg-foreground/5 border-transparent focus:border-primary rounded-xl px-4 text-sm outline-none transition-all" placeholder="0.00" />
+                </div>
+            </div>
+
+            <button type="submit" class="w-full py-4 bg-primary text-[#0f1219] font-black rounded-xl hover:opacity-90 hover:scale-[1.01] active:scale-95 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 mt-4 uppercase tracking-wider text-sm">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" /></svg>
+                Add to Garage
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/vehicleManagement.js" asp-append-version="true"></script>
+}
