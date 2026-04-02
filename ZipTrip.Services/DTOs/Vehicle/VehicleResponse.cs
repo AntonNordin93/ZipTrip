@@ -12,6 +12,7 @@ namespace ZipTrip.Services.DTOs.Vehicle
         public decimal? MaxHeightMeters { get; set; }
         public decimal? MaxWeightKg { get;set; }
         public decimal? RangeKm { get;set; }
+        public int? Year { get; set; }
         public bool IsDefault { get; set; }
     }
 }
