@@ -3,10 +3,10 @@
     const modelSel = document.getElementById('api-model-select');
     const yearIn = document.getElementById('api-year-search');
     const nicknameIn = document.getElementById('res-nickname');
+    const datalist = document.getElementById('brand-options');
 
     let vehicleDb = null;
 
-    // --- NYTT: Denna måste finnas för att koppla JSON-text till C#-siffror ---
     const vehicleTypeMap = {
         "OrdinaryCar": "0",
         "ElectricCar": "1",
@@ -14,122 +14,113 @@
         "Caravan": "3"
     };
 
-    // 1. Ladda din lokala databas
+    // 1. Ladda databasen
     async function loadLocalDatabase() {
         try {
             const response = await fetch('/data/vehicleDb.json');
             if (!response.ok) throw new Error("Network response was not ok");
             vehicleDb = await response.json();
-            console.log("ZipTrip Vehicle Database Loaded Successfully!");
+            console.log("ZipTrip Vehicle Database Loaded!");
+            populateBrandSuggestions();
         } catch (error) {
-            console.error("Error loading local vehicle database:", error);
-            if (modelSel) modelSel.innerHTML = '<option>Error loading database</option>';
+            console.error("Error loading database:", error);
         }
     }
 
     loadLocalDatabase();
 
-    function resetSpecs() {
-        const fields = ['res-height', 'res-weight', 'res-range'];
-        fields.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.value = (id === 'res-height') ? "1.50" : "0";
+    function populateBrandSuggestions() {
+        if (!datalist || !vehicleDb) return;
+        datalist.innerHTML = '';
+        const sortedBrands = [...vehicleDb.brands].sort((a, b) => a.name.localeCompare(b.name));
+        sortedBrands.forEach(brand => {
+            const option = document.createElement('option');
+            option.value = brand.name;
+            datalist.appendChild(option);
         });
-
-        const resType = document.getElementById('res-type');
-        if (resType) resType.selectedIndex = 0;
-
-        if (yearIn) {
-            yearIn.min = 1950;
-            yearIn.max = new Date().getFullYear();
-        }
     }
 
+    // 2. Hantera märke (Lås upp modeller)
     if (brandIn && modelSel) {
-        brandIn.addEventListener('input', () => {
-            if (!vehicleDb) return;
+        ['input', 'change'].forEach(evt => {
+            brandIn.addEventListener(evt, function () {
+                if (!vehicleDb) return;
+                const make = brandIn.value.trim().toLowerCase();
+                const brandData = vehicleDb.brands.find(b => b.name.toLowerCase() === make);
 
-            const make = brandIn.value.trim().toLowerCase();
-            const brandData = vehicleDb.brands.find(b => b.name.toLowerCase() === make);
+                modelSel.innerHTML = '<option value="">Select Model</option>';
 
-            modelSel.innerHTML = '<option value="">Select Model</option>';
-            resetSpecs();
-
-            if (brandData) {
-                brandData.models.sort((a, b) => a.name.localeCompare(b.name)).forEach(m => {
-                    const opt = document.createElement('option');
-                    opt.value = m.name;
-                    opt.text = m.name;
-                    modelSel.appendChild(opt);
-                });
-                modelSel.disabled = false;
-            } else {
-                modelSel.innerHTML = '<option value="">Brand not found</option>';
-                modelSel.disabled = true;
-            }
+                if (brandData) {
+                    brandData.models.sort((a, b) => a.name.localeCompare(b.name)).forEach(m => {
+                        const opt = document.createElement('option');
+                        opt.value = m.name;
+                        opt.text = m.name;
+                        modelSel.appendChild(opt);
+                    });
+                    modelSel.disabled = false;
+                } else {
+                    modelSel.disabled = true;
+                }
+                syncHiddenFields();
+            });
         });
 
+        // 3. Hantera modell (Sätt specs och ÅRS-SPÄRRAR)
         modelSel.addEventListener('change', () => {
             if (!vehicleDb) return;
 
             const make = brandIn.value.trim().toLowerCase();
             const modelName = modelSel.value;
-
             const brandData = vehicleDb.brands.find(b => b.name.toLowerCase() === make);
             if (!brandData) return;
 
             const modelData = brandData.models.find(m => m.name === modelName);
             if (!modelData) return;
 
-            // --- A. SPÄRRA ÅRTALEN ---
+            // --- HÄR ÄR FIXEN FÖR ÅRTALEN ---
             const currentYear = new Date().getFullYear();
+            const startYear = modelData.startYear || 1950;
             const endYear = modelData.endYear || currentYear;
 
             if (yearIn) {
-                yearIn.min = modelData.startYear;
+                yearIn.min = startYear;
                 yearIn.max = endYear;
 
-                let selectedYear = parseInt(yearIn.value);
-                if (isNaN(selectedYear) || selectedYear < modelData.startYear) {
-                    yearIn.value = modelData.startYear;
-                } else if (selectedYear > endYear) {
+                // Om nuvarande år i fältet är utanför modellens levnadstid, tvinga in det
+                let currentVal = parseInt(yearIn.value);
+                if (isNaN(currentVal) || currentVal < startYear) {
+                    yearIn.value = startYear;
+                } else if (currentVal > endYear) {
                     yearIn.value = endYear;
                 }
             }
 
-            // --- B. FYLL I STATS ---
-            const resHeight = document.getElementById('res-height');
-            const resWeight = document.getElementById('res-weight');
-            const resRange = document.getElementById('res-range');
+            // Fyll i specifikationer
+            document.getElementById('res-height').value = modelData.height || "1.50";
+            document.getElementById('res-weight').value = modelData.weight || "1500";
+            document.getElementById('res-range').value = modelData.range || "0";
+
             const resType = document.getElementById('res-type');
-
-            if (resHeight) resHeight.value = modelData.height;
-            if (resWeight) resWeight.value = modelData.weight;
-            if (resRange) resRange.value = modelData.range;
-
-            // --- C. SMART TYPE SELECTOR (Nu via value/siffra) ---
             if (resType && brandData.type) {
-                const targetValue = vehicleTypeMap[brandData.type];
-                if (targetValue !== undefined) {
-                    resType.value = targetValue;
-                }
+                resType.value = vehicleTypeMap[brandData.type] || "0";
             }
 
             syncHiddenFields();
         });
+    }
 
-        if (yearIn) {
-            yearIn.addEventListener('input', function () {
-                const min = parseInt(this.min);
-                const max = parseInt(this.max);
-                let val = parseInt(this.value);
+    // 4. Hantera manuell ändring av år (Håll det inom spärrarna)
+    if (yearIn) {
+        yearIn.addEventListener('input', function () {
+            const min = parseInt(this.min);
+            const max = parseInt(this.max);
+            let val = parseInt(this.value);
 
-                if (val < min) this.value = min;
-                if (val > max) this.value = max;
+            if (val < min) this.value = min;
+            if (val > max) this.value = max;
 
-                syncHiddenFields();
-            });
-        }
+            syncHiddenFields();
+        });
     }
 
     function syncHiddenFields() {
@@ -137,13 +128,13 @@
         const model = modelSel ? modelSel.value.trim() : "";
         const year = yearIn ? yearIn.value : "";
 
-        const hiddenBrand = document.getElementById('hidden-brand');
-        const hiddenModel = document.getElementById('hidden-model');
-        const hiddenYear = document.getElementById('hidden-year');
+        const hBrand = document.getElementById('hidden-brand');
+        const hModel = document.getElementById('hidden-model');
+        const hYear = document.getElementById('hidden-year');
 
-        if (hiddenBrand) hiddenBrand.value = make;
-        if (hiddenModel) hiddenModel.value = model;
-        if (hiddenYear) hiddenYear.value = year;
+        if (hBrand) hBrand.value = make;
+        if (hModel) hModel.value = model;
+        if (hYear) hYear.value = year;
 
         if (nicknameIn && make && model) {
             nicknameIn.value = `${make} ${model} (${year})`;

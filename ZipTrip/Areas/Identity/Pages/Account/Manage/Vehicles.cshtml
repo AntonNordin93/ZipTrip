@@ -57,7 +57,8 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="space-y-1">
                 <label class="text-xs font-bold text-foreground/40 uppercase ml-1 tracking-widest">Search Brand</label>
-                <input id="api-brand-search" type="text" placeholder="Ex. Tesla, Volvo, Scania" class="w-full h-12 bg-foreground/5 border-transparent focus:border-primary rounded-xl px-4 text-sm outline-none transition-all" />
+                <input id="api-brand-search" list="brand-options" placeholder="Search brand..." class="w-full h-12 bg-foreground/5 border-transparent focus:border-primary rounded-xl px-4 text-sm outline-none transition-all" />
+                <datalist id="brand-options"></datalist>
             </div>
             <div class="space-y-1">
                 <label class="text-xs font-bold text-foreground/40 uppercase ml-1 tracking-widest">Select Model</label>
