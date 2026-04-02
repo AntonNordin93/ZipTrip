@@ -2,8 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using ZipTrip.Services.Interfaces;
+using ZipTrip.Services.DTOs.Vehicle;
 using ZipTrip.Domain.Entities;
 using ZipTrip.Domain.Enums;
 
@@ -12,11 +13,13 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
     public class VehiclesModel : PageModel
     {
         private readonly UserManager<User> _userManager;
-        public VehiclesModel(UserManager<User> userManager)
+        private readonly IVehicleService _vehicleService;
+        public VehiclesModel(UserManager<User> userManager, IVehicleService vehicleService)
         {
             _userManager = userManager;
+            _vehicleService = vehicleService;
         }
-        public List<UserVehicle> UserVehicles { get; set; } = new();
+        public List<VehicleResponse> UserVehicles { get; set; } = new();
 
         [TempData]
         public string? StatusMessage { get; set; }
@@ -51,63 +54,51 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
         }
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.Users
-                .Include(x => x.Vehicles)
-                .FirstOrDefaultAsync(u => u.Id == _userManager.GetUserId(User));
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-            UserVehicles = user.Vehicles.ToList();
+            var userId= _userManager.GetUserId(User);
+            if (userId == null) return NotFound("Unable to load user.");
+
+            var vehicles = await _vehicleService.GetUserVehiclesAsync(userId);
+            UserVehicles = vehicles.ToList();
             return Page();
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.Users
-                .Include(x => x.Vehicles)
-                .FirstOrDefaultAsync(u => u.Id == _userManager.GetUserId(User));
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            var userId = _userManager.GetUserId(User);
+            if(userId == null) return NotFound("Unable to load user.");
+
             if (!ModelState.IsValid)
             {
-                UserVehicles = user.Vehicles.ToList();
+                var vehicles = await _vehicleService.GetUserVehiclesAsync(userId);
+                UserVehicles = vehicles.ToList();
                 return Page();
             }
-            var newVehicle = new UserVehicle
+            var request = new VehicleRequest
             {
                 Name = !string.IsNullOrWhiteSpace(Input.Name)
-               ? Input.Name
-               : $"{Input.Brand} {Input.Model}".Trim(),
-
-                VehicleType = Input.SelectedVehicleType ?? VehicleType.OrdinaryCar,
+                ? Input.Name:$"My {Input.Brand} {Input.Model}".Trim(),
+                SelectedVehicleType = Input.SelectedVehicleType ?? VehicleType.OrdinaryCar,
                 MaxHeightMeters = Input.MaxHeightMeters,
                 MaxWeightKg = Input.MaxWeightKg,
-                RangeKm = Input.RangeKm,
-                UserId = user.Id,
-                IsDefault = !user.Vehicles.Any()
+                RangeKm = Input.RangeKm
             };
-
-            user.Vehicles.Add(newVehicle);
-            await _userManager.UpdateAsync(user);
+            await _vehicleService.AddVehicleAsync(userId, request);
             StatusMessage = "Vehicle added successfully.";
             return RedirectToPage();
         }
         public async Task<IActionResult> OnPostDeleteAsync(Guid id)
         {
-            var user = await _userManager.Users
-                .Include(x => x.Vehicles)
-                .FirstOrDefaultAsync(u => u.Id == _userManager.GetUserId(User));
-
-            var vehicle = user?.Vehicles.FirstOrDefault(v => v.Id == id);
-            if (vehicle != null)
+            var success = await _vehicleService.DeleteVehicleAsync(id);
+            if (success)
             {
-                user?.Vehicles.Remove(vehicle);
-                await _userManager.UpdateAsync(user);
                 StatusMessage = "Vehicle deleted successfully.";
+
+            }
+            else
+            {
+                StatusMessage = "Error deleting vehicle.";
             }
             return RedirectToPage();
+
         }
     }
 }

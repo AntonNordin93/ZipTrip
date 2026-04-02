@@ -12,8 +12,8 @@ using ZipTrip.Data;
 namespace ZipTrip.Data.Migrations
 {
     [DbContext(typeof(ZipTripDbContext))]
-    [Migration("20260331224921_AddedUserInfo")]
-    partial class AddedUserInfo
+    [Migration("20260402015519_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -169,6 +169,7 @@ namespace ZipTrip.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal?>("EstimatedStopTimesMinutes")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<double>("Latitude")

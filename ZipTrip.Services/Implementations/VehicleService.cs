@@ -20,17 +20,16 @@ namespace ZipTrip.Services.Implementations
         }
         public async Task<IEnumerable<VehicleResponse>> GetUserVehiclesAsync(string userId)
         {
-            return await _context.UserVehicles
+            var vehicles = await _context.UserVehicles
                 .Where(v => v.UserId == userId)
-                .ProjectTo<VehicleResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync();
+            return _mapper.Map<IEnumerable<VehicleResponse>>(vehicles);
         }
         public async Task<VehicleResponse?> GetVehicleByIdAsync(Guid id)
         {
-            return await _context.UserVehicles
-                .Where(v => v.Id == id)
-                .ProjectTo<VehicleResponse>(_mapper.ConfigurationProvider)
+            var vehicle= await _context.UserVehicles
                 .FirstOrDefaultAsync(v => v.Id == id);
+            return _mapper.Map<VehicleResponse>(vehicle);
         }
 
         public async Task<VehicleResponse> AddVehicleAsync(string userId, VehicleRequest request)
@@ -52,9 +51,8 @@ namespace ZipTrip.Services.Implementations
         }
         public async Task<IEnumerable<VehicleResponse>> GetStandardSpecsAsync()
         {
-            return await _context.VehicleSpecifications
-                .ProjectTo<VehicleResponse>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+            var specs = await _context.VehicleSpecifications.ToListAsync();
+            return _mapper.Map<IEnumerable<VehicleResponse>>(specs);
         }
         public async Task<bool> DeleteVehicleAsync(Guid id)
         {

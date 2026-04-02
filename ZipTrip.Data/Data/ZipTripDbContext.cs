@@ -17,6 +17,10 @@ public class ZipTripDbContext : IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<RouteStop>()
+        .Property(r => r.EstimatedStopTimesMinutes)
+        .HasPrecision(18, 2);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ZipTripDbContext).Assembly);
     }
 }
