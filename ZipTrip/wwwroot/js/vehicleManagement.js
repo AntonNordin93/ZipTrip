@@ -1,65 +1,152 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
     const brandIn = document.getElementById('api-brand-search');
     const modelSel = document.getElementById('api-model-select');
+    const yearIn = document.getElementById('api-year-search');
     const nicknameIn = document.getElementById('res-nickname');
 
+    let vehicleDb = null;
+
+    // --- NYTT: Denna måste finnas för att koppla JSON-text till C#-siffror ---
+    const vehicleTypeMap = {
+        "OrdinaryCar": "0",
+        "ElectricCar": "1",
+        "Motorhome": "2",
+        "Caravan": "3"
+    };
+
+    // 1. Ladda din lokala databas
+    async function loadLocalDatabase() {
+        try {
+            const response = await fetch('/data/vehicleDb.json');
+            if (!response.ok) throw new Error("Network response was not ok");
+            vehicleDb = await response.json();
+            console.log("ZipTrip Vehicle Database Loaded Successfully!");
+        } catch (error) {
+            console.error("Error loading local vehicle database:", error);
+            if (modelSel) modelSel.innerHTML = '<option>Error loading database</option>';
+        }
+    }
+
+    loadLocalDatabase();
+
+    function resetSpecs() {
+        const fields = ['res-height', 'res-weight', 'res-range'];
+        fields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = (id === 'res-height') ? "1.50" : "0";
+        });
+
+        const resType = document.getElementById('res-type');
+        if (resType) resType.selectedIndex = 0;
+
+        if (yearIn) {
+            yearIn.min = 1950;
+            yearIn.max = new Date().getFullYear();
+        }
+    }
+
     if (brandIn && modelSel) {
-        // 1. Fetch models from NHTSA API when brand changes
-        brandIn.addEventListener('change', async () => {
-            const make = brandIn.value.trim();
-            if (make.length < 2) return;
+        brandIn.addEventListener('input', () => {
+            if (!vehicleDb) return;
 
-            modelSel.innerHTML = '<option>Loading models...</option>';
-            modelSel.disabled = true;
+            const make = brandIn.value.trim().toLowerCase();
+            const brandData = vehicleDb.brands.find(b => b.name.toLowerCase() === make);
 
-            try {
-                const response = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/${make}?format=json`);
-                const data = await response.json();
+            modelSel.innerHTML = '<option value="">Select Model</option>';
+            resetSpecs();
 
-                modelSel.innerHTML = '<option value="">Select Model</option>';
-                data.Results.sort((a, b) => a.Model_Name.localeCompare(b.Model_Name)).forEach(m => {
+            if (brandData) {
+                brandData.models.sort((a, b) => a.name.localeCompare(b.name)).forEach(m => {
                     const opt = document.createElement('option');
-                    opt.value = m.Model_Name;
-                    opt.text = m.Model_Name;
+                    opt.value = m.name;
+                    opt.text = m.name;
                     modelSel.appendChild(opt);
                 });
                 modelSel.disabled = false;
-            } catch (e) {
-                console.error("Vehicle API Error:", e);
-                modelSel.innerHTML = '<option>Error loading database</option>';
+            } else {
+                modelSel.innerHTML = '<option value="">Brand not found</option>';
+                modelSel.disabled = true;
             }
         });
 
-        // 2. Auto-fill specs when model is selected
         modelSel.addEventListener('change', () => {
-            const make = brandIn.value;
-            const model = modelSel.value;
+            if (!vehicleDb) return;
 
-            // Set hidden values for the backend
-            const hiddenBrand = document.getElementById('hidden-brand');
-            const hiddenModel = document.getElementById('hidden-model');
+            const make = brandIn.value.trim().toLowerCase();
+            const modelName = modelSel.value;
 
-            if (hiddenBrand) hiddenBrand.value = make;
-            if (hiddenModel) hiddenModel.value = model;
-            if (nicknameIn) nicknameIn.value = `${make} ${model}`;
+            const brandData = vehicleDb.brands.find(b => b.name.toLowerCase() === make);
+            if (!brandData) return;
 
-            // Smart Auto-filler logic
-            const modelLower = model.toLowerCase();
+            const modelData = brandData.models.find(m => m.name === modelName);
+            if (!modelData) return;
+
+            // --- A. SPÄRRA ÅRTALEN ---
+            const currentYear = new Date().getFullYear();
+            const endYear = modelData.endYear || currentYear;
+
+            if (yearIn) {
+                yearIn.min = modelData.startYear;
+                yearIn.max = endYear;
+
+                let selectedYear = parseInt(yearIn.value);
+                if (isNaN(selectedYear) || selectedYear < modelData.startYear) {
+                    yearIn.value = modelData.startYear;
+                } else if (selectedYear > endYear) {
+                    yearIn.value = endYear;
+                }
+            }
+
+            // --- B. FYLL I STATS ---
             const resHeight = document.getElementById('res-height');
             const resWeight = document.getElementById('res-weight');
             const resRange = document.getElementById('res-range');
             const resType = document.getElementById('res-type');
 
-            if (modelLower.includes("model 3") || modelLower.includes("model y")) {
-                if (resHeight) resHeight.value = 1.44;
-                if (resWeight) resWeight.value = 1847;
-                if (resRange) resRange.value = 491;
-                if (resType) resType.value = "1"; // ElectricCar
-            } else if (modelLower.includes("xc90")) {
-                if (resHeight) resHeight.value = 1.77;
-                if (resWeight) resWeight.value = 2100;
-                if (resType) resType.value = "0"; // OrdinaryCar
+            if (resHeight) resHeight.value = modelData.height;
+            if (resWeight) resWeight.value = modelData.weight;
+            if (resRange) resRange.value = modelData.range;
+
+            // --- C. SMART TYPE SELECTOR (Nu via value/siffra) ---
+            if (resType && brandData.type) {
+                const targetValue = vehicleTypeMap[brandData.type];
+                if (targetValue !== undefined) {
+                    resType.value = targetValue;
+                }
             }
+
+            syncHiddenFields();
         });
+
+        if (yearIn) {
+            yearIn.addEventListener('input', function () {
+                const min = parseInt(this.min);
+                const max = parseInt(this.max);
+                let val = parseInt(this.value);
+
+                if (val < min) this.value = min;
+                if (val > max) this.value = max;
+
+                syncHiddenFields();
+            });
+        }
+    }
+
+    function syncHiddenFields() {
+        const make = brandIn ? brandIn.value.trim() : "";
+        const model = modelSel ? modelSel.value.trim() : "";
+        const year = yearIn ? yearIn.value : "";
+
+        const hiddenBrand = document.getElementById('hidden-brand');
+        const hiddenModel = document.getElementById('hidden-model');
+        const hiddenYear = document.getElementById('hidden-year');
+
+        if (hiddenBrand) hiddenBrand.value = make;
+        if (hiddenModel) hiddenModel.value = model;
+        if (hiddenYear) hiddenYear.value = year;
+
+        if (nicknameIn && make && model) {
+            nicknameIn.value = `${make} ${model} (${year})`;
+        }
     }
 });

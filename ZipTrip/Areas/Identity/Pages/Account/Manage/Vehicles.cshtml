@@ -54,7 +54,7 @@
             <h4 class="text-xl font-bold text-foreground">Add a New Vehicle</h4>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="space-y-1">
                 <label class="text-xs font-bold text-foreground/40 uppercase ml-1 tracking-widest">Search Brand</label>
                 <input id="api-brand-search" type="text" placeholder="Ex. Tesla, Volvo, Scania" class="w-full h-12 bg-foreground/5 border-transparent focus:border-primary rounded-xl px-4 text-sm outline-none transition-all" />
@@ -70,6 +70,10 @@
                     </div>
                 </div>
             </div>
+            <div class="space-y-1">
+                <label class="text-xs font-bold text-foreground/40 uppercase ml-1 tracking-widest">Year</label>
+                <input id="api-year-search" type="number" placeholder="2024" min="1950" max="2026" class="w-full h-12 bg-foreground/5 border-transparent focus:border-primary rounded-xl px-4 text-sm outline-none transition-all" />
+            </div>
         </div>
 
         <form method="post" class="space-y-6 pt-6 border-t border-border/20">
@@ -77,6 +81,7 @@
 
             <input type="hidden" asp-for="Input.Brand" id="hidden-brand" />
             <input type="hidden" asp-for="Input.Model" id="hidden-model" />
+            <input type="hidden" asp-for="Input.Year" id="hidden-year" />
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-1">
