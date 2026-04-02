@@ -14,19 +14,42 @@
             }
     </script>
 </head>
-<body class="bg-background text-foreground">
+<body class="bg-background text-foreground flex flex-col min-h-screen font-sans antialiased">
 
     <header class="fixed w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <nav class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold tracking-tighter">
-                ZIP<span class="text-primary">TRIP</span>
+        <nav aria-label="Main navigation" class="container mx-auto flex items-center justify-between h-16 px-4 relative">
+            <a href="/" class="flex items-center gap-2" aria-label="ZipTrip Home">
+                <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center" aria-hidden="true">
+                    <svg class="w-5 h-5 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z">
+                        </path>
+                    </svg>
+                </div>
+                <span class="font-display text-xl font-bold text-primary tracking-wide">ZipTrip</span>
             </a>
 
-            <div class="flex items-center gap-4">
-                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-foreground/5 border border-border hover:scale-110 transition-all cursor-pointer">
-                    <span id="theme-icon" class="text-lg">🌙</span>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground" role="list">
+                <a href="/#features" class="hover:text-foreground transition-colors" role="listitem">Features</a>
+                <a href="/#Vehicles" class="hover:text-foreground transition-colors" role="listitem">Vehicles</a>
+                <a href="/#How" class="hover:text-foreground transition-colors" role="listitem">How It Works</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-md bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+                    <span id="theme-icon" class="text-sm">🌙</span>
                 </button>
                 <partial name="_LoginPartial" />
+
+                <button id="mobile-menu-btn" class="md:hidden w-9 h-9 flex items-center justify-center rounded-md bg-muted text-foreground hover:bg-foreground/10">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-background border-b border-border shadow-2xl flex-col py-4 px-6 gap-4">
+                <a href="/#features" class="text-foreground font-bold text-lg group-hover:text-primary" role="listitem">Features</a>
+                <a href="/#Vehicles" class="text-foreground font-bold text-lg group-hover:text-primary" role="listitem">Vehicles</a>
+                <a href="/#How" class="text-foreground font-bold text-lg group-hover:text-primary" role="listitem">How It Works</a>
             </div>
         </nav>
     </header>
@@ -34,30 +57,33 @@
     <main role="main">
         @RenderBody()
     </main>
-
-    <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const btn = document.getElementById('theme-toggle');
-                const icon = document.getElementById('theme-icon');
-            
-                function updateIcon() {
-                    icon.innerText = document.documentElement.classList.contains('dark') ? '🌙' : '☀️';
-                }
-            
-                updateIcon(); // Sätt rätt ikon vid start
-
-                btn.addEventListener('click', () => {
-                    if (document.documentElement.classList.contains('dark')) {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('theme', 'light');
-                    } else {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('theme', 'dark');
-                    }
-                    updateIcon();
-                });
-            });
-    </script>
+    <footer class="bg-background border-t border-border py-16 px-4 mt-auto" role="contentinfo">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center" aria-hidden="true">
+                            <svg class="w-4 h-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <span class="font-display text-lg font-bold text-primary">ZipTrip</span>
+                    </div>
+                    <p class="text-muted-foreground text-sm max-w-xs">
+                        Your ultimate platform for road trips tailored to your vehicle.
+                    </p>
+                </div>
+                <nav aria-label="Footer" class="flex gap-12 text-sm">
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-foreground mb-3">Company</h4>
+                        <a href="#" class="block text-muted-foreground hover:text-primary transition-colors">About us</a>
+                        <a href="#" class="block text-muted-foreground hover:text-primary transition-colors">Contact</a>
+                    </div>
+                </nav>
+            </div>
+            <div class="border-t border-border mt-12 pt-6 text-center text-muted-foreground text-xs">
+                &copy; 2026 ZipTrip. All rights reserved.
+            </div>
+        </div>
+    </footer>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
