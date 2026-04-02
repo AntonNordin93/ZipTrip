@@ -51,6 +51,8 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Range (km)")]
             public decimal? RangeKm { get; set; }
+
+            public bool IsDefault { get; set; }
         }
         public async Task<IActionResult> OnGetAsync()
         {
@@ -79,7 +81,8 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
                 SelectedVehicleType = Input.SelectedVehicleType ?? VehicleType.OrdinaryCar,
                 MaxHeightMeters = Input.MaxHeightMeters,
                 MaxWeightKg = Input.MaxWeightKg,
-                RangeKm = Input.RangeKm
+                RangeKm = Input.RangeKm,
+                IsDefault= Input.IsDefault
             };
             await _vehicleService.AddVehicleAsync(userId, request);
             StatusMessage = "Vehicle added successfully.";
