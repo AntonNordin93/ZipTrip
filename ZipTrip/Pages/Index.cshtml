@@ -1,4 +1,5 @@
 ﻿@page
+@using ZipTrip.Domain.Enums
 @model IndexModel
 <section class="relative min-h-screen flex items-center overflow-hidden">
     <div class="absolute inset-0 z-0">
@@ -44,13 +45,13 @@
                 {
                     <div class="p-8 rounded-[2rem] bg-card border border-border hover:border-primary/50 transition-all cursor-pointer group">
                         <div class="text-4xl mb-6 group-hover:scale-110 transition-transform">
-                            @(vehicle.VehicleTypeName == "ElectricCar" ? "⚡" : vehicle.VehicleTypeName == "MotorHome" ? "🚐" : "🚗")
+                            @(vehicle.VehicleType == VehicleType.ElectricCar ? "⚡" : vehicle.VehicleType == VehicleType.MotorHome ? "🚐" : vehicle.VehicleType == VehicleType.Caravan ? "🏠" : "🚗")
                         </div>
                         <h3 class="text-xl font-bold">@vehicle.Name</h3>
-                        <p class="text-sm text-muted-foreground mb-4">@vehicle.VehicleTypeName</p>
+                        <p class="text-sm text-muted-foreground mb-4">@vehicle.VehicleType</p>
                         
                         <div class="flex gap-4 text-xs font-mono opacity-70">
-                            <span>@vehicle.MaxRangeKm km</span>
+                            <span>@vehicle.RangeKm km</span>
                             <span>@vehicle.MaxHeightMeters m</span>
                         </div>
                     </div>

@@ -1,7 +1,9 @@
 ﻿@import "tailwindcss";
+
 @source "../Pages";
 @source "../Pages/Shared";
 @source "../Areas/Identity/Pages";
+
 @theme {
     /* DARK MODE (Standard) */
     --color-background: #0f1219;
@@ -16,9 +18,9 @@
 
     /* LIGHT MODE - Modern App Style */
     html:not(.dark) {
-        --color-background: #f8fafc; /* Ljusgrå/blå ton istället för kritvitt */
-        --color-foreground: #0f172a; /* Djup mörkblå text */
-        --color-primary: #059669; /* Smaragdgrön för läsbarhet */
+        --color-background: #f8fafc;
+        --color-foreground: #0f172a;
+        --color-primary: #059669;
         --color-card: #ffffff;
         --color-border: rgba(0, 0, 0, 0.05);
     }
@@ -28,6 +30,17 @@
         font-family: "Outfit", sans-serif;
     }
 
+    /* FIX FÖR DARK MODE DROPDOWNS */
+    /* Detta tvingar webbläsaren att rita dropdown-menyn mörkt */
+    select {
+        color-scheme: dark;
+    }
+
+        /* Specifik styling för options så de matchar dina kort */
+        select option {
+            @apply bg-card text-foreground;
+        }
+
     /* Fixa Hero-bilden för Light Mode */
     .hero-overlay {
         @apply absolute inset-0 transition-all duration-500;
@@ -35,7 +48,10 @@
     }
 
     html:not(.dark) .hero-overlay {
-        /* I ljust läge gör vi bilden ljus men behåller färgerna */
         background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(248, 250, 252, 1));
+        /* Tvinga select till ljust läge om användaren kör light mode */
+        select {
+            color-scheme: light;
+        }
     }
 }

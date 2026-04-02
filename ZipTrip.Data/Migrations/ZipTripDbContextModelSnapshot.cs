@@ -166,6 +166,7 @@ namespace ZipTrip.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal?>("EstimatedStopTimesMinutes")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<double>("Latitude")

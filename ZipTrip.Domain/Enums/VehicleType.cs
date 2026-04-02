@@ -8,12 +8,12 @@ namespace ZipTrip.Domain.Enums
     public enum VehicleType
     {
         [Display(Name = "Ordinary Car")]
-        OrdinaryCar,
+        OrdinaryCar=0,
         [Display(Name = "Electric Car")]
-        ElectricCar,
+        ElectricCar=1,
         [Display(Name = "Motor Home")]
-        MotorHome,
-        [Display(Name = "Car with Trailer")]
-        CarWithTrailer,
+        MotorHome=2,
+        [Display(Name = "Caravan/trailer")]
+        Caravan=3
     }
 }

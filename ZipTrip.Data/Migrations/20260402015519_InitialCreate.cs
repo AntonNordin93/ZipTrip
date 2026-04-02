@@ -32,6 +32,7 @@ namespace ZipTrip.Data.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
@@ -250,7 +251,7 @@ namespace ZipTrip.Data.Migrations
                     Latitude = table.Column<double>(type: "float", nullable: false),
                     Longitude = table.Column<double>(type: "float", nullable: false),
                     StopOrder = table.Column<int>(type: "int", nullable: false),
-                    EstimatedStopTimesMinutes = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    EstimatedStopTimesMinutes = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TripId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },

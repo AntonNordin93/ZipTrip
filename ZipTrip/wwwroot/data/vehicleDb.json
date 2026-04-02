@@ -1,0 +1,6010 @@
+{
+  "brands": [
+    {
+      "name": "Adria",
+      "type": "Motorhome",
+      "startYear": 1965,
+      "models": [
+        {
+          "name": "Matrix",
+          "startYear": 2010,
+          "endYear": 2026,
+          "weight": 3100,
+          "height": 2.85,
+          "range": 800
+        },
+        {
+          "name": "Coral",
+          "startYear": 1999,
+          "endYear": 2026,
+          "weight": 3000,
+          "height": 2.78,
+          "range": 800
+        },
+        {
+          "name": "Sonic",
+          "startYear": 2011,
+          "endYear": 2026,
+          "weight": 3500,
+          "height": 2.95,
+          "range": 750
+        },
+        {
+          "name": "Twin",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 2800,
+          "height": 2.60,
+          "range": 900
+        },
+        {
+          "name": "Compact",
+          "startYear": 2008,
+          "endYear": 2026,
+          "weight": 2700,
+          "height": 2.75,
+          "range": 800
+        },
+        {
+          "name": "Alpina",
+          "startYear": 1975,
+          "endYear": 2026,
+          "weight": 1850,
+          "height": 2.60,
+          "range": 0
+        },
+        {
+          "name": "Adora",
+          "startYear": 2000,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 2.58,
+          "range": 0
+        },
+        {
+          "name": "Action",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 1100,
+          "height": 2.55,
+          "range": 0
+        },
+        {
+          "name": "Altea",
+          "startYear": 1990,
+          "endYear": 2026,
+          "weight": 1300,
+          "height": 2.58,
+          "range": 0
+        },
+        {
+          "name": "Astella",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 2200,
+          "height": 2.60,
+          "range": 0
+        },
+        {
+          "name": "Aviva",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 1050,
+          "height": 2.58,
+          "range": 0
+        }
+      ]
+    },
+    {
+      "name": "Alfa Romeo",
+      "type": "OrdinaryCar",
+      "startYear": 1910,
+      "models": [
+        {
+          "name": "Giulia 105/115",
+          "startYear": 1962,
+          "endYear": 1978,
+          "weight": 1000,
+          "height": 1.43,
+          "range": 450
+        },
+        {
+          "name": "Spider",
+          "startYear": 1966,
+          "endYear": 1993,
+          "weight": 1040,
+          "height": 1.29,
+          "range": 400
+        },
+        {
+          "name": "Alfasud",
+          "startYear": 1971,
+          "endYear": 1989,
+          "weight": 850,
+          "height": 1.37,
+          "range": 400
+        },
+        {
+          "name": "Alfetta",
+          "startYear": 1972,
+          "endYear": 1987,
+          "weight": 1140,
+          "height": 1.43,
+          "range": 500
+        },
+        {
+          "name": "33",
+          "startYear": 1983,
+          "endYear": 1995,
+          "weight": 970,
+          "height": 1.35,
+          "range": 450
+        },
+        {
+          "name": "75",
+          "startYear": 1985,
+          "endYear": 1992,
+          "weight": 1150,
+          "height": 1.40,
+          "range": 500
+        },
+        {
+          "name": "164",
+          "startYear": 1987,
+          "endYear": 1998,
+          "weight": 1300,
+          "height": 1.39,
+          "range": 600
+        },
+        {
+          "name": "145 / 146",
+          "startYear": 1994,
+          "endYear": 2000,
+          "weight": 1150,
+          "height": 1.43,
+          "range": 500
+        },
+        {
+          "name": "156",
+          "startYear": 1997,
+          "endYear": 2007,
+          "weight": 1350,
+          "height": 1.41,
+          "range": 600
+        },
+        {
+          "name": "166",
+          "startYear": 1998,
+          "endYear": 2007,
+          "weight": 1500,
+          "height": 1.41,
+          "range": 650
+        },
+        {
+          "name": "147",
+          "startYear": 2000,
+          "endYear": 2010,
+          "weight": 1250,
+          "height": 1.44,
+          "range": 600
+        },
+        {
+          "name": "GT",
+          "startYear": 2003,
+          "endYear": 2010,
+          "weight": 1360,
+          "height": 1.36,
+          "range": 650
+        },
+        {
+          "name": "159",
+          "startYear": 2005,
+          "endYear": 2011,
+          "weight": 1550,
+          "height": 1.42,
+          "range": 700
+        },
+        {
+          "name": "Brera",
+          "startYear": 2005,
+          "endYear": 2010,
+          "weight": 1550,
+          "height": 1.37,
+          "range": 600
+        },
+        {
+          "name": "MiTo",
+          "startYear": 2008,
+          "endYear": 2018,
+          "weight": 1150,
+          "height": 1.44,
+          "range": 650
+        },
+        {
+          "name": "Giulietta",
+          "startYear": 2010,
+          "endYear": 2020,
+          "weight": 1350,
+          "height": 1.46,
+          "range": 700
+        },
+        {
+          "name": "4C",
+          "startYear": 2013,
+          "endYear": 2020,
+          "weight": 895,
+          "height": 1.18,
+          "range": 400
+        },
+        {
+          "name": "Giulia",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 1550,
+          "height": 1.44,
+          "range": 800
+        },
+        {
+          "name": "Stelvio",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 1750,
+          "height": 1.67,
+          "range": 750
+        },
+        {
+          "name": "Tonale",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 1.60,
+          "range": 650
+        }
+      ]
+    },
+    {
+      "name": "Aston Martin",
+      "type": "OrdinaryCar",
+      "startYear": 1913,
+      "models": [
+        {
+          "name": "DB5",
+          "startYear": 1963,
+          "endYear": 1965,
+          "weight": 1502,
+          "height": 1.32,
+          "range": 400
+        },
+        {
+          "name": "DB6",
+          "startYear": 1965,
+          "endYear": 1971,
+          "weight": 1550,
+          "height": 1.32,
+          "range": 400
+        },
+        {
+          "name": "V8 Vantage",
+          "startYear": 1977,
+          "endYear": 1989,
+          "weight": 1800,
+          "height": 1.33,
+          "range": 450
+        },
+        {
+          "name": "DB7",
+          "startYear": 1994,
+          "endYear": 2004,
+          "weight": 1750,
+          "height": 1.24,
+          "range": 500
+        },
+        {
+          "name": "Vanquish",
+          "startYear": 2001,
+          "endYear": 2007,
+          "weight": 1835,
+          "height": 1.31,
+          "range": 450
+        },
+        {
+          "name": "DB9",
+          "startYear": 2004,
+          "endYear": 2016,
+          "weight": 1760,
+          "height": 1.27,
+          "range": 550
+        },
+        {
+          "name": "V8 Vantage",
+          "startYear": 2005,
+          "endYear": 2017,
+          "weight": 1630,
+          "height": 1.25,
+          "range": 550
+        },
+        {
+          "name": "Rapide",
+          "startYear": 2010,
+          "endYear": 2020,
+          "weight": 1990,
+          "height": 1.35,
+          "range": 600
+        },
+        {
+          "name": "DB11",
+          "startYear": 2016,
+          "endYear": 2023,
+          "weight": 1875,
+          "height": 1.29,
+          "range": 600
+        },
+        {
+          "name": "Vantage",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1630,
+          "height": 1.27,
+          "range": 550
+        },
+        {
+          "name": "DBS Superleggera",
+          "startYear": 2018,
+          "endYear": 2023,
+          "weight": 1845,
+          "height": 1.28,
+          "range": 500
+        },
+        {
+          "name": "DBX",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2245,
+          "height": 1.68,
+          "range": 650
+        },
+        {
+          "name": "DB12",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 1788,
+          "height": 1.29,
+          "range": 550
+        }
+      ]
+    },
+    {
+      "name": "Audi",
+      "type": "OrdinaryCar",
+      "startYear": 1910,
+      "models": [
+        {
+          "name": "50",
+          "startYear": 1974,
+          "endYear": 1978,
+          "weight": 685,
+          "height": 1.34,
+          "range": 450
+        },
+        {
+          "name": "80 (B1)",
+          "startYear": 1972,
+          "endYear": 1978,
+          "weight": 880,
+          "height": 1.36,
+          "range": 500
+        },
+        {
+          "name": "80 (B2)",
+          "startYear": 1978,
+          "endYear": 1986,
+          "weight": 930,
+          "height": 1.36,
+          "range": 550
+        },
+        {
+          "name": "80 (B3)",
+          "startYear": 1986,
+          "endYear": 1991,
+          "weight": 1050,
+          "height": 1.39,
+          "range": 600
+        },
+        {
+          "name": "80 (B4)",
+          "startYear": 1991,
+          "endYear": 1996,
+          "weight": 1190,
+          "height": 1.39,
+          "range": 650
+        },
+        {
+          "name": "100 (C1)",
+          "startYear": 1968,
+          "endYear": 1976,
+          "weight": 1050,
+          "height": 1.42,
+          "range": 550
+        },
+        {
+          "name": "100 (C2)",
+          "startYear": 1976,
+          "endYear": 1982,
+          "weight": 1110,
+          "height": 1.39,
+          "range": 600
+        },
+        {
+          "name": "100 (C3)",
+          "startYear": 1982,
+          "endYear": 1991,
+          "weight": 1210,
+          "height": 1.42,
+          "range": 650
+        },
+        {
+          "name": "100 (C4)",
+          "startYear": 1990,
+          "endYear": 1994,
+          "weight": 1370,
+          "height": 1.43,
+          "range": 700
+        },
+        {
+          "name": "V8",
+          "startYear": 1988,
+          "endYear": 1993,
+          "weight": 1710,
+          "height": 1.42,
+          "range": 600
+        },
+        {
+          "name": "A2",
+          "startYear": 1999,
+          "endYear": 2005,
+          "weight": 990,
+          "height": 1.55,
+          "range": 700
+        },
+        {
+          "name": "A3 (8L)",
+          "startYear": 1996,
+          "endYear": 2003,
+          "weight": 1150,
+          "height": 1.42,
+          "range": 700
+        },
+        {
+          "name": "A3 (8P)",
+          "startYear": 2003,
+          "endYear": 2012,
+          "weight": 1300,
+          "height": 1.42,
+          "range": 750
+        },
+        {
+          "name": "A3 (8V)",
+          "startYear": 2012,
+          "endYear": 2020,
+          "weight": 1350,
+          "height": 1.42,
+          "range": 800
+        },
+        {
+          "name": "A3 (8Y)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1400,
+          "height": 1.43,
+          "range": 800
+        },
+        {
+          "name": "A4 (B5)",
+          "startYear": 1994,
+          "endYear": 2001,
+          "weight": 1250,
+          "height": 1.41,
+          "range": 750
+        },
+        {
+          "name": "A4 (B6)",
+          "startYear": 2000,
+          "endYear": 2006,
+          "weight": 1400,
+          "height": 1.42,
+          "range": 800
+        },
+        {
+          "name": "A4 (B7)",
+          "startYear": 2004,
+          "endYear": 2008,
+          "weight": 1450,
+          "height": 1.42,
+          "range": 800
+        },
+        {
+          "name": "A4 (B8)",
+          "startYear": 2008,
+          "endYear": 2015,
+          "weight": 1550,
+          "height": 1.42,
+          "range": 850
+        },
+        {
+          "name": "A4 (B9)",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 1.43,
+          "range": 900
+        },
+        {
+          "name": "A5 (8T/8F)",
+          "startYear": 2007,
+          "endYear": 2016,
+          "weight": 1600,
+          "height": 1.37,
+          "range": 800
+        },
+        {
+          "name": "A5 (F5)",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.38,
+          "range": 850
+        },
+        {
+          "name": "A6 (C4)",
+          "startYear": 1994,
+          "endYear": 1997,
+          "weight": 1400,
+          "height": 1.43,
+          "range": 700
+        },
+        {
+          "name": "A6 (C5)",
+          "startYear": 1997,
+          "endYear": 2004,
+          "weight": 1500,
+          "height": 1.45,
+          "range": 750
+        },
+        {
+          "name": "A6 (C6)",
+          "startYear": 2004,
+          "endYear": 2011,
+          "weight": 1650,
+          "height": 1.46,
+          "range": 850
+        },
+        {
+          "name": "A6 (C7)",
+          "startYear": 2011,
+          "endYear": 2018,
+          "weight": 1750,
+          "height": 1.45,
+          "range": 900
+        },
+        {
+          "name": "A6 (C8)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1850,
+          "height": 1.46,
+          "range": 950
+        },
+        {
+          "name": "A7 (C7)",
+          "startYear": 2010,
+          "endYear": 2018,
+          "weight": 1800,
+          "height": 1.42,
+          "range": 850
+        },
+        {
+          "name": "A7 (C8)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.42,
+          "range": 900
+        },
+        {
+          "name": "A8 (D2)",
+          "startYear": 1994,
+          "endYear": 2002,
+          "weight": 1750,
+          "height": 1.44,
+          "range": 750
+        },
+        {
+          "name": "A8 (D3)",
+          "startYear": 2002,
+          "endYear": 2009,
+          "weight": 1850,
+          "height": 1.44,
+          "range": 800
+        },
+        {
+          "name": "A8 (D4)",
+          "startYear": 2009,
+          "endYear": 2017,
+          "weight": 1950,
+          "height": 1.46,
+          "range": 850
+        },
+        {
+          "name": "A8 (D5)",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 2050,
+          "height": 1.47,
+          "range": 900
+        },
+        {
+          "name": "Q2",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.51,
+          "range": 700
+        },
+        {
+          "name": "Q3 (8U)",
+          "startYear": 2011,
+          "endYear": 2018,
+          "weight": 1550,
+          "height": 1.59,
+          "range": 750
+        },
+        {
+          "name": "Q3 (F3)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.58,
+          "range": 800
+        },
+        {
+          "name": "Q5 (8R)",
+          "startYear": 2008,
+          "endYear": 2016,
+          "weight": 1850,
+          "height": 1.65,
+          "range": 800
+        },
+        {
+          "name": "Q5 (FY)",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.66,
+          "range": 850
+        },
+        {
+          "name": "Q7 (4L)",
+          "startYear": 2005,
+          "endYear": 2015,
+          "weight": 2300,
+          "height": 1.74,
+          "range": 850
+        },
+        {
+          "name": "Q7 (4M)",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 2150,
+          "height": 1.74,
+          "range": 900
+        },
+        {
+          "name": "Q8",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 2200,
+          "height": 1.70,
+          "range": 850
+        },
+        {
+          "name": "TT (Mk1)",
+          "startYear": 1998,
+          "endYear": 2006,
+          "weight": 1250,
+          "height": 1.34,
+          "range": 600
+        },
+        {
+          "name": "TT (Mk2)",
+          "startYear": 2006,
+          "endYear": 2014,
+          "weight": 1350,
+          "height": 1.35,
+          "range": 650
+        },
+        {
+          "name": "TT (Mk3)",
+          "startYear": 2014,
+          "endYear": 2023,
+          "weight": 1400,
+          "height": 1.35,
+          "range": 700
+        },
+        {
+          "name": "R8 (Gen 1)",
+          "startYear": 2006,
+          "endYear": 2015,
+          "weight": 1650,
+          "height": 1.25,
+          "range": 500
+        },
+        {
+          "name": "R8 (Gen 2)",
+          "startYear": 2015,
+          "endYear": 2024,
+          "weight": 1700,
+          "height": 1.24,
+          "range": 500
+        }
+      ]
+    },
+    {
+      "name": "Audi Electric",
+      "type": "ElectricCar",
+      "startYear": 2018,
+      "models": [
+        {
+          "name": "e-tron / Q8 e-tron",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 2500,
+          "height": 1.63,
+          "range": 450
+        },
+        {
+          "name": "Q4 e-tron",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2050,
+          "height": 1.63,
+          "range": 510
+        },
+        {
+          "name": "e-tron GT",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2350,
+          "height": 1.41,
+          "range": 480
+        },
+        {
+          "name": "Q6 e-tron",
+          "startYear": 2024,
+          "endYear": 2026,
+          "weight": 2350,
+          "height": 1.65,
+          "range": 625
+        }
+      ]
+    },
+    {
+      "name": "Bentley",
+      "type": "OrdinaryCar",
+      "startYear": 1919,
+      "models": [
+        {
+          "name": "Arnage",
+          "startYear": 1998,
+          "endYear": 2009,
+          "weight": 2585,
+          "height": 1.51,
+          "range": 550
+        },
+        {
+          "name": "Continental GT (Gen 1)",
+          "startYear": 2003,
+          "endYear": 2011,
+          "weight": 2385,
+          "height": 1.39,
+          "range": 500
+        },
+        {
+          "name": "Continental GT (Gen 2)",
+          "startYear": 2011,
+          "endYear": 2018,
+          "weight": 2320,
+          "height": 1.40,
+          "range": 550
+        },
+        {
+          "name": "Continental GT (Gen 3)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 2244,
+          "height": 1.40,
+          "range": 600
+        },
+        {
+          "name": "Flying Spur (Gen 1-2)",
+          "startYear": 2005,
+          "endYear": 2019,
+          "weight": 2475,
+          "height": 1.48,
+          "range": 550
+        },
+        {
+          "name": "Flying Spur (Gen 3)",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 2437,
+          "height": 1.48,
+          "range": 600
+        },
+        {
+          "name": "Mulsanne",
+          "startYear": 2010,
+          "endYear": 2020,
+          "weight": 2685,
+          "height": 1.52,
+          "range": 600
+        },
+        {
+          "name": "Bentayga",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 2440,
+          "height": 1.74,
+          "range": 650
+        }
+      ]
+    },
+    {
+      "name": "BMW",
+      "type": "OrdinaryCar",
+      "startYear": 1916,
+      "models": [
+        {
+          "name": "1502 / 2002",
+          "startYear": 1966,
+          "endYear": 1977,
+          "weight": 1050,
+          "height": 1.41,
+          "range": 450
+        },
+        {
+          "name": "1-Series (E81/E82/E87/E88)",
+          "startYear": 2004,
+          "endYear": 2013,
+          "weight": 1350,
+          "height": 1.42,
+          "range": 700
+        },
+        {
+          "name": "1-Series (F20/F21)",
+          "startYear": 2011,
+          "endYear": 2019,
+          "weight": 1400,
+          "height": 1.42,
+          "range": 750
+        },
+        {
+          "name": "1-Series (F40)",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 1450,
+          "height": 1.43,
+          "range": 800
+        },
+        {
+          "name": "2-Series (F22/F23)",
+          "startYear": 2014,
+          "endYear": 2021,
+          "weight": 1450,
+          "height": 1.42,
+          "range": 750
+        },
+        {
+          "name": "2-Series Active Tourer (F45/U06)",
+          "startYear": 2014,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 1.56,
+          "range": 750
+        },
+        {
+          "name": "3-Series (E21)",
+          "startYear": 1975,
+          "endYear": 1983,
+          "weight": 1050,
+          "height": 1.38,
+          "range": 500
+        },
+        {
+          "name": "3-Series (E30)",
+          "startYear": 1982,
+          "endYear": 1994,
+          "weight": 1100,
+          "height": 1.38,
+          "range": 550
+        },
+        {
+          "name": "3-Series (E36)",
+          "startYear": 1990,
+          "endYear": 2000,
+          "weight": 1300,
+          "height": 1.39,
+          "range": 600
+        },
+        {
+          "name": "3-Series (E46)",
+          "startYear": 1997,
+          "endYear": 2006,
+          "weight": 1450,
+          "height": 1.41,
+          "range": 700
+        },
+        {
+          "name": "3-Series (E90/E91/E92/E93)",
+          "startYear": 2005,
+          "endYear": 2013,
+          "weight": 1550,
+          "height": 1.42,
+          "range": 800
+        },
+        {
+          "name": "3-Series (F30/F31)",
+          "startYear": 2011,
+          "endYear": 2019,
+          "weight": 1600,
+          "height": 1.43,
+          "range": 850
+        },
+        {
+          "name": "3-Series (G20/G21)",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.44,
+          "range": 850
+        },
+        {
+          "name": "4-Series (F32/F33/F36)",
+          "startYear": 2013,
+          "endYear": 2020,
+          "weight": 1600,
+          "height": 1.38,
+          "range": 800
+        },
+        {
+          "name": "4-Series (G22/G23/G26)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 1.38,
+          "range": 800
+        },
+        {
+          "name": "5-Series (E12)",
+          "startYear": 1972,
+          "endYear": 1981,
+          "weight": 1350,
+          "height": 1.42,
+          "range": 550
+        },
+        {
+          "name": "5-Series (E28)",
+          "startYear": 1981,
+          "endYear": 1988,
+          "weight": 1400,
+          "height": 1.41,
+          "range": 600
+        },
+        {
+          "name": "5-Series (E34)",
+          "startYear": 1987,
+          "endYear": 1996,
+          "weight": 1550,
+          "height": 1.41,
+          "range": 700
+        },
+        {
+          "name": "5-Series (E39)",
+          "startYear": 1995,
+          "endYear": 2004,
+          "weight": 1650,
+          "height": 1.44,
+          "range": 800
+        },
+        {
+          "name": "5-Series (E60/E61)",
+          "startYear": 2003,
+          "endYear": 2010,
+          "weight": 1700,
+          "height": 1.47,
+          "range": 850
+        },
+        {
+          "name": "5-Series (F10/F11)",
+          "startYear": 2010,
+          "endYear": 2017,
+          "weight": 1800,
+          "height": 1.46,
+          "range": 900
+        },
+        {
+          "name": "5-Series (G30/G31)",
+          "startYear": 2017,
+          "endYear": 2023,
+          "weight": 1850,
+          "height": 1.47,
+          "range": 950
+        },
+        {
+          "name": "5-Series (G60/G61)",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 1950,
+          "height": 1.51,
+          "range": 950
+        },
+        {
+          "name": "6-Series (E24)",
+          "startYear": 1976,
+          "endYear": 1989,
+          "weight": 1500,
+          "height": 1.36,
+          "range": 600
+        },
+        {
+          "name": "6-Series (E63/E64)",
+          "startYear": 2003,
+          "endYear": 2010,
+          "weight": 1750,
+          "height": 1.37,
+          "range": 650
+        },
+        {
+          "name": "6-Series (F12/F13/F06)",
+          "startYear": 2011,
+          "endYear": 2018,
+          "weight": 1900,
+          "height": 1.37,
+          "range": 700
+        },
+        {
+          "name": "7-Series (E23)",
+          "startYear": 1977,
+          "endYear": 1986,
+          "weight": 1600,
+          "height": 1.43,
+          "range": 650
+        },
+        {
+          "name": "7-Series (E32)",
+          "startYear": 1986,
+          "endYear": 1994,
+          "weight": 1800,
+          "height": 1.40,
+          "range": 700
+        },
+        {
+          "name": "7-Series (E38)",
+          "startYear": 1994,
+          "endYear": 2001,
+          "weight": 1950,
+          "height": 1.43,
+          "range": 750
+        },
+        {
+          "name": "7-Series (E65/E66)",
+          "startYear": 2001,
+          "endYear": 2008,
+          "weight": 2000,
+          "height": 1.49,
+          "range": 800
+        },
+        {
+          "name": "7-Series (F01/F02)",
+          "startYear": 2008,
+          "endYear": 2015,
+          "weight": 2050,
+          "height": 1.48,
+          "range": 850
+        },
+        {
+          "name": "7-Series (G11/G12)",
+          "startYear": 2015,
+          "endYear": 2022,
+          "weight": 2100,
+          "height": 1.47,
+          "range": 900
+        },
+        {
+          "name": "7-Series (G70)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2250,
+          "height": 1.54,
+          "range": 900
+        },
+        {
+          "name": "8-Series (E31)",
+          "startYear": 1989,
+          "endYear": 1999,
+          "weight": 1900,
+          "height": 1.34,
+          "range": 650
+        },
+        {
+          "name": "8-Series (G14/G15/G16)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1950,
+          "height": 1.34,
+          "range": 750
+        },
+        {
+          "name": "X1 (E84)",
+          "startYear": 2009,
+          "endYear": 2015,
+          "weight": 1600,
+          "height": 1.54,
+          "range": 750
+        },
+        {
+          "name": "X1 (F48)",
+          "startYear": 2015,
+          "endYear": 2022,
+          "weight": 1650,
+          "height": 1.60,
+          "range": 800
+        },
+        {
+          "name": "X1 (U11)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 1.64,
+          "range": 800
+        },
+        {
+          "name": "X2 (F39)",
+          "startYear": 2017,
+          "endYear": 2023,
+          "weight": 1650,
+          "height": 1.53,
+          "range": 750
+        },
+        {
+          "name": "X3 (E83)",
+          "startYear": 2003,
+          "endYear": 2010,
+          "weight": 1850,
+          "height": 1.67,
+          "range": 750
+        },
+        {
+          "name": "X3 (F25)",
+          "startYear": 2010,
+          "endYear": 2017,
+          "weight": 1850,
+          "height": 1.66,
+          "range": 850
+        },
+        {
+          "name": "X3 (G01)",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.68,
+          "range": 900
+        },
+        {
+          "name": "X4 (F26)",
+          "startYear": 2014,
+          "endYear": 2018,
+          "weight": 1850,
+          "height": 1.62,
+          "range": 800
+        },
+        {
+          "name": "X4 (G02)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.62,
+          "range": 850
+        },
+        {
+          "name": "X5 (E53)",
+          "startYear": 1999,
+          "endYear": 2006,
+          "weight": 2150,
+          "height": 1.72,
+          "range": 750
+        },
+        {
+          "name": "X5 (E70)",
+          "startYear": 2006,
+          "endYear": 2013,
+          "weight": 2200,
+          "height": 1.77,
+          "range": 800
+        },
+        {
+          "name": "X5 (F15)",
+          "startYear": 2013,
+          "endYear": 2018,
+          "weight": 2250,
+          "height": 1.76,
+          "range": 900
+        },
+        {
+          "name": "X5 (G05)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 2300,
+          "height": 1.74,
+          "range": 950
+        },
+        {
+          "name": "X6 (E71)",
+          "startYear": 2008,
+          "endYear": 2014,
+          "weight": 2250,
+          "height": 1.69,
+          "range": 800
+        },
+        {
+          "name": "X6 (F16)",
+          "startYear": 2014,
+          "endYear": 2019,
+          "weight": 2300,
+          "height": 1.70,
+          "range": 850
+        },
+        {
+          "name": "X6 (G06)",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 2350,
+          "height": 1.70,
+          "range": 900
+        },
+        {
+          "name": "X7 (G07)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 2500,
+          "height": 1.80,
+          "range": 900
+        },
+        {
+          "name": "Z3",
+          "startYear": 1995,
+          "endYear": 2002,
+          "weight": 1250,
+          "height": 1.29,
+          "range": 500
+        },
+        {
+          "name": "Z4 (E85/E86)",
+          "startYear": 2002,
+          "endYear": 2008,
+          "weight": 1350,
+          "height": 1.30,
+          "range": 550
+        },
+        {
+          "name": "Z4 (E89)",
+          "startYear": 2009,
+          "endYear": 2016,
+          "weight": 1500,
+          "height": 1.29,
+          "range": 600
+        },
+        {
+          "name": "Z4 (G29)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1550,
+          "height": 1.31,
+          "range": 650
+        }
+      ]
+    },
+    {
+      "name": "BMW Electric",
+      "type": "ElectricCar",
+      "startYear": 2013,
+      "models": [
+        {
+          "name": "i3",
+          "startYear": 2013,
+          "endYear": 2022,
+          "weight": 1300,
+          "height": 1.58,
+          "range": 260
+        },
+        {
+          "name": "iX1",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2010,
+          "height": 1.64,
+          "range": 440
+        },
+        {
+          "name": "iX2",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 2020,
+          "height": 1.56,
+          "range": 450
+        },
+        {
+          "name": "iX3",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2185,
+          "height": 1.67,
+          "range": 460
+        },
+        {
+          "name": "i4",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2125,
+          "height": 1.45,
+          "range": 590
+        },
+        {
+          "name": "i5",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 2230,
+          "height": 1.51,
+          "range": 580
+        },
+        {
+          "name": "i7",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2640,
+          "height": 1.54,
+          "range": 620
+        },
+        {
+          "name": "iX",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2440,
+          "height": 1.69,
+          "range": 600
+        }
+      ]
+    },
+    {
+      "name": "Bürstner",
+      "type": "Motorhome",
+      "startYear": 1958,
+      "models": [
+        {
+          "name": "Lyseo",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 3100,
+          "height": 2.95,
+          "range": 800
+        },
+        {
+          "name": "Ixeo",
+          "startYear": 2008,
+          "endYear": 2026,
+          "weight": 3200,
+          "height": 2.98,
+          "range": 750
+        },
+        {
+          "name": "Lineo",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2800,
+          "height": 2.60,
+          "range": 800
+        },
+        {
+          "name": "Delfin",
+          "startYear": 2003,
+          "endYear": 2026,
+          "weight": 3000,
+          "height": 2.85,
+          "range": 750
+        },
+        {
+          "name": "Campeo",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2750,
+          "height": 2.65,
+          "range": 850
+        },
+        {
+          "name": "Averso",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 1450,
+          "height": 2.58,
+          "range": 0
+        },
+        {
+          "name": "Premio",
+          "startYear": 2008,
+          "endYear": 2026,
+          "weight": 1250,
+          "height": 2.60,
+          "range": 0
+        }
+      ]
+    },
+    {
+      "name": "BYD",
+      "type": "ElectricCar",
+      "startYear": 2003,
+      "models": [
+        {
+          "name": "Atto 3",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 1750,
+          "height": 1.61,
+          "range": 420
+        },
+        {
+          "name": "Han",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2250,
+          "height": 1.49,
+          "range": 521
+        },
+        {
+          "name": "Tang",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2489,
+          "height": 1.72,
+          "range": 400
+        },
+        {
+          "name": "Seal",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 2055,
+          "height": 1.46,
+          "range": 570
+        },
+        {
+          "name": "Dolphin",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 1658,
+          "height": 1.57,
+          "range": 427
+        }
+      ]
+    },
+    {
+      "name": "Cadillac",
+      "type": "OrdinaryCar",
+      "startYear": 1902,
+      "models": [
+        {
+          "name": "Series 62",
+          "startYear": 1940,
+          "endYear": 1964,
+          "weight": 2100,
+          "height": 1.58,
+          "range": 400
+        },
+        {
+          "name": "DeVille (Classic)",
+          "startYear": 1959,
+          "endYear": 1984,
+          "weight": 2200,
+          "height": 1.45,
+          "range": 450
+        },
+        {
+          "name": "DeVille (Modern)",
+          "startYear": 1985,
+          "endYear": 2005,
+          "weight": 1800,
+          "height": 1.43,
+          "range": 550
+        },
+        {
+          "name": "Eldorado (Classic)",
+          "startYear": 1953,
+          "endYear": 1978,
+          "weight": 2150,
+          "height": 1.38,
+          "range": 400
+        },
+        {
+          "name": "Eldorado (Modern)",
+          "startYear": 1979,
+          "endYear": 2002,
+          "weight": 1700,
+          "height": 1.37,
+          "range": 500
+        },
+        {
+          "name": "Fleetwood",
+          "startYear": 1985,
+          "endYear": 1996,
+          "weight": 1850,
+          "height": 1.44,
+          "range": 550
+        },
+        {
+          "name": "Seville",
+          "startYear": 1975,
+          "endYear": 2004,
+          "weight": 1800,
+          "height": 1.42,
+          "range": 550
+        },
+        {
+          "name": "CTS",
+          "startYear": 2003,
+          "endYear": 2019,
+          "weight": 1750,
+          "height": 1.45,
+          "range": 600
+        },
+        {
+          "name": "ATS",
+          "startYear": 2013,
+          "endYear": 2019,
+          "weight": 1550,
+          "height": 1.42,
+          "range": 650
+        },
+        {
+          "name": "XT5",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 1850,
+          "height": 1.68,
+          "range": 700
+        },
+        {
+          "name": "Escalade (Gen 1-2)",
+          "startYear": 1998,
+          "endYear": 2006,
+          "weight": 2500,
+          "height": 1.89,
+          "range": 600
+        },
+        {
+          "name": "Escalade (Gen 3-4)",
+          "startYear": 2007,
+          "endYear": 2020,
+          "weight": 2650,
+          "height": 1.91,
+          "range": 650
+        },
+        {
+          "name": "Escalade (Gen 5)",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2700,
+          "height": 1.94,
+          "range": 700
+        },
+        {
+          "name": "Lyriq (EV)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2545,
+          "height": 1.62,
+          "range": 500
+        }
+      ]
+    },
+    {
+      "name": "Chevrolet",
+      "type": "OrdinaryCar",
+      "startYear": 1911,
+      "models": [
+        {
+          "name": "Bel Air (Gen 1-3)",
+          "startYear": 1950,
+          "endYear": 1957,
+          "weight": 1550,
+          "height": 1.55,
+          "range": 400
+        },
+        {
+          "name": "Bel Air (Gen 4-8)",
+          "startYear": 1958,
+          "endYear": 1981,
+          "weight": 1650,
+          "height": 1.45,
+          "range": 450
+        },
+        {
+          "name": "Impala (Gen 1-4)",
+          "startYear": 1958,
+          "endYear": 1970,
+          "weight": 1750,
+          "height": 1.42,
+          "range": 400
+        },
+        {
+          "name": "Impala (Gen 5-10)",
+          "startYear": 1971,
+          "endYear": 2020,
+          "weight": 1700,
+          "height": 1.45,
+          "range": 600
+        },
+        {
+          "name": "Chevelle",
+          "startYear": 1964,
+          "endYear": 1977,
+          "weight": 1600,
+          "height": 1.38,
+          "range": 450
+        },
+        {
+          "name": "Nova",
+          "startYear": 1962,
+          "endYear": 1979,
+          "weight": 1450,
+          "height": 1.39,
+          "range": 450
+        },
+        {
+          "name": "Malibu (Classic)",
+          "startYear": 1964,
+          "endYear": 1983,
+          "weight": 1500,
+          "height": 1.40,
+          "range": 500
+        },
+        {
+          "name": "Malibu (Modern)",
+          "startYear": 1997,
+          "endYear": 2026,
+          "weight": 1550,
+          "height": 1.46,
+          "range": 700
+        },
+        {
+          "name": "Corvette (C1)",
+          "startYear": 1953,
+          "endYear": 1962,
+          "weight": 1300,
+          "height": 1.32,
+          "range": 350
+        },
+        {
+          "name": "Corvette (C2/C3)",
+          "startYear": 1963,
+          "endYear": 1982,
+          "weight": 1450,
+          "height": 1.25,
+          "range": 400
+        },
+        {
+          "name": "Corvette (C4/C5)",
+          "startYear": 1984,
+          "endYear": 2004,
+          "weight": 1500,
+          "height": 1.19,
+          "range": 500
+        },
+        {
+          "name": "Corvette (C6/C7)",
+          "startYear": 2005,
+          "endYear": 2019,
+          "weight": 1550,
+          "height": 1.24,
+          "range": 550
+        },
+        {
+          "name": "Corvette (C8)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.23,
+          "range": 500
+        },
+        {
+          "name": "Camaro (Gen 1-2)",
+          "startYear": 1967,
+          "endYear": 1981,
+          "weight": 1550,
+          "height": 1.30,
+          "range": 450
+        },
+        {
+          "name": "Camaro (Gen 3-4)",
+          "startYear": 1982,
+          "endYear": 2002,
+          "weight": 1500,
+          "height": 1.28,
+          "range": 500
+        },
+        {
+          "name": "Camaro (Gen 5-6)",
+          "startYear": 2010,
+          "endYear": 2024,
+          "weight": 1700,
+          "height": 1.35,
+          "range": 550
+        },
+        {
+          "name": "Cruze",
+          "startYear": 2008,
+          "endYear": 2019,
+          "weight": 1350,
+          "height": 1.48,
+          "range": 750
+        },
+        {
+          "name": "Equinox",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.66,
+          "range": 700
+        },
+        {
+          "name": "Tahoe (Gen 1-2)",
+          "startYear": 1995,
+          "endYear": 2006,
+          "weight": 2350,
+          "height": 1.90,
+          "range": 600
+        },
+        {
+          "name": "Tahoe (Gen 3-5)",
+          "startYear": 2007,
+          "endYear": 2026,
+          "weight": 2550,
+          "height": 1.92,
+          "range": 750
+        },
+        {
+          "name": "Suburban",
+          "startYear": 1935,
+          "endYear": 2026,
+          "weight": 2650,
+          "height": 1.92,
+          "range": 800
+        },
+        {
+          "name": "Silverado 1500 (Gen 1-2)",
+          "startYear": 1999,
+          "endYear": 2013,
+          "weight": 2200,
+          "height": 1.88,
+          "range": 650
+        },
+        {
+          "name": "Silverado 1500 (Gen 3-4)",
+          "startYear": 2014,
+          "endYear": 2026,
+          "weight": 2300,
+          "height": 1.92,
+          "range": 750
+        },
+        {
+          "name": "Bolt EV",
+          "startYear": 2016,
+          "endYear": 2023,
+          "weight": 1620,
+          "height": 1.59,
+          "range": 416
+        }
+      ]
+    },
+    {
+      "name": "Chrysler",
+      "type": "OrdinaryCar",
+      "startYear": 1925,
+      "models": [
+        {
+          "name": "New Yorker",
+          "startYear": 1940,
+          "endYear": 1996,
+          "weight": 1800,
+          "height": 1.42,
+          "range": 500
+        },
+        {
+          "name": "LeBaron",
+          "startYear": 1977,
+          "endYear": 1995,
+          "weight": 1350,
+          "height": 1.35,
+          "range": 550
+        },
+        {
+          "name": "300M",
+          "startYear": 1998,
+          "endYear": 2004,
+          "weight": 1650,
+          "height": 1.42,
+          "range": 600
+        },
+        {
+          "name": "300 / 300C",
+          "startYear": 2005,
+          "endYear": 2023,
+          "weight": 1850,
+          "height": 1.48,
+          "range": 650
+        },
+        {
+          "name": "Voyager / Grand Voyager",
+          "startYear": 1984,
+          "endYear": 2016,
+          "weight": 1950,
+          "height": 1.75,
+          "range": 700
+        },
+        {
+          "name": "PT Cruiser",
+          "startYear": 2000,
+          "endYear": 2010,
+          "weight": 1450,
+          "height": 1.60,
+          "range": 550
+        },
+        {
+          "name": "Crossfire",
+          "startYear": 2004,
+          "endYear": 2008,
+          "weight": 1400,
+          "height": 1.30,
+          "range": 500
+        },
+        {
+          "name": "Pacifica",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 2000,
+          "height": 1.77,
+          "range": 750
+        }
+      ]
+    },
+    {
+      "name": "Citroën",
+      "type": "OrdinaryCar",
+      "startYear": 1919,
+      "models": [
+        {
+          "name": "Traction Avant",
+          "startYear": 1934,
+          "endYear": 1957,
+          "weight": 1100,
+          "height": 1.52,
+          "range": 400
+        },
+        {
+          "name": "2CV",
+          "startYear": 1948,
+          "endYear": 1990,
+          "weight": 600,
+          "height": 1.60,
+          "range": 350
+        },
+        {
+          "name": "DS",
+          "startYear": 1955,
+          "endYear": 1975,
+          "weight": 1250,
+          "height": 1.47,
+          "range": 500
+        },
+        {
+          "name": "CX",
+          "startYear": 1974,
+          "endYear": 1991,
+          "weight": 1350,
+          "height": 1.36,
+          "range": 600
+        },
+        {
+          "name": "BX",
+          "startYear": 1982,
+          "endYear": 1994,
+          "weight": 1000,
+          "height": 1.36,
+          "range": 650
+        },
+        {
+          "name": "XM",
+          "startYear": 1989,
+          "endYear": 2000,
+          "weight": 1450,
+          "height": 1.39,
+          "range": 700
+        },
+        {
+          "name": "Xantia",
+          "startYear": 1993,
+          "endYear": 2002,
+          "weight": 1300,
+          "height": 1.38,
+          "range": 750
+        },
+        {
+          "name": "C1",
+          "startYear": 2005,
+          "endYear": 2021,
+          "weight": 850,
+          "height": 1.46,
+          "range": 600
+        },
+        {
+          "name": "C3 (Gen 1-2)",
+          "startYear": 2002,
+          "endYear": 2016,
+          "weight": 1050,
+          "height": 1.52,
+          "range": 700
+        },
+        {
+          "name": "C3 (Gen 3-4)",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 1150,
+          "height": 1.47,
+          "range": 750
+        },
+        {
+          "name": "C4 (Gen 1-2)",
+          "startYear": 2004,
+          "endYear": 2018,
+          "weight": 1250,
+          "height": 1.46,
+          "range": 800
+        },
+        {
+          "name": "C4 (Gen 3)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1300,
+          "height": 1.52,
+          "range": 800
+        },
+        {
+          "name": "C5 (Gen 1-2)",
+          "startYear": 2001,
+          "endYear": 2017,
+          "weight": 1550,
+          "height": 1.47,
+          "range": 900
+        },
+        {
+          "name": "C5 Aircross",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 1.67,
+          "range": 850
+        },
+        {
+          "name": "Berlingo",
+          "startYear": 1996,
+          "endYear": 2026,
+          "weight": 1400,
+          "height": 1.84,
+          "range": 700
+        },
+        {
+          "name": "Jumpy",
+          "startYear": 1994,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 1.90,
+          "range": 800
+        },
+        {
+          "name": "Jumper",
+          "startYear": 1994,
+          "endYear": 2026,
+          "weight": 2050,
+          "height": 2.25,
+          "range": 850
+        },
+        {
+          "name": "ë-C4 (EV)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1616,
+          "height": 1.52,
+          "range": 350
+        },
+        {
+          "name": "ë-Berlingo (EV)",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 1.84,
+          "range": 280
+        }
+      ]
+    },
+    {
+      "name": "Cupra",
+      "type": "OrdinaryCar",
+      "startYear": 2018,
+      "models": [
+        {
+          "name": "Ateca",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 1.61,
+          "range": 600
+        },
+        {
+          "name": "Formentor",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1550,
+          "height": 1.51,
+          "range": 650
+        },
+        {
+          "name": "Leon",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1450,
+          "height": 1.44,
+          "range": 650
+        },
+        {
+          "name": "Born (EV)",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 1800,
+          "height": 1.54,
+          "range": 420
+        },
+        {
+          "name": "Tavascan (EV)",
+          "startYear": 2024,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 1.60,
+          "range": 520
+        }
+      ]
+    },
+    {
+      "name": "Dacia",
+      "type": "OrdinaryCar",
+      "startYear": 1966,
+      "models": [
+        {
+          "name": "1300 / 1310",
+          "startYear": 1969,
+          "endYear": 2004,
+          "weight": 900,
+          "height": 1.43,
+          "range": 500
+        },
+        {
+          "name": "Logan",
+          "startYear": 2004,
+          "endYear": 2026,
+          "weight": 1050,
+          "height": 1.51,
+          "range": 700
+        },
+        {
+          "name": "Sandero (Gen 1-2)",
+          "startYear": 2008,
+          "endYear": 2020,
+          "weight": 1050,
+          "height": 1.52,
+          "range": 750
+        },
+        {
+          "name": "Sandero (Gen 3)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1100,
+          "height": 1.50,
+          "range": 750
+        },
+        {
+          "name": "Duster (Gen 1)",
+          "startYear": 2010,
+          "endYear": 2017,
+          "weight": 1250,
+          "height": 1.69,
+          "range": 800
+        },
+        {
+          "name": "Duster (Gen 2-3)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1300,
+          "height": 1.69,
+          "range": 800
+        },
+        {
+          "name": "Jogger",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 1250,
+          "height": 1.63,
+          "range": 800
+        },
+        {
+          "name": "Spring (EV)",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 970,
+          "height": 1.51,
+          "range": 230
+        }
+      ]
+    },
+    {
+      "name": "Dethleffs",
+      "type": "Motorhome",
+      "startYear": 1932,
+      "models": [
+        {
+          "name": "Trend",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 2900,
+          "height": 2.90,
+          "range": 800
+        },
+        {
+          "name": "Just",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2850,
+          "height": 2.94,
+          "range": 800
+        },
+        {
+          "name": "Pulse",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 3000,
+          "height": 2.99,
+          "range": 750
+        },
+        {
+          "name": "Globetrotter",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 4200,
+          "height": 3.04,
+          "range": 700
+        },
+        {
+          "name": "Globus",
+          "startYear": 2000,
+          "endYear": 2015,
+          "weight": 3100,
+          "height": 2.85,
+          "range": 750
+        },
+        {
+          "name": "Camper",
+          "startYear": 1990,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 2.65,
+          "range": 0
+        },
+        {
+          "name": "Nomad",
+          "startYear": 1995,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 2.65,
+          "range": 0
+        },
+        {
+          "name": "Beduin",
+          "startYear": 1980,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 2.65,
+          "range": 0
+        },
+        {
+          "name": "Aero",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 1300,
+          "height": 2.61,
+          "range": 0
+        }
+      ]
+    },
+    {
+      "name": "Dodge",
+      "type": "OrdinaryCar",
+      "startYear": 1900,
+      "models": [
+        {
+          "name": "Dart (Classic)",
+          "startYear": 1960,
+          "endYear": 1976,
+          "weight": 1400,
+          "height": 1.37,
+          "range": 450
+        },
+        {
+          "name": "Charger (Gen 1-4)",
+          "startYear": 1966,
+          "endYear": 1978,
+          "weight": 1650,
+          "height": 1.35,
+          "range": 400
+        },
+        {
+          "name": "Charger (Gen 6-7)",
+          "startYear": 2006,
+          "endYear": 2023,
+          "weight": 1900,
+          "height": 1.48,
+          "range": 550
+        },
+        {
+          "name": "Challenger (Gen 1)",
+          "startYear": 1970,
+          "endYear": 1974,
+          "weight": 1550,
+          "height": 1.30,
+          "range": 400
+        },
+        {
+          "name": "Challenger (Gen 3)",
+          "startYear": 2008,
+          "endYear": 2023,
+          "weight": 1900,
+          "height": 1.46,
+          "range": 500
+        },
+        {
+          "name": "Viper",
+          "startYear": 1992,
+          "endYear": 2017,
+          "weight": 1500,
+          "height": 1.12,
+          "range": 400
+        },
+        {
+          "name": "Ram 1500 / RAM",
+          "startYear": 1981,
+          "endYear": 2026,
+          "weight": 2400,
+          "height": 1.95,
+          "range": 700
+        },
+        {
+          "name": "Durango (Gen 1-2)",
+          "startYear": 1998,
+          "endYear": 2009,
+          "weight": 2150,
+          "height": 1.82,
+          "range": 600
+        },
+        {
+          "name": "Durango (Gen 3)",
+          "startYear": 2011,
+          "endYear": 2026,
+          "weight": 2300,
+          "height": 1.80,
+          "range": 650
+        },
+        {
+          "name": "Journey",
+          "startYear": 2008,
+          "endYear": 2020,
+          "weight": 1850,
+          "height": 1.69,
+          "range": 650
+        }
+      ]
+    },
+    {
+      "name": "Ferrari",
+      "type": "OrdinaryCar",
+      "startYear": 1947,
+      "models": [
+        {
+          "name": "250 GTO",
+          "startYear": 1962,
+          "endYear": 1964,
+          "weight": 880,
+          "height": 1.21,
+          "range": 350
+        },
+        {
+          "name": "308 GTB/GTS",
+          "startYear": 1975,
+          "endYear": 1985,
+          "weight": 1090,
+          "height": 1.12,
+          "range": 400
+        },
+        {
+          "name": "Testarossa",
+          "startYear": 1984,
+          "endYear": 1996,
+          "weight": 1500,
+          "height": 1.13,
+          "range": 450
+        },
+        {
+          "name": "F40",
+          "startYear": 1987,
+          "endYear": 1992,
+          "weight": 1100,
+          "height": 1.12,
+          "range": 450
+        },
+        {
+          "name": "360 Modena",
+          "startYear": 1999,
+          "endYear": 2004,
+          "weight": 1390,
+          "height": 1.21,
+          "range": 500
+        },
+        {
+          "name": "F430",
+          "startYear": 2004,
+          "endYear": 2009,
+          "weight": 1450,
+          "height": 1.21,
+          "range": 500
+        },
+        {
+          "name": "458 Italia",
+          "startYear": 2009,
+          "endYear": 2015,
+          "weight": 1485,
+          "height": 1.21,
+          "range": 550
+        },
+        {
+          "name": "488 GTB",
+          "startYear": 2015,
+          "endYear": 2019,
+          "weight": 1475,
+          "height": 1.21,
+          "range": 550
+        },
+        {
+          "name": "F8 Tributo",
+          "startYear": 2019,
+          "endYear": 2023,
+          "weight": 1435,
+          "height": 1.20,
+          "range": 550
+        },
+        {
+          "name": "Roma",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1570,
+          "height": 1.30,
+          "range": 600
+        },
+        {
+          "name": "Purosangue",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 2033,
+          "height": 1.58,
+          "range": 550
+        }
+      ]
+    },
+    {
+      "name": "Fiat",
+      "type": "OrdinaryCar",
+      "startYear": 1899,
+      "models": [
+        {
+          "name": "500 (Classic)",
+          "startYear": 1957,
+          "endYear": 1975,
+          "weight": 500,
+          "height": 1.32,
+          "range": 300
+        },
+        {
+          "name": "124",
+          "startYear": 1966,
+          "endYear": 1974,
+          "weight": 850,
+          "height": 1.42,
+          "range": 450
+        },
+        {
+          "name": "127",
+          "startYear": 1971,
+          "endYear": 1983,
+          "weight": 700,
+          "height": 1.36,
+          "range": 500
+        },
+        {
+          "name": "Panda (Gen 1)",
+          "startYear": 1980,
+          "endYear": 2003,
+          "weight": 700,
+          "height": 1.44,
+          "range": 550
+        },
+        {
+          "name": "Panda (Gen 2-3)",
+          "startYear": 2003,
+          "endYear": 2026,
+          "weight": 950,
+          "height": 1.55,
+          "range": 600
+        },
+        {
+          "name": "Uno",
+          "startYear": 1983,
+          "endYear": 1995,
+          "weight": 750,
+          "height": 1.43,
+          "range": 600
+        },
+        {
+          "name": "Punto (Gen 1-2)",
+          "startYear": 1993,
+          "endYear": 2010,
+          "weight": 950,
+          "height": 1.45,
+          "range": 650
+        },
+        {
+          "name": "Grande Punto",
+          "startYear": 2005,
+          "endYear": 2018,
+          "weight": 1050,
+          "height": 1.49,
+          "range": 650
+        },
+        {
+          "name": "500 (Modern)",
+          "startYear": 2007,
+          "endYear": 2026,
+          "weight": 900,
+          "height": 1.48,
+          "range": 550
+        },
+        {
+          "name": "Tipo",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 1200,
+          "height": 1.49,
+          "range": 750
+        },
+        {
+          "name": "Ducato (Gen 1-2)",
+          "startYear": 1981,
+          "endYear": 2006,
+          "weight": 1800,
+          "height": 2.15,
+          "range": 700
+        },
+        {
+          "name": "Ducato (Gen 3)",
+          "startYear": 2006,
+          "endYear": 2026,
+          "weight": 2000,
+          "height": 2.25,
+          "range": 800
+        },
+        {
+          "name": "500e (EV)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1365,
+          "height": 1.52,
+          "range": 320
+        }
+      ]
+    },
+    {
+      "name": "Ford",
+      "type": "OrdinaryCar",
+      "startYear": 1903,
+      "models": [
+        {
+          "name": "Anglia",
+          "startYear": 1939,
+          "endYear": 1967,
+          "weight": 800,
+          "height": 1.40,
+          "range": 350
+        },
+        {
+          "name": "Cortina",
+          "startYear": 1962,
+          "endYear": 1982,
+          "weight": 1000,
+          "height": 1.42,
+          "range": 500
+        },
+        {
+          "name": "Taunus",
+          "startYear": 1970,
+          "endYear": 1982,
+          "weight": 1050,
+          "height": 1.38,
+          "range": 500
+        },
+        {
+          "name": "Granada",
+          "startYear": 1972,
+          "endYear": 1994,
+          "weight": 1250,
+          "height": 1.42,
+          "range": 600
+        },
+        {
+          "name": "Capri",
+          "startYear": 1968,
+          "endYear": 1986,
+          "weight": 1050,
+          "height": 1.33,
+          "range": 550
+        },
+        {
+          "name": "Escort (Mk1-Mk2)",
+          "startYear": 1968,
+          "endYear": 1980,
+          "weight": 850,
+          "height": 1.39,
+          "range": 450
+        },
+        {
+          "name": "Escort (Mk3-Mk6)",
+          "startYear": 1980,
+          "endYear": 2002,
+          "weight": 1000,
+          "height": 1.40,
+          "range": 550
+        },
+        {
+          "name": "Sierra",
+          "startYear": 1982,
+          "endYear": 1993,
+          "weight": 1150,
+          "height": 1.40,
+          "range": 600
+        },
+        {
+          "name": "Scorpio",
+          "startYear": 1985,
+          "endYear": 1998,
+          "weight": 1350,
+          "height": 1.41,
+          "range": 650
+        },
+        {
+          "name": "Fiesta (Mk1-Mk3)",
+          "startYear": 1976,
+          "endYear": 1997,
+          "weight": 800,
+          "height": 1.36,
+          "range": 500
+        },
+        {
+          "name": "Fiesta (Mk4-Mk8)",
+          "startYear": 1995,
+          "endYear": 2023,
+          "weight": 1100,
+          "height": 1.47,
+          "range": 650
+        },
+        {
+          "name": "Focus (Mk1)",
+          "startYear": 1998,
+          "endYear": 2004,
+          "weight": 1200,
+          "height": 1.43,
+          "range": 700
+        },
+        {
+          "name": "Focus (Mk2-Mk4)",
+          "startYear": 2004,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.46,
+          "range": 750
+        },
+        {
+          "name": "Mondeo (Mk1-Mk3)",
+          "startYear": 1993,
+          "endYear": 2007,
+          "weight": 1350,
+          "height": 1.43,
+          "range": 750
+        },
+        {
+          "name": "Mondeo (Mk4-Mk5)",
+          "startYear": 2007,
+          "endYear": 2022,
+          "weight": 1550,
+          "height": 1.48,
+          "range": 850
+        },
+        {
+          "name": "Mustang (Gen 1-3)",
+          "startYear": 1964,
+          "endYear": 1993,
+          "weight": 1400,
+          "height": 1.30,
+          "range": 450
+        },
+        {
+          "name": "Mustang (Gen 4-7)",
+          "startYear": 1994,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 1.38,
+          "range": 550
+        },
+        {
+          "name": "Kuga",
+          "startYear": 2008,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.67,
+          "range": 750
+        },
+        {
+          "name": "Puma",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 1280,
+          "height": 1.53,
+          "range": 700
+        },
+        {
+          "name": "Explorer",
+          "startYear": 1990,
+          "endYear": 2026,
+          "weight": 2050,
+          "height": 1.77,
+          "range": 650
+        },
+        {
+          "name": "F-150 (Gen 10-14)",
+          "startYear": 1997,
+          "endYear": 2026,
+          "weight": 2200,
+          "height": 1.95,
+          "range": 700
+        },
+        {
+          "name": "Transit (Mk1-Mk3)",
+          "startYear": 1965,
+          "endYear": 1986,
+          "weight": 1500,
+          "height": 1.98,
+          "range": 600
+        },
+        {
+          "name": "Transit (Mk4-Mk8)",
+          "startYear": 1986,
+          "endYear": 2026,
+          "weight": 2000,
+          "height": 2.10,
+          "range": 800
+        },
+        {
+          "name": "Transit Custom",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.98,
+          "range": 800
+        },
+        {
+          "name": "Mustang Mach-E (EV)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 1.62,
+          "range": 440
+        },
+        {
+          "name": "F-150 Lightning (EV)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2950,
+          "height": 1.98,
+          "range": 515
+        }
+      ]
+    },
+    {
+      "name": "Hobby",
+      "type": "Caravan",
+      "startYear": 1967,
+      "models": [
+        {
+          "name": "Optima Ontour",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 3150,
+          "height": 2.85,
+          "range": 800
+        },
+        {
+          "name": "Optima De Luxe",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 3200,
+          "height": 2.85,
+          "range": 800
+        },
+        {
+          "name": "Vantana",
+          "startYear": 2014,
+          "endYear": 2026,
+          "weight": 2900,
+          "height": 2.65,
+          "range": 850
+        },
+        {
+          "name": "Prestige (Gen 1-3)",
+          "startYear": 1975,
+          "endYear": 2005,
+          "weight": 1400,
+          "height": 2.55,
+          "range": 0
+        },
+        {
+          "name": "Prestige (Gen 4-5)",
+          "startYear": 2006,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 2.62,
+          "range": 0
+        },
+        {
+          "name": "Excellent",
+          "startYear": 1985,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 2.60,
+          "range": 0
+        },
+        {
+          "name": "Excellent Edition",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 2.60,
+          "range": 0
+        },
+        {
+          "name": "De Luxe",
+          "startYear": 1980,
+          "endYear": 2026,
+          "weight": 1450,
+          "height": 2.58,
+          "range": 0
+        },
+        {
+          "name": "Ontour",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 1200,
+          "height": 2.58,
+          "range": 0
+        },
+        {
+          "name": "Maxia",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 1750,
+          "height": 2.60,
+          "range": 0
+        }
+      ]
+    },
+    {
+      "name": "Honda",
+      "type": "OrdinaryCar",
+      "startYear": 1948,
+      "models": [
+        {
+          "name": "Civic (Gen 1-3)",
+          "startYear": 1972,
+          "endYear": 1987,
+          "weight": 850,
+          "height": 1.35,
+          "range": 450
+        },
+        {
+          "name": "Civic (Gen 4-7)",
+          "startYear": 1987,
+          "endYear": 2005,
+          "weight": 1100,
+          "height": 1.39,
+          "range": 550
+        },
+        {
+          "name": "Civic (Gen 8-11)",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.43,
+          "range": 650
+        },
+        {
+          "name": "Accord (Gen 1-3)",
+          "startYear": 1976,
+          "endYear": 1989,
+          "weight": 1050,
+          "height": 1.37,
+          "range": 550
+        },
+        {
+          "name": "Accord (Gen 4-8)",
+          "startYear": 1989,
+          "endYear": 2015,
+          "weight": 1450,
+          "height": 1.44,
+          "range": 700
+        },
+        {
+          "name": "CR-V (Gen 1-2)",
+          "startYear": 1995,
+          "endYear": 2006,
+          "weight": 1450,
+          "height": 1.68,
+          "range": 600
+        },
+        {
+          "name": "CR-V (Gen 3-6)",
+          "startYear": 2006,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.68,
+          "range": 750
+        },
+        {
+          "name": "HR-V (Gen 1)",
+          "startYear": 1998,
+          "endYear": 2006,
+          "weight": 1250,
+          "height": 1.58,
+          "range": 550
+        },
+        {
+          "name": "HR-V (Gen 2-3)",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.59,
+          "range": 650
+        },
+        {
+          "name": "Jazz / Fit",
+          "startYear": 2001,
+          "endYear": 2026,
+          "weight": 1100,
+          "height": 1.52,
+          "range": 650
+        },
+        {
+          "name": "S2000",
+          "startYear": 1999,
+          "endYear": 2009,
+          "weight": 1250,
+          "height": 1.28,
+          "range": 500
+        },
+        {
+          "name": "NSX (Gen 1)",
+          "startYear": 1990,
+          "endYear": 2005,
+          "weight": 1370,
+          "height": 1.17,
+          "range": 500
+        },
+        {
+          "name": "Honda e (EV)",
+          "startYear": 2020,
+          "endYear": 2024,
+          "weight": 1540,
+          "height": 1.51,
+          "range": 220
+        }
+      ]
+    },
+    {
+      "name": "Hyundai",
+      "type": "OrdinaryCar",
+      "startYear": 1967,
+      "models": [
+        {
+          "name": "Pony",
+          "startYear": 1975,
+          "endYear": 1990,
+          "weight": 950,
+          "height": 1.36,
+          "range": 450
+        },
+        {
+          "name": "Elantra",
+          "startYear": 1990,
+          "endYear": 2026,
+          "weight": 1250,
+          "height": 1.42,
+          "range": 600
+        },
+        {
+          "name": "i10",
+          "startYear": 2007,
+          "endYear": 2026,
+          "weight": 950,
+          "height": 1.48,
+          "range": 550
+        },
+        {
+          "name": "i20",
+          "startYear": 2008,
+          "endYear": 2026,
+          "weight": 1100,
+          "height": 1.45,
+          "range": 650
+        },
+        {
+          "name": "i30",
+          "startYear": 2007,
+          "endYear": 2026,
+          "weight": 1300,
+          "height": 1.45,
+          "range": 750
+        },
+        {
+          "name": "Tucson (Gen 1-2)",
+          "startYear": 2004,
+          "endYear": 2015,
+          "weight": 1550,
+          "height": 1.68,
+          "range": 650
+        },
+        {
+          "name": "Tucson (Gen 3-4)",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.65,
+          "range": 750
+        },
+        {
+          "name": "Santa Fe (Gen 1-2)",
+          "startYear": 2000,
+          "endYear": 2012,
+          "weight": 1800,
+          "height": 1.73,
+          "range": 700
+        },
+        {
+          "name": "Santa Fe (Gen 3-5)",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 1950,
+          "height": 1.71,
+          "range": 800
+        },
+        {
+          "name": "Kona",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 1400,
+          "height": 1.56,
+          "range": 700
+        },
+        {
+          "name": "Kona Electric (EV)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 1.57,
+          "range": 480
+        },
+        {
+          "name": "Ioniq 5 (EV)",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2000,
+          "height": 1.60,
+          "range": 500
+        },
+        {
+          "name": "Ioniq 6 (EV)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 1950,
+          "height": 1.49,
+          "range": 614
+        }
+      ]
+    },
+    {
+      "name": "Hymer",
+      "type": "Motorhome",
+      "startYear": 1957,
+      "models": [
+        {
+          "name": "B-Class",
+          "startYear": 1981,
+          "endYear": 2026,
+          "weight": 3500,
+          "height": 2.95,
+          "range": 800
+        },
+        {
+          "name": "T-Class",
+          "startYear": 2000,
+          "endYear": 2026,
+          "weight": 3100,
+          "height": 2.85,
+          "range": 850
+        },
+        {
+          "name": "Exsis-t",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 2800,
+          "height": 2.77,
+          "range": 800
+        },
+        {
+          "name": "Exsis-i",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 2900,
+          "height": 2.77,
+          "range": 800
+        },
+        {
+          "name": "Free / Ayers Rock",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 2800,
+          "height": 2.60,
+          "range": 800
+        },
+        {
+          "name": "Grand Canyon",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 2900,
+          "height": 2.60,
+          "range": 800
+        },
+        {
+          "name": "Venture S",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 4100,
+          "height": 3.07,
+          "range": 750
+        },
+        {
+          "name": "Eriba Touring",
+          "startYear": 1957,
+          "endYear": 2026,
+          "weight": 1100,
+          "height": 2.26,
+          "range": 0
+        },
+        {
+          "name": "Eriba Nova",
+          "startYear": 1970,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 2.60,
+          "range": 0
+        },
+        {
+          "name": "Eriba Feeling",
+          "startYear": 2008,
+          "endYear": 2026,
+          "weight": 1200,
+          "height": 2.24,
+          "range": 0
+        }
+      ]
+    },
+    {
+      "name": "Jaguar",
+      "type": "OrdinaryCar",
+      "startYear": 1922,
+      "models": [
+        {
+          "name": "E-Type",
+          "startYear": 1961,
+          "endYear": 1974,
+          "weight": 1250,
+          "height": 1.22,
+          "range": 450
+        },
+        {
+          "name": "XJ (Series 1-3)",
+          "startYear": 1968,
+          "endYear": 1992,
+          "weight": 1750,
+          "height": 1.34,
+          "range": 500
+        },
+        {
+          "name": "XJ (X300/X308/X350)",
+          "startYear": 1994,
+          "endYear": 2009,
+          "weight": 1800,
+          "height": 1.34,
+          "range": 600
+        },
+        {
+          "name": "XJ (X351)",
+          "startYear": 2010,
+          "endYear": 2019,
+          "weight": 1850,
+          "height": 1.46,
+          "range": 700
+        },
+        {
+          "name": "S-Type",
+          "startYear": 1999,
+          "endYear": 2007,
+          "weight": 1700,
+          "height": 1.44,
+          "range": 650
+        },
+        {
+          "name": "XF",
+          "startYear": 2007,
+          "endYear": 2026,
+          "weight": 1750,
+          "height": 1.46,
+          "range": 750
+        },
+        {
+          "name": "XE",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 1.41,
+          "range": 750
+        },
+        {
+          "name": "F-Type",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.31,
+          "range": 550
+        },
+        {
+          "name": "F-Pace",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.65,
+          "range": 750
+        },
+        {
+          "name": "E-Pace",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 1800,
+          "height": 1.65,
+          "range": 700
+        },
+        {
+          "name": "I-Pace (EV)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 2200,
+          "height": 1.56,
+          "range": 470
+        }
+      ]
+    },
+    {
+      "name": "Jeep",
+      "type": "OrdinaryCar",
+      "startYear": 1941,
+      "models": [
+        {
+          "name": "Willys / CJ",
+          "startYear": 1944,
+          "endYear": 1986,
+          "weight": 1200,
+          "height": 1.70,
+          "range": 350
+        },
+        {
+          "name": "Wrangler (YJ/TJ)",
+          "startYear": 1986,
+          "endYear": 2006,
+          "weight": 1500,
+          "height": 1.80,
+          "range": 450
+        },
+        {
+          "name": "Wrangler (JK/JL)",
+          "startYear": 2006,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.85,
+          "range": 550
+        },
+        {
+          "name": "Cherokee (XJ)",
+          "startYear": 1984,
+          "endYear": 2001,
+          "weight": 1550,
+          "height": 1.62,
+          "range": 500
+        },
+        {
+          "name": "Cherokee (KL)",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 1750,
+          "height": 1.68,
+          "range": 600
+        },
+        {
+          "name": "Grand Cherokee (ZJ/WJ)",
+          "startYear": 1992,
+          "endYear": 2004,
+          "weight": 1850,
+          "height": 1.70,
+          "range": 550
+        },
+        {
+          "name": "Grand Cherokee (WK/WL)",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 2200,
+          "height": 1.80,
+          "range": 700
+        },
+        {
+          "name": "Renegade",
+          "startYear": 2014,
+          "endYear": 2026,
+          "weight": 1450,
+          "height": 1.69,
+          "range": 650
+        },
+        {
+          "name": "Compass",
+          "startYear": 2006,
+          "endYear": 2026,
+          "weight": 1550,
+          "height": 1.64,
+          "range": 650
+        },
+        {
+          "name": "Avenger (EV)",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 1536,
+          "height": 1.52,
+          "range": 400
+        }
+      ]
+    },
+    {
+      "name": "Kabe",
+      "type": "Motorhome",
+      "startYear": 1957,
+      "models": [
+        {
+          "name": "Travel Master Classic",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 3500,
+          "height": 2.95,
+          "range": 750
+        },
+        {
+          "name": "Travel Master Royal",
+          "startYear": 1995,
+          "endYear": 2026,
+          "weight": 4100,
+          "height": 3.05,
+          "range": 750
+        },
+        {
+          "name": "Travel Master Imperial",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 4500,
+          "height": 3.08,
+          "range": 700
+        },
+        {
+          "name": "Crown",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 4500,
+          "height": 3.08,
+          "range": 700
+        },
+        {
+          "name": "Van",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 3100,
+          "height": 2.70,
+          "range": 800
+        },
+        {
+          "name": "Royal",
+          "startYear": 1960,
+          "endYear": 2026,
+          "weight": 1950,
+          "height": 2.65,
+          "range": 0
+        },
+        {
+          "name": "Imperial",
+          "startYear": 2010,
+          "endYear": 2026,
+          "weight": 2400,
+          "height": 2.70,
+          "range": 0
+        },
+        {
+          "name": "Classic",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 2.62,
+          "range": 0
+        },
+        {
+          "name": "Ametist",
+          "startYear": 1980,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 2.62,
+          "range": 0
+        },
+        {
+          "name": "Safir",
+          "startYear": 1980,
+          "endYear": 2026,
+          "weight": 1750,
+          "height": 2.62,
+          "range": 0
+        }
+      ]
+    },
+    {
+      "name": "Kia",
+      "type": "OrdinaryCar",
+      "startYear": 1944,
+      "models": [
+        {
+          "name": "Pride",
+          "startYear": 1987,
+          "endYear": 2000,
+          "weight": 850,
+          "height": 1.45,
+          "range": 450
+        },
+        {
+          "name": "Picanto",
+          "startYear": 2004,
+          "endYear": 2026,
+          "weight": 950,
+          "height": 1.48,
+          "range": 550
+        },
+        {
+          "name": "Rio",
+          "startYear": 1999,
+          "endYear": 2026,
+          "weight": 1150,
+          "height": 1.45,
+          "range": 600
+        },
+        {
+          "name": "Ceed",
+          "startYear": 2006,
+          "endYear": 2026,
+          "weight": 1300,
+          "height": 1.44,
+          "range": 700
+        },
+        {
+          "name": "Optima",
+          "startYear": 2000,
+          "endYear": 2020,
+          "weight": 1550,
+          "height": 1.46,
+          "range": 800
+        },
+        {
+          "name": "Sportage (Gen 1-2)",
+          "startYear": 1993,
+          "endYear": 2010,
+          "weight": 1550,
+          "height": 1.65,
+          "range": 600
+        },
+        {
+          "name": "Sportage (Gen 3-5)",
+          "startYear": 2010,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.64,
+          "range": 750
+        },
+        {
+          "name": "Sorento (Gen 1)",
+          "startYear": 2002,
+          "endYear": 2009,
+          "weight": 1950,
+          "height": 1.73,
+          "range": 650
+        },
+        {
+          "name": "Sorento (Gen 2-4)",
+          "startYear": 2009,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.70,
+          "range": 800
+        },
+        {
+          "name": "Niro",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 1.54,
+          "range": 850
+        },
+        {
+          "name": "e-Niro (EV)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1730,
+          "height": 1.56,
+          "range": 455
+        },
+        {
+          "name": "EV6 (EV)",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2000,
+          "height": 1.55,
+          "range": 528
+        },
+        {
+          "name": "EV9 (EV)",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 2500,
+          "height": 1.75,
+          "range": 500
+        }
+      ]
+    },
+    {
+      "name": "Koenigsegg",
+      "type": "OrdinaryCar",
+      "startYear": 1994,
+      "models": [
+        {
+          "name": "CC8S",
+          "startYear": 2002,
+          "endYear": 2003,
+          "weight": 1175,
+          "height": 1.12,
+          "range": 400
+        },
+        {
+          "name": "CCR",
+          "startYear": 2004,
+          "endYear": 2006,
+          "weight": 1180,
+          "height": 1.12,
+          "range": 400
+        },
+        {
+          "name": "CCX",
+          "startYear": 2006,
+          "endYear": 2010,
+          "weight": 1280,
+          "height": 1.12,
+          "range": 450
+        },
+        {
+          "name": "Agera",
+          "startYear": 2010,
+          "endYear": 2018,
+          "weight": 1330,
+          "height": 1.12,
+          "range": 450
+        },
+        {
+          "name": "Regera",
+          "startYear": 2016,
+          "endYear": 2022,
+          "weight": 1590,
+          "height": 1.11,
+          "range": 400
+        },
+        {
+          "name": "Jesko",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1420,
+          "height": 1.21,
+          "range": 450
+        },
+        {
+          "name": "Gemera",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 1850,
+          "height": 1.29,
+          "range": 500
+        }
+      ]
+    },
+    {
+      "name": "Lamborghini",
+      "type": "OrdinaryCar",
+      "startYear": 1963,
+      "models": [
+        {
+          "name": "Miura",
+          "startYear": 1966,
+          "endYear": 1973,
+          "weight": 1125,
+          "height": 1.05,
+          "range": 350
+        },
+        {
+          "name": "Countach",
+          "startYear": 1974,
+          "endYear": 1990,
+          "weight": 1490,
+          "height": 1.07,
+          "range": 350
+        },
+        {
+          "name": "Diablo",
+          "startYear": 1990,
+          "endYear": 2001,
+          "weight": 1575,
+          "height": 1.10,
+          "range": 400
+        },
+        {
+          "name": "Murcielago",
+          "startYear": 2001,
+          "endYear": 2010,
+          "weight": 1650,
+          "height": 1.13,
+          "range": 400
+        },
+        {
+          "name": "Gallardo",
+          "startYear": 2003,
+          "endYear": 2013,
+          "weight": 1430,
+          "height": 1.16,
+          "range": 450
+        },
+        {
+          "name": "Aventador",
+          "startYear": 2011,
+          "endYear": 2022,
+          "weight": 1575,
+          "height": 1.13,
+          "range": 400
+        },
+        {
+          "name": "Huracan",
+          "startYear": 2014,
+          "endYear": 2024,
+          "weight": 1422,
+          "height": 1.16,
+          "range": 450
+        },
+        {
+          "name": "Urus",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 2200,
+          "height": 1.63,
+          "range": 550
+        },
+        {
+          "name": "Revuelto",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 1772,
+          "height": 1.16,
+          "range": 400
+        }
+      ]
+    },
+    {
+      "name": "Land Rover",
+      "type": "OrdinaryCar",
+      "startYear": 1948,
+      "models": [
+        {
+          "name": "Series I-III",
+          "startYear": 1948,
+          "endYear": 1985,
+          "weight": 1500,
+          "height": 1.95,
+          "range": 400
+        },
+        {
+          "name": "Defender (Classic)",
+          "startYear": 1983,
+          "endYear": 2016,
+          "weight": 1900,
+          "height": 2.02,
+          "range": 500
+        },
+        {
+          "name": "Defender (Modern)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2300,
+          "height": 1.96,
+          "range": 700
+        },
+        {
+          "name": "Discovery (Gen 1-2)",
+          "startYear": 1989,
+          "endYear": 2004,
+          "weight": 2000,
+          "height": 1.96,
+          "range": 600
+        },
+        {
+          "name": "Discovery (Gen 3-5)",
+          "startYear": 2004,
+          "endYear": 2026,
+          "weight": 2400,
+          "height": 1.88,
+          "range": 750
+        },
+        {
+          "name": "Range Rover (Classic)",
+          "startYear": 1970,
+          "endYear": 1996,
+          "weight": 1850,
+          "height": 1.78,
+          "range": 550
+        },
+        {
+          "name": "Range Rover (P38/L322)",
+          "startYear": 1994,
+          "endYear": 2012,
+          "weight": 2400,
+          "height": 1.86,
+          "range": 650
+        },
+        {
+          "name": "Range Rover (L405/L460)",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 2500,
+          "height": 1.87,
+          "range": 750
+        },
+        {
+          "name": "Range Rover Sport",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 2300,
+          "height": 1.82,
+          "range": 700
+        },
+        {
+          "name": "Range Rover Evoque",
+          "startYear": 2011,
+          "endYear": 2026,
+          "weight": 1800,
+          "height": 1.63,
+          "range": 650
+        }
+      ]
+    },
+    {
+      "name": "Lexus",
+      "type": "OrdinaryCar",
+      "startYear": 1989,
+      "models": [
+        {
+          "name": "IS (Gen 1)",
+          "startYear": 1998,
+          "endYear": 2005,
+          "weight": 1400,
+          "height": 1.42,
+          "range": 600
+        },
+        {
+          "name": "IS (Gen 2-3)",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 1.43,
+          "range": 700
+        },
+        {
+          "name": "ES",
+          "startYear": 1989,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.44,
+          "range": 800
+        },
+        {
+          "name": "GS",
+          "startYear": 1991,
+          "endYear": 2020,
+          "weight": 1700,
+          "height": 1.45,
+          "range": 750
+        },
+        {
+          "name": "LS (Gen 1-3)",
+          "startYear": 1989,
+          "endYear": 2006,
+          "weight": 1800,
+          "height": 1.44,
+          "range": 650
+        },
+        {
+          "name": "LS (Gen 4-5)",
+          "startYear": 2006,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 1.46,
+          "range": 800
+        },
+        {
+          "name": "NX",
+          "startYear": 2014,
+          "endYear": 2026,
+          "weight": 1800,
+          "height": 1.64,
+          "range": 750
+        },
+        {
+          "name": "RX (Gen 1-2)",
+          "startYear": 1998,
+          "endYear": 2008,
+          "weight": 1850,
+          "height": 1.67,
+          "range": 650
+        },
+        {
+          "name": "RX (Gen 3-5)",
+          "startYear": 2008,
+          "endYear": 2026,
+          "weight": 2050,
+          "height": 1.69,
+          "range": 800
+        },
+        {
+          "name": "RZ (EV)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2050,
+          "height": 1.63,
+          "range": 400
+        }
+      ]
+    },
+    {
+      "name": "Lucid",
+      "type": "ElectricCar",
+      "startYear": 2021,
+      "models": [
+        {
+          "name": "Air",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2360,
+          "height": 1.41,
+          "range": 830
+        },
+        {
+          "name": "Gravity",
+          "startYear": 2024,
+          "endYear": 2026,
+          "weight": 2600,
+          "height": 1.65,
+          "range": 700
+        }
+      ]
+    },
+    {
+      "name": "Maserati",
+      "type": "OrdinaryCar",
+      "startYear": 1914,
+      "models": [
+        {
+          "name": "Quattroporte (Gen 1-3)",
+          "startYear": 1963,
+          "endYear": 1990,
+          "weight": 1700,
+          "height": 1.36,
+          "range": 500
+        },
+        {
+          "name": "Quattroporte (Gen 4-5)",
+          "startYear": 1994,
+          "endYear": 2012,
+          "weight": 1900,
+          "height": 1.44,
+          "range": 550
+        },
+        {
+          "name": "Quattroporte (Gen 6)",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 2000,
+          "height": 1.48,
+          "range": 600
+        },
+        {
+          "name": "Ghibli (Classic)",
+          "startYear": 1967,
+          "endYear": 1973,
+          "weight": 1550,
+          "height": 1.16,
+          "range": 400
+        },
+        {
+          "name": "Ghibli (Modern)",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.46,
+          "range": 600
+        },
+        {
+          "name": "GranTurismo",
+          "startYear": 2007,
+          "endYear": 2019,
+          "weight": 1880,
+          "height": 1.35,
+          "range": 500
+        },
+        {
+          "name": "Levante",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 2200,
+          "height": 1.68,
+          "range": 650
+        },
+        {
+          "name": "Grecale",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 1870,
+          "height": 1.67,
+          "range": 600
+        }
+      ]
+    },
+    {
+      "name": "Mazda",
+      "type": "OrdinaryCar",
+      "startYear": 1920,
+      "models": [
+        {
+          "name": "323 / Familia",
+          "startYear": 1977,
+          "endYear": 2003,
+          "weight": 1050,
+          "height": 1.42,
+          "range": 550
+        },
+        {
+          "name": "626 / Capella",
+          "startYear": 1970,
+          "endYear": 2002,
+          "weight": 1200,
+          "height": 1.43,
+          "range": 600
+        },
+        {
+          "name": "Mazda3 (Gen 1-2)",
+          "startYear": 2003,
+          "endYear": 2013,
+          "weight": 1300,
+          "height": 1.47,
+          "range": 650
+        },
+        {
+          "name": "Mazda3 (Gen 3-4)",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.44,
+          "range": 700
+        },
+        {
+          "name": "Mazda6 (Gen 1-2)",
+          "startYear": 2002,
+          "endYear": 2012,
+          "weight": 1450,
+          "height": 1.44,
+          "range": 700
+        },
+        {
+          "name": "Mazda6 (Gen 3)",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 1550,
+          "height": 1.45,
+          "range": 800
+        },
+        {
+          "name": "MX-5 Miata (NA/NB)",
+          "startYear": 1989,
+          "endYear": 2005,
+          "weight": 1050,
+          "height": 1.23,
+          "range": 500
+        },
+        {
+          "name": "MX-5 Miata (NC/ND)",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 1100,
+          "height": 1.23,
+          "range": 550
+        },
+        {
+          "name": "RX-7 (FB/FC/FD)",
+          "startYear": 1978,
+          "endYear": 2002,
+          "weight": 1250,
+          "height": 1.23,
+          "range": 450
+        },
+        {
+          "name": "RX-8",
+          "startYear": 2003,
+          "endYear": 2012,
+          "weight": 1350,
+          "height": 1.34,
+          "range": 450
+        },
+        {
+          "name": "CX-5",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 1.68,
+          "range": 750
+        },
+        {
+          "name": "CX-60",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2050,
+          "height": 1.68,
+          "range": 800
+        },
+        {
+          "name": "MX-30 (EV)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1645,
+          "height": 1.56,
+          "range": 200
+        }
+      ]
+    },
+    {
+      "name": "Mercedes-Benz",
+      "type": "OrdinaryCar",
+      "startYear": 1926,
+      "models": [
+        {
+          "name": "190 (W201)",
+          "startYear": 1982,
+          "endYear": 1993,
+          "weight": 1150,
+          "height": 1.39,
+          "range": 600
+        },
+        {
+          "name": "C-Class (W202/W203)",
+          "startYear": 1993,
+          "endYear": 2007,
+          "weight": 1450,
+          "height": 1.42,
+          "range": 700
+        },
+        {
+          "name": "C-Class (W204/W205)",
+          "startYear": 2007,
+          "endYear": 2021,
+          "weight": 1600,
+          "height": 1.44,
+          "range": 850
+        },
+        {
+          "name": "C-Class (W206)",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 1.44,
+          "range": 900
+        },
+        {
+          "name": "E-Class (W123/W124)",
+          "startYear": 1976,
+          "endYear": 1995,
+          "weight": 1450,
+          "height": 1.44,
+          "range": 750
+        },
+        {
+          "name": "E-Class (W210/W211)",
+          "startYear": 1995,
+          "endYear": 2009,
+          "weight": 1650,
+          "height": 1.48,
+          "range": 850
+        },
+        {
+          "name": "E-Class (W212/W213)",
+          "startYear": 2009,
+          "endYear": 2023,
+          "weight": 1800,
+          "height": 1.47,
+          "range": 900
+        },
+        {
+          "name": "E-Class (W214)",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 1950,
+          "height": 1.47,
+          "range": 950
+        },
+        {
+          "name": "S-Class (W116/W126)",
+          "startYear": 1972,
+          "endYear": 1991,
+          "weight": 1650,
+          "height": 1.43,
+          "range": 700
+        },
+        {
+          "name": "S-Class (W140/W220)",
+          "startYear": 1991,
+          "endYear": 2005,
+          "weight": 1950,
+          "height": 1.48,
+          "range": 800
+        },
+        {
+          "name": "S-Class (W221/W222)",
+          "startYear": 2005,
+          "endYear": 2020,
+          "weight": 2100,
+          "height": 1.49,
+          "range": 850
+        },
+        {
+          "name": "S-Class (W223)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2250,
+          "height": 1.50,
+          "range": 900
+        },
+        {
+          "name": "G-Class (W460/W461/W463)",
+          "startYear": 1979,
+          "endYear": 2018,
+          "weight": 2350,
+          "height": 1.93,
+          "range": 550
+        },
+        {
+          "name": "G-Class (New W463)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 2550,
+          "height": 1.97,
+          "range": 600
+        },
+        {
+          "name": "GLC (X253/X254)",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 1850,
+          "height": 1.64,
+          "range": 850
+        },
+        {
+          "name": "GLE / M-Class",
+          "startYear": 1997,
+          "endYear": 2026,
+          "weight": 2200,
+          "height": 1.77,
+          "range": 850
+        },
+        {
+          "name": "Sprinter (Gen 1-2)",
+          "startYear": 1995,
+          "endYear": 2018,
+          "weight": 2100,
+          "height": 2.45,
+          "range": 750
+        },
+        {
+          "name": "Sprinter (Gen 3)",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 2300,
+          "height": 2.65,
+          "range": 800
+        },
+        {
+          "name": "V-Class / Vito",
+          "startYear": 1996,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 1.88,
+          "range": 800
+        },
+        {
+          "name": "EQA (EV)",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2040,
+          "height": 1.62,
+          "range": 420
+        },
+        {
+          "name": "EQC (EV)",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 2495,
+          "height": 1.62,
+          "range": 410
+        },
+        {
+          "name": "EQE (EV)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2355,
+          "height": 1.51,
+          "range": 620
+        },
+        {
+          "name": "EQS (EV)",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2480,
+          "height": 1.51,
+          "range": 740
+        }
+      ]
+    },
+    {
+      "name": "Mini",
+      "type": "OrdinaryCar",
+      "startYear": 1959,
+      "models": [
+        {
+          "name": "Classic Mini",
+          "startYear": 1959,
+          "endYear": 2000,
+          "weight": 650,
+          "height": 1.35,
+          "range": 400
+        },
+        {
+          "name": "Hatch (R50/R53)",
+          "startYear": 2001,
+          "endYear": 2006,
+          "weight": 1150,
+          "height": 1.41,
+          "range": 600
+        },
+        {
+          "name": "Hatch (R56)",
+          "startYear": 2006,
+          "endYear": 2013,
+          "weight": 1200,
+          "height": 1.41,
+          "range": 650
+        },
+        {
+          "name": "Hatch (F56/F55)",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 1250,
+          "height": 1.41,
+          "range": 700
+        },
+        {
+          "name": "Countryman (R60)",
+          "startYear": 2010,
+          "endYear": 2016,
+          "weight": 1400,
+          "height": 1.56,
+          "range": 700
+        },
+        {
+          "name": "Countryman (F60/U25)",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 1550,
+          "height": 1.56,
+          "range": 750
+        },
+        {
+          "name": "Cooper SE (EV)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1365,
+          "height": 1.43,
+          "range": 230
+        }
+      ]
+    },
+    {
+      "name": "Mitsubishi",
+      "type": "OrdinaryCar",
+      "startYear": 1917,
+      "models": [
+        {
+          "name": "Lancer (Classic)",
+          "startYear": 1973,
+          "endYear": 2000,
+          "weight": 1050,
+          "height": 1.40,
+          "range": 500
+        },
+        {
+          "name": "Lancer (Modern)",
+          "startYear": 2000,
+          "endYear": 2017,
+          "weight": 1350,
+          "height": 1.48,
+          "range": 600
+        },
+        {
+          "name": "Lancer Evolution (I-X)",
+          "startYear": 1992,
+          "endYear": 2016,
+          "weight": 1450,
+          "height": 1.45,
+          "range": 450
+        },
+        {
+          "name": "Galant",
+          "startYear": 1969,
+          "endYear": 2012,
+          "weight": 1350,
+          "height": 1.42,
+          "range": 650
+        },
+        {
+          "name": "Pajero / Shogun",
+          "startYear": 1982,
+          "endYear": 2021,
+          "weight": 2100,
+          "height": 1.90,
+          "range": 700
+        },
+        {
+          "name": "Outlander",
+          "startYear": 2001,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 1.71,
+          "range": 750
+        },
+        {
+          "name": "Outlander PHEV",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.71,
+          "range": 600
+        },
+        {
+          "name": "L200 / Triton",
+          "startYear": 1978,
+          "endYear": 2026,
+          "weight": 1950,
+          "height": 1.78,
+          "range": 750
+        }
+      ]
+    },
+    {
+      "name": "Nio",
+      "type": "ElectricCar",
+      "startYear": 2014,
+      "models": [
+        {
+          "name": "ES8",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 2460,
+          "height": 1.75,
+          "range": 500
+        },
+        {
+          "name": "ES6 / EL6",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 2300,
+          "height": 1.70,
+          "range": 480
+        },
+        {
+          "name": "ET7",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2359,
+          "height": 1.50,
+          "range": 580
+        },
+        {
+          "name": "ET5",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2140,
+          "height": 1.49,
+          "range": 560
+        }
+      ]
+    },
+    {
+      "name": "Nissan",
+      "type": "OrdinaryCar",
+      "startYear": 1933,
+      "models": [
+        {
+          "name": "Sunny / Sentra",
+          "startYear": 1966,
+          "endYear": 2006,
+          "weight": 1050,
+          "height": 1.40,
+          "range": 600
+        },
+        {
+          "name": "Primera",
+          "startYear": 1990,
+          "endYear": 2008,
+          "weight": 1250,
+          "height": 1.44,
+          "range": 650
+        },
+        {
+          "name": "Micra",
+          "startYear": 1982,
+          "endYear": 2026,
+          "weight": 1000,
+          "height": 1.52,
+          "range": 650
+        },
+        {
+          "name": "Skyline / GT-R (R32-R34)",
+          "startYear": 1989,
+          "endYear": 2002,
+          "weight": 1500,
+          "height": 1.36,
+          "range": 450
+        },
+        {
+          "name": "GT-R (R35)",
+          "startYear": 2007,
+          "endYear": 2024,
+          "weight": 1750,
+          "height": 1.37,
+          "range": 500
+        },
+        {
+          "name": "Qashqai (Gen 1-2)",
+          "startYear": 2006,
+          "endYear": 2021,
+          "weight": 1400,
+          "height": 1.60,
+          "range": 750
+        },
+        {
+          "name": "Qashqai (Gen 3)",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 1.62,
+          "range": 800
+        },
+        {
+          "name": "X-Trail",
+          "startYear": 2000,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 1.71,
+          "range": 750
+        },
+        {
+          "name": "Navara",
+          "startYear": 1997,
+          "endYear": 2026,
+          "weight": 1950,
+          "height": 1.80,
+          "range": 700
+        },
+        {
+          "name": "Leaf (Gen 1)",
+          "startYear": 2010,
+          "endYear": 2017,
+          "weight": 1520,
+          "height": 1.55,
+          "range": 150
+        },
+        {
+          "name": "Leaf (Gen 2)",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 1580,
+          "height": 1.54,
+          "range": 385
+        },
+        {
+          "name": "Ariya (EV)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.66,
+          "range": 500
+        }
+      ]
+    },
+    {
+      "name": "Opel",
+      "type": "OrdinaryCar",
+      "startYear": 1899,
+      "models": [
+        {
+          "name": "Kadett",
+          "startYear": 1962,
+          "endYear": 1991,
+          "weight": 900,
+          "height": 1.40,
+          "range": 550
+        },
+        {
+          "name": "Astra (F/G/H)",
+          "startYear": 1991,
+          "endYear": 2009,
+          "weight": 1250,
+          "height": 1.46,
+          "range": 650
+        },
+        {
+          "name": "Astra (J/K/L)",
+          "startYear": 2009,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.48,
+          "range": 750
+        },
+        {
+          "name": "Vectra",
+          "startYear": 1988,
+          "endYear": 2008,
+          "weight": 1350,
+          "height": 1.43,
+          "range": 700
+        },
+        {
+          "name": "Insignia",
+          "startYear": 2008,
+          "endYear": 2022,
+          "weight": 1600,
+          "height": 1.50,
+          "range": 850
+        },
+        {
+          "name": "Corsa",
+          "startYear": 1982,
+          "endYear": 2026,
+          "weight": 1150,
+          "height": 1.43,
+          "range": 650
+        },
+        {
+          "name": "Zafira",
+          "startYear": 1999,
+          "endYear": 2019,
+          "weight": 1550,
+          "height": 1.68,
+          "range": 700
+        },
+        {
+          "name": "Mokka",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 1300,
+          "height": 1.53,
+          "range": 700
+        },
+        {
+          "name": "Corsa-e (EV)",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 1530,
+          "height": 1.43,
+          "range": 330
+        },
+        {
+          "name": "Mokka-e (EV)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1598,
+          "height": 1.53,
+          "range": 320
+        }
+      ]
+    },
+    {
+      "name": "Peugeot",
+      "type": "OrdinaryCar",
+      "startYear": 1891,
+      "models": [
+        {
+          "name": "205",
+          "startYear": 1983,
+          "endYear": 1998,
+          "weight": 900,
+          "height": 1.37,
+          "range": 500
+        },
+        {
+          "name": "206",
+          "startYear": 1998,
+          "endYear": 2012,
+          "weight": 1050,
+          "height": 1.43,
+          "range": 600
+        },
+        {
+          "name": "208",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 1150,
+          "height": 1.43,
+          "range": 650
+        },
+        {
+          "name": "306",
+          "startYear": 1993,
+          "endYear": 2002,
+          "weight": 1150,
+          "height": 1.38,
+          "range": 600
+        },
+        {
+          "name": "308",
+          "startYear": 2007,
+          "endYear": 2026,
+          "weight": 1300,
+          "height": 1.44,
+          "range": 750
+        },
+        {
+          "name": "406",
+          "startYear": 1995,
+          "endYear": 2004,
+          "weight": 1400,
+          "height": 1.41,
+          "range": 700
+        },
+        {
+          "name": "508",
+          "startYear": 2010,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 1.40,
+          "range": 850
+        },
+        {
+          "name": "3008",
+          "startYear": 2008,
+          "endYear": 2026,
+          "weight": 1450,
+          "height": 1.62,
+          "range": 800
+        },
+        {
+          "name": "5008",
+          "startYear": 2009,
+          "endYear": 2026,
+          "weight": 1550,
+          "height": 1.64,
+          "range": 800
+        },
+        {
+          "name": "Boxer",
+          "startYear": 1994,
+          "endYear": 2026,
+          "weight": 2000,
+          "height": 2.25,
+          "range": 850
+        },
+        {
+          "name": "e-208 (EV)",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 1455,
+          "height": 1.43,
+          "range": 350
+        },
+        {
+          "name": "e-2008 (EV)",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 1548,
+          "height": 1.55,
+          "range": 330
+        }
+      ]
+    },
+    {
+      "name": "Polestar",
+      "type": "ElectricCar",
+      "startYear": 2019,
+      "models": [
+        {
+          "name": "Polestar 1 (Hybrid)",
+          "startYear": 2019,
+          "endYear": 2022,
+          "weight": 2350,
+          "height": 1.35,
+          "range": 124
+        },
+        {
+          "name": "Polestar 2",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 1.47,
+          "range": 540
+        },
+        {
+          "name": "Polestar 3",
+          "startYear": 2024,
+          "endYear": 2026,
+          "weight": 2580,
+          "height": 1.61,
+          "range": 610
+        },
+        {
+          "name": "Polestar 4",
+          "startYear": 2024,
+          "endYear": 2026,
+          "weight": 2230,
+          "height": 1.54,
+          "range": 600
+        }
+      ]
+    },
+    {
+      "name": "Porsche",
+      "type": "OrdinaryCar",
+      "startYear": 1948,
+      "models": [
+        {
+          "name": "356",
+          "startYear": 1948,
+          "endYear": 1965,
+          "weight": 850,
+          "height": 1.30,
+          "range": 400
+        },
+        {
+          "name": "911 (Classic / G-Model)",
+          "startYear": 1963,
+          "endYear": 1989,
+          "weight": 1150,
+          "height": 1.32,
+          "range": 450
+        },
+        {
+          "name": "911 (964 / 993)",
+          "startYear": 1989,
+          "endYear": 1998,
+          "weight": 1350,
+          "height": 1.31,
+          "range": 500
+        },
+        {
+          "name": "911 (996 / 997)",
+          "startYear": 1997,
+          "endYear": 2012,
+          "weight": 1450,
+          "height": 1.30,
+          "range": 550
+        },
+        {
+          "name": "911 (991 / 992)",
+          "startYear": 2011,
+          "endYear": 2026,
+          "weight": 1550,
+          "height": 1.30,
+          "range": 600
+        },
+        {
+          "name": "944 / 968",
+          "startYear": 1982,
+          "endYear": 1995,
+          "weight": 1300,
+          "height": 1.27,
+          "range": 500
+        },
+        {
+          "name": "Boxster / Cayman (986/987)",
+          "startYear": 1996,
+          "endYear": 2012,
+          "weight": 1350,
+          "height": 1.29,
+          "range": 550
+        },
+        {
+          "name": "718 Boxster / Cayman",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 1400,
+          "height": 1.28,
+          "range": 600
+        },
+        {
+          "name": "Cayenne (Gen 1-2)",
+          "startYear": 2002,
+          "endYear": 2017,
+          "weight": 2200,
+          "height": 1.70,
+          "range": 650
+        },
+        {
+          "name": "Cayenne (Gen 3)",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 1.69,
+          "range": 750
+        },
+        {
+          "name": "Panamera (Gen 1)",
+          "startYear": 2009,
+          "endYear": 2016,
+          "weight": 1950,
+          "height": 1.42,
+          "range": 700
+        },
+        {
+          "name": "Panamera (Gen 2)",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 2000,
+          "height": 1.42,
+          "range": 750
+        },
+        {
+          "name": "Macan",
+          "startYear": 2014,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.62,
+          "range": 700
+        },
+        {
+          "name": "Taycan (EV)",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 2200,
+          "height": 1.38,
+          "range": 450
+        },
+        {
+          "name": "Macan Electric (EV)",
+          "startYear": 2024,
+          "endYear": 2026,
+          "weight": 2300,
+          "height": 1.62,
+          "range": 590
+        }
+      ]
+    },
+    {
+      "name": "Polar",
+      "type": "Caravan",
+      "startYear": 1964,
+      "models": [
+        {
+          "name": "Polar 520",
+          "startYear": 1980,
+          "endYear": 2026,
+          "weight": 1400,
+          "height": 2.65,
+          "range": 0
+        },
+        {
+          "name": "Polar 590",
+          "startYear": 1985,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 2.65,
+          "range": 0
+        },
+        {
+          "name": "Polar 730",
+          "startYear": 1995,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 2.65,
+          "range": 0
+        },
+        {
+          "name": "Grizzly",
+          "startYear": 2010,
+          "endYear": 2018,
+          "weight": 4200,
+          "height": 3.10,
+          "range": 700
+        },
+        {
+          "name": "Kodiak",
+          "startYear": 2015,
+          "endYear": 2022,
+          "weight": 4500,
+          "height": 3.10,
+          "range": 700
+        }
+      ]
+    },
+    {
+      "name": "Renault",
+      "type": "OrdinaryCar",
+      "startYear": 1899,
+      "models": [
+        {
+          "name": "4 / 5",
+          "startYear": 1961,
+          "endYear": 1996,
+          "weight": 800,
+          "height": 1.40,
+          "range": 450
+        },
+        {
+          "name": "Clio (Gen 1-2)",
+          "startYear": 1990,
+          "endYear": 2012,
+          "weight": 1000,
+          "height": 1.41,
+          "range": 600
+        },
+        {
+          "name": "Clio (Gen 3-5)",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 1150,
+          "height": 1.44,
+          "range": 700
+        },
+        {
+          "name": "Megane (Gen 1-2)",
+          "startYear": 1995,
+          "endYear": 2008,
+          "weight": 1200,
+          "height": 1.42,
+          "range": 650
+        },
+        {
+          "name": "Megane (Gen 3-4)",
+          "startYear": 2008,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.44,
+          "range": 750
+        },
+        {
+          "name": "Kangoo",
+          "startYear": 1997,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.80,
+          "range": 700
+        },
+        {
+          "name": "Trafic",
+          "startYear": 1980,
+          "endYear": 2026,
+          "weight": 1850,
+          "height": 1.97,
+          "range": 800
+        },
+        {
+          "name": "Master",
+          "startYear": 1980,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 2.30,
+          "range": 850
+        },
+        {
+          "name": "Zoe (EV)",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 1.56,
+          "range": 395
+        },
+        {
+          "name": "Megane E-Tech (EV)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 1620,
+          "height": 1.50,
+          "range": 450
+        }
+      ]
+    },
+    {
+      "name": "Rivian",
+      "type": "ElectricCar",
+      "startYear": 2009,
+      "models": [
+        {
+          "name": "R1T",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 3200,
+          "height": 1.99,
+          "range": 640
+        },
+        {
+          "name": "R1S",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 3200,
+          "height": 1.96,
+          "range": 630
+        }
+      ]
+    },
+    {
+      "name": "Seat",
+      "type": "OrdinaryCar",
+      "startYear": 1950,
+      "models": [
+        {
+          "name": "Ibiza",
+          "startYear": 1984,
+          "endYear": 2026,
+          "weight": 1100,
+          "height": 1.44,
+          "range": 650
+        },
+        {
+          "name": "Leon (Gen 1-2)",
+          "startYear": 1999,
+          "endYear": 2012,
+          "weight": 1250,
+          "height": 1.45,
+          "range": 700
+        },
+        {
+          "name": "Leon (Gen 3-4)",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.45,
+          "range": 750
+        },
+        {
+          "name": "Ateca",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 1400,
+          "height": 1.61,
+          "range": 700
+        },
+        {
+          "name": "Tarraco",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.67,
+          "range": 750
+        }
+      ]
+    },
+    {
+      "name": "Skoda",
+      "type": "OrdinaryCar",
+      "startYear": 1925,
+      "models": [
+        {
+          "name": "Felicia",
+          "startYear": 1994,
+          "endYear": 2001,
+          "weight": 1000,
+          "height": 1.42,
+          "range": 500
+        },
+        {
+          "name": "Fabia",
+          "startYear": 1999,
+          "endYear": 2026,
+          "weight": 1150,
+          "height": 1.46,
+          "range": 700
+        },
+        {
+          "name": "Octavia (Gen 1-2)",
+          "startYear": 1996,
+          "endYear": 2013,
+          "weight": 1300,
+          "height": 1.46,
+          "range": 750
+        },
+        {
+          "name": "Octavia (Gen 3-4)",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 1400,
+          "height": 1.47,
+          "range": 850
+        },
+        {
+          "name": "Superb (Gen 1-2)",
+          "startYear": 2001,
+          "endYear": 2015,
+          "weight": 1500,
+          "height": 1.46,
+          "range": 800
+        },
+        {
+          "name": "Superb (Gen 3-4)",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 1.47,
+          "range": 900
+        },
+        {
+          "name": "Yeti",
+          "startYear": 2009,
+          "endYear": 2017,
+          "weight": 1450,
+          "height": 1.69,
+          "range": 700
+        },
+        {
+          "name": "Kodiaq",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 1.67,
+          "range": 800
+        },
+        {
+          "name": "Enyaq (EV)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 1.61,
+          "range": 520
+        }
+      ]
+    },
+    {
+      "name": "Subaru",
+      "type": "OrdinaryCar",
+      "startYear": 1953,
+      "models": [
+        {
+          "name": "Impreza",
+          "startYear": 1992,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.46,
+          "range": 600
+        },
+        {
+          "name": "Legacy",
+          "startYear": 1989,
+          "endYear": 2020,
+          "weight": 1450,
+          "height": 1.50,
+          "range": 650
+        },
+        {
+          "name": "Outback",
+          "startYear": 1994,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.68,
+          "range": 700
+        },
+        {
+          "name": "Forester",
+          "startYear": 1997,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 1.73,
+          "range": 700
+        },
+        {
+          "name": "Solterra (EV)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2010,
+          "height": 1.65,
+          "range": 460
+        }
+      ]
+    },
+    {
+      "name": "Suzuki",
+      "type": "OrdinaryCar",
+      "startYear": 1955,
+      "models": [
+        {
+          "name": "Swift",
+          "startYear": 1983,
+          "endYear": 2026,
+          "weight": 1000,
+          "height": 1.49,
+          "range": 600
+        },
+        {
+          "name": "Vitara / Grand Vitara",
+          "startYear": 1988,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.71,
+          "range": 650
+        },
+        {
+          "name": "Jimny",
+          "startYear": 1970,
+          "endYear": 2026,
+          "weight": 1100,
+          "height": 1.72,
+          "range": 450
+        }
+      ]
+    },
+    {
+      "name": "Toyota",
+      "type": "OrdinaryCar",
+      "startYear": 1937,
+      "models": [
+        {
+          "name": "Corolla (Classic)",
+          "startYear": 1966,
+          "endYear": 2000,
+          "weight": 1050,
+          "height": 1.38,
+          "range": 550
+        },
+        {
+          "name": "Corolla / Auris",
+          "startYear": 2001,
+          "endYear": 2026,
+          "weight": 1350,
+          "height": 1.43,
+          "range": 700
+        },
+        {
+          "name": "Yaris",
+          "startYear": 1999,
+          "endYear": 2026,
+          "weight": 1050,
+          "height": 1.50,
+          "range": 650
+        },
+        {
+          "name": "Camry",
+          "startYear": 1982,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 1.44,
+          "range": 800
+        },
+        {
+          "name": "Prius",
+          "startYear": 1997,
+          "endYear": 2026,
+          "weight": 1400,
+          "height": 1.47,
+          "range": 900
+        },
+        {
+          "name": "RAV4 (Gen 1-2)",
+          "startYear": 1994,
+          "endYear": 2012,
+          "weight": 1400,
+          "height": 1.68,
+          "range": 600
+        },
+        {
+          "name": "RAV4 (Gen 3-5)",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.68,
+          "range": 800
+        },
+        {
+          "name": "Land Cruiser",
+          "startYear": 1951,
+          "endYear": 2026,
+          "weight": 2400,
+          "height": 1.88,
+          "range": 750
+        },
+        {
+          "name": "Hilux",
+          "startYear": 1968,
+          "endYear": 2026,
+          "weight": 2000,
+          "height": 1.81,
+          "range": 750
+        },
+        {
+          "name": "bZ4X (EV)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.65,
+          "range": 450
+        }
+      ]
+    },
+    {
+      "name": "Volkswagen",
+      "type": "OrdinaryCar",
+      "startYear": 1937,
+      "models": [
+        {
+          "name": "Type 1 (Beetle)",
+          "startYear": 1938,
+          "endYear": 2003,
+          "weight": 800,
+          "height": 1.50,
+          "range": 350
+        },
+        {
+          "name": "Golf (Mk1-Mk3)",
+          "startYear": 1974,
+          "endYear": 1997,
+          "weight": 1000,
+          "height": 1.41,
+          "range": 550
+        },
+        {
+          "name": "Golf (Mk4-Mk8)",
+          "startYear": 1997,
+          "endYear": 2026,
+          "weight": 1300,
+          "height": 1.45,
+          "range": 750
+        },
+        {
+          "name": "Passat (B1-B4)",
+          "startYear": 1973,
+          "endYear": 1996,
+          "weight": 1200,
+          "height": 1.43,
+          "range": 700
+        },
+        {
+          "name": "Passat (B5-B9)",
+          "startYear": 1996,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 1.46,
+          "range": 850
+        },
+        {
+          "name": "Polo",
+          "startYear": 1975,
+          "endYear": 2026,
+          "weight": 1100,
+          "height": 1.45,
+          "range": 650
+        },
+        {
+          "name": "Tiguan",
+          "startYear": 2007,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.67,
+          "range": 800
+        },
+        {
+          "name": "Touareg",
+          "startYear": 2002,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 1.71,
+          "range": 850
+        },
+        {
+          "name": "Transporter (T1-T3)",
+          "startYear": 1950,
+          "endYear": 1990,
+          "weight": 1400,
+          "height": 1.95,
+          "range": 500
+        },
+        {
+          "name": "Transporter (T4-T7)",
+          "startYear": 1990,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.99,
+          "range": 850
+        },
+        {
+          "name": "Crafter",
+          "startYear": 2006,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 2.35,
+          "range": 800
+        },
+        {
+          "name": "ID.3 (EV)",
+          "startYear": 2019,
+          "endYear": 2026,
+          "weight": 1815,
+          "height": 1.56,
+          "range": 420
+        },
+        {
+          "name": "ID.4 / ID.5 (EV)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2120,
+          "height": 1.63,
+          "range": 510
+        },
+        {
+          "name": "ID. Buzz (EV)",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2400,
+          "height": 1.93,
+          "range": 400
+        }
+      ]
+    },
+    {
+      "name": "Volvo",
+      "type": "OrdinaryCar",
+      "startYear": 1927,
+      "models": [
+        {
+          "name": "PV444 / 544",
+          "startYear": 1944,
+          "endYear": 1965,
+          "weight": 1070,
+          "height": 1.55,
+          "range": 400
+        },
+        {
+          "name": "Amazon",
+          "startYear": 1956,
+          "endYear": 1970,
+          "weight": 1100,
+          "height": 1.50,
+          "range": 450
+        },
+        {
+          "name": "140-Series",
+          "startYear": 1966,
+          "endYear": 1974,
+          "weight": 1250,
+          "height": 1.44,
+          "range": 500
+        },
+        {
+          "name": "240-Series",
+          "startYear": 1974,
+          "endYear": 1993,
+          "weight": 1350,
+          "height": 1.45,
+          "range": 550
+        },
+        {
+          "name": "740 / 940",
+          "startYear": 1984,
+          "endYear": 1998,
+          "weight": 1450,
+          "height": 1.41,
+          "range": 600
+        },
+        {
+          "name": "850",
+          "startYear": 1991,
+          "endYear": 1996,
+          "weight": 1500,
+          "height": 1.40,
+          "range": 650
+        },
+        {
+          "name": "V70 (Gen 1)",
+          "startYear": 1996,
+          "endYear": 2000,
+          "weight": 1550,
+          "height": 1.43,
+          "range": 750
+        },
+        {
+          "name": "V70 (Gen 2-3)",
+          "startYear": 2000,
+          "endYear": 2016,
+          "weight": 1650,
+          "height": 1.47,
+          "range": 850
+        },
+        {
+          "name": "XC70",
+          "startYear": 2000,
+          "endYear": 2016,
+          "weight": 1750,
+          "height": 1.56,
+          "range": 800
+        },
+        {
+          "name": "XC90 (Gen 1)",
+          "startYear": 2002,
+          "endYear": 2014,
+          "weight": 2100,
+          "height": 1.78,
+          "range": 850
+        },
+        {
+          "name": "XC90 (Gen 2)",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 2150,
+          "height": 1.77,
+          "range": 900
+        },
+        {
+          "name": "XC60 (Gen 1)",
+          "startYear": 2008,
+          "endYear": 2017,
+          "weight": 1800,
+          "height": 1.71,
+          "range": 800
+        },
+        {
+          "name": "XC60 (Gen 2)",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 1.66,
+          "range": 850
+        },
+        {
+          "name": "V90 / S90",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 1850,
+          "height": 1.47,
+          "range": 800
+        },
+        {
+          "name": "XC40",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 1650,
+          "height": 1.65,
+          "range": 750
+        },
+        {
+          "name": "XC40 / EX40 (EV)",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2180,
+          "height": 1.65,
+          "range": 420
+        },
+        {
+          "name": "C40 / EC40 (EV)",
+          "startYear": 2021,
+          "endYear": 2026,
+          "weight": 2185,
+          "height": 1.58,
+          "range": 430
+        },
+        {
+          "name": "EX30 (EV)",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 1850,
+          "height": 1.55,
+          "range": 475
+        },
+        {
+          "name": "EX90 (EV)",
+          "startYear": 2024,
+          "endYear": 2026,
+          "weight": 2818,
+          "height": 1.74,
+          "range": 600
+        }
+      ]
+    },
+    {
+      "name": "Weinsberg",
+      "type": "Motorhome",
+      "startYear": 1969,
+      "models": [
+        {
+          "name": "CaraCompact",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 2800,
+          "height": 2.60,
+          "range": 800
+        },
+        {
+          "name": "CaraLoft",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 2900,
+          "height": 2.80,
+          "range": 750
+        },
+        {
+          "name": "CaraOne",
+          "startYear": 2010,
+          "endYear": 2026,
+          "weight": 1100,
+          "height": 2.58,
+          "range": 0
+        },
+        {
+          "name": "CaraTwo",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 1200,
+          "height": 2.58,
+          "range": 0
+        }
+      ]
+    },
+    {
+      "name": "Xpeng",
+      "type": "ElectricCar",
+      "startYear": 2014,
+      "models": [
+        {
+          "name": "P7",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 2020,
+          "height": 1.45,
+          "range": 500
+        },
+        {
+          "name": "G9",
+          "startYear": 2022,
+          "endYear": 2026,
+          "weight": 2350,
+          "height": 1.68,
+          "range": 520
+        }
+      ]
+    },
+    {
+      "name": "Carthago",
+      "type": "Motorhome",
+      "startYear": 1979,
+      "models": [
+        {
+          "name": "C-Tourer",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 3200,
+          "height": 2.89,
+          "range": 800
+        },
+        {
+          "name": "Chic C-Line",
+          "startYear": 2004,
+          "endYear": 2026,
+          "weight": 3500,
+          "height": 2.89,
+          "range": 850
+        },
+        {
+          "name": "Chic E-Line",
+          "startYear": 2010,
+          "endYear": 2026,
+          "weight": 4500,
+          "height": 3.12,
+          "range": 850
+        },
+        {
+          "name": "Liner-for-two",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 4600,
+          "height": 3.12,
+          "range": 850
+        }
+      ]
+    },
+    {
+      "name": "Chausson",
+      "type": "Motorhome",
+      "startYear": 1980,
+      "models": [
+        {
+          "name": "Flash",
+          "startYear": 2005,
+          "endYear": 2020,
+          "weight": 2950,
+          "height": 2.92,
+          "range": 750
+        },
+        {
+          "name": "Welcome",
+          "startYear": 2000,
+          "endYear": 2020,
+          "weight": 3100,
+          "height": 2.92,
+          "range": 750
+        },
+        {
+          "name": "Titanium",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 3050,
+          "height": 2.92,
+          "range": 800
+        }
+      ]
+    },
+    {
+      "name": "Fendt",
+      "type": "Caravan",
+      "startYear": 1970,
+      "models": [
+        {
+          "name": "Saphir",
+          "startYear": 1998,
+          "endYear": 2026,
+          "weight": 1400,
+          "height": 2.63,
+          "range": 0
+        },
+        {
+          "name": "Bianco",
+          "startYear": 2008,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 2.63,
+          "range": 0
+        },
+        {
+          "name": "Tendenza",
+          "startYear": 2011,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 2.63,
+          "range": 0
+        },
+        {
+          "name": "Opal",
+          "startYear": 2013,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 2.63,
+          "range": 0
+        },
+        {
+          "name": "Diamant",
+          "startYear": 1975,
+          "endYear": 2026,
+          "weight": 1850,
+          "height": 2.65,
+          "range": 0
+        }
+      ]
+    },
+    {
+      "name": "Knaus",
+      "type": "Motorhome",
+      "startYear": 1960,
+      "models": [
+        {
+          "name": "BoxStar",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 2850,
+          "height": 2.58,
+          "range": 850
+        },
+        {
+          "name": "Sky TI",
+          "startYear": 2011,
+          "endYear": 2026,
+          "weight": 3000,
+          "height": 2.79,
+          "range": 800
+        },
+        {
+          "name": "Sun I",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 4400,
+          "height": 2.94,
+          "range": 800
+        },
+        {
+          "name": "Sport",
+          "startYear": 1995,
+          "endYear": 2026,
+          "weight": 1300,
+          "height": 2.57,
+          "range": 0
+        },
+        {
+          "name": "Südwind",
+          "startYear": 1962,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 2.57,
+          "range": 0
+        }
+      ]
+    },
+    {
+      "name": "Pilote",
+      "type": "Motorhome",
+      "startYear": 1962,
+      "models": [
+        {
+          "name": "Pacific",
+          "startYear": 2000,
+          "endYear": 2026,
+          "weight": 2950,
+          "height": 2.85,
+          "range": 800
+        },
+        {
+          "name": "Galaxy",
+          "startYear": 1995,
+          "endYear": 2026,
+          "weight": 3150,
+          "height": 2.88,
+          "range": 800
+        },
+        {
+          "name": "V-Edition",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 2850,
+          "height": 2.65,
+          "range": 850
+        }
+      ]
+    },
+    {
+      "name": "Rapido",
+      "type": "Motorhome",
+      "startYear": 1961,
+      "models": [
+        {
+          "name": "Series 6F",
+          "startYear": 2010,
+          "endYear": 2026,
+          "weight": 3050,
+          "height": 2.90,
+          "range": 800
+        },
+        {
+          "name": "Series 8F",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 3150,
+          "height": 2.89,
+          "range": 800
+        },
+        {
+          "name": "Distinction",
+          "startYear": 2016,
+          "endYear": 2026,
+          "weight": 4300,
+          "height": 2.95,
+          "range": 850
+        }
+      ]
+    },
+    {
+      "name": "Sunlight",
+      "type": "Motorhome",
+      "startYear": 2004,
+      "models": [
+        {
+          "name": "Cliff",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 2850,
+          "height": 2.65,
+          "range": 850
+        },
+        {
+          "name": "T-Series",
+          "startYear": 2006,
+          "endYear": 2026,
+          "weight": 2950,
+          "height": 2.90,
+          "range": 800
+        },
+        {
+          "name": "I-Series",
+          "startYear": 2018,
+          "endYear": 2026,
+          "weight": 3050,
+          "height": 2.93,
+          "range": 800
+        }
+      ]
+    },
+    {
+      "name": "Tabbert",
+      "type": "Caravan",
+      "startYear": 1953,
+      "models": [
+        {
+          "name": "Rossini",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 1500,
+          "height": 2.62,
+          "range": 0
+        },
+        {
+          "name": "Da Vinci",
+          "startYear": 2003,
+          "endYear": 2026,
+          "weight": 1600,
+          "height": 2.65,
+          "range": 0
+        },
+        {
+          "name": "Vivaldi",
+          "startYear": 2004,
+          "endYear": 2026,
+          "weight": 1700,
+          "height": 2.65,
+          "range": 0
+        },
+        {
+          "name": "Puccini",
+          "startYear": 2005,
+          "endYear": 2026,
+          "weight": 1900,
+          "height": 2.65,
+          "range": 0
+        }
+      ]
+    },
+    {
+      "name": "Tesla",
+      "type": "ElectricCar",
+      "startYear": 2008,
+      "models": [
+        {
+          "name": "Roadster",
+          "startYear": 2008,
+          "endYear": 2012,
+          "weight": 1300,
+          "height": 1.13,
+          "range": 390
+        },
+        {
+          "name": "Model S",
+          "startYear": 2012,
+          "endYear": 2026,
+          "weight": 2100,
+          "height": 1.44,
+          "range": 600
+        },
+        {
+          "name": "Model X",
+          "startYear": 2015,
+          "endYear": 2026,
+          "weight": 2400,
+          "height": 1.68,
+          "range": 500
+        },
+        {
+          "name": "Model 3",
+          "startYear": 2017,
+          "endYear": 2026,
+          "weight": 1840,
+          "height": 1.44,
+          "range": 513
+        },
+        {
+          "name": "Model Y",
+          "startYear": 2020,
+          "endYear": 2026,
+          "weight": 1995,
+          "height": 1.62,
+          "range": 455
+        },
+        {
+          "name": "Cybertruck",
+          "startYear": 2023,
+          "endYear": 2026,
+          "weight": 3000,
+          "height": 1.90,
+          "range": 540
+        }
+      ]
+    }
+  ]
+}
