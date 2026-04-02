@@ -1,73 +1,227 @@
 ﻿@page
 @using ZipTrip.Domain.Enums
 @model IndexModel
-<section class="relative min-h-screen flex items-center overflow-hidden">
-    <div class="absolute inset-0 z-0">
-        <img src="~/images/hero-road.jpg" class="w-full h-full object-cover" alt="Väg" />
-        <div class="hero-overlay"></div>
-    </div>
-
-    <div class="relative z-10 container mx-auto px-4">
-        <div class="max-w-3xl">
-            <span class="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">
-                ⚡ Roadtrips genom Sverige
-            </span>
-            <h1 class="hero-title text-6xl md:text-8xl font-bold mb-6 leading-tight">
-                Din resa, <br />
-                <span class="text-primary">ditt fordon,</span><br />
-                din väg.
-            </h1>
-            <p class="dark:text-gray-400 text-gray-700 text-xl mb-10 max-w-lg transition-colors">
-                Planera roadtrips anpassade efter just ditt fordon. Bil, elbil eller husbil – vi fixar resten.
-            </p>
-            
-            <a href="/Trip/Create" class="btn-primary">
-                Planera din resa
-            </a>
-        </div>
-    </div>
-</section>
-
-<section id="vehicles" class="py-20 bg-background transition-colors duration-500">
-    <div class="container mx-auto px-4">
-        <div class="flex justify-between items-end mb-12">
-            <div>
-                <h2 class="text-4xl font-bold mb-2">Välj ditt fordon</h2>
-                <p class="text-muted-foreground">Anpassa din rutt efter räckvidd och fordonshöjd.</p>
+<div class="min-h-screen bg-background">
+    <main id="main-content">
+        <section aria-label="Introduction" class="relative min-h-screen flex items-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="~/images/hero-road.jpg" class="w-full h-full object-cover" alt="Väg" />
+                <div class="hero-overlay"></div>
             </div>
-            <a href="/Account/Vehicles/Add" class="text-primary font-bold hover:underline">+ Lägg till fordon</a>
-        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            @if (Model.UserVehicles != null && Model.UserVehicles.Any())
-            {
-                @foreach (var vehicle in Model.UserVehicles)
-                {
-                    <div class="p-8 rounded-[2rem] bg-card border border-border hover:border-primary/50 transition-all cursor-pointer group">
-                        <div class="text-4xl mb-6 group-hover:scale-110 transition-transform">
-                            @(vehicle.VehicleType == VehicleType.ElectricCar ? "⚡" : vehicle.VehicleType == VehicleType.MotorHome ? "🚐" : vehicle.VehicleType == VehicleType.Caravan ? "🏠" : "🚗")
+            <div class="relative z-10 container mx-auto px-4 pt-16">
+                <div class="max-w-3xl mx-auto text-center">
+                    <span class="text-accent font-bold tracking-widest uppercase text-sm mb-4 block">
+                        Road trips through Sweden
+                    </span>
+                    <h1 class="hero-title text-5xl md:text-7xl font-bold mb-6 leading-[1.1] font-display text-foreground">
+                        Your journey,<br />
+                        <span class="text-primary">your vehicle,</span><br />
+                        your road.
+                    </h1>
+                    <p class="text-muted-foreground text-lg md:text-xl mb-10 max-w-lg mx-auto leading-relaxed">
+                        Plan road trips tailored to your vehicle. Car, EV, or motorhome – we handle the rest.
+                    </p>
+                    <a href="/Trip/Create" class="inline-flex items-center justify-center gap-2 rounded-md text-base font-bold bg-primary text-[#0f1219] hover:scale-105 h-14 px-8 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] hover:shadow-[0_0_25px_hsl(150_100%_45%/0.5)] transition-all duration-200">
+                        Plan your trip
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="Vehicles" aria-label="Vehicle types" class="py-24 bg-card border-b border-border transition-colors duration-500">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <span class="text-sm font-bold text-secondary uppercase tracking-widest">Vehicle types</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-3 font-display text-foreground">Choose your vehicle</h2>
+                    <p class="text-muted-foreground mt-4 max-w-lg mx-auto text-lg">Every vehicle type gets unique route suggestions and smart stops.</p>
+                    <a href="/Account/Vehicles/Add" class="inline-block mt-6 text-primary font-bold hover:underline">Add vehicle</a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    @if (Model.UserVehicles != null && Model.UserVehicles.Any())
+                    {
+                        foreach (var vehicle in Model.UserVehicles)
+                        {
+                            string iconColor = "text-neon-green";
+                            string hoverShadow = "hover:border-primary/50";
+                            string iconPath = "M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z";
+
+                            if (vehicle.VehicleType == VehicleType.ElectricCar)
+                            {
+                                iconColor = "text-neon-cyan";
+                                hoverShadow = "hover:border-neon-cyan/50";
+                                iconPath = "M13 2L3 14h9l-1 8 10-12h-9l1-8z";
+                            }
+                            else if (vehicle.VehicleType == VehicleType.MotorHome || vehicle.VehicleType == VehicleType.Caravan)
+                            {
+                                iconColor = "text-neon-orange";
+                                hoverShadow = "hover:border-neon-orange/50";
+                                iconPath = "M10 17h4M5 17h.01M19 17h.01M1 13h22M2 13l2-8h16l2 8M3 21h18M4 21v-4M20 21v-4";
+                            }
+
+                            <div onclick="window.location.href='/Account/Manage/Vehicles'" class="group relative bg-background rounded-lg p-8 border border-border @hoverShadow transition-colors duration-200 cursor-pointer text-left shadow-sm">
+                                <div class="w-14 h-14 rounded-lg bg-muted flex items-center justify-center mb-6">
+                                    <svg class="w-7 h-7 @iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="@iconPath"></path></svg>
+                                </div>
+                                <h3 class="font-display text-xl font-semibold text-foreground mb-2">@vehicle.Name</h3>
+                                <p class="text-muted-foreground mb-6 leading-relaxed">Your saved vehicle in the garage.</p>
+                                
+                                <ul class="space-y-2">
+                                    <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>Type: @vehicle.VehicleType
+                                    </li>
+                                    <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>Range: @vehicle.RangeKm km
+                                    </li>
+                                    <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>Height: @vehicle.MaxHeightMeters m
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="group relative bg-background rounded-lg p-8 border border-border hover:border-primary/50 transition-colors duration-200 cursor-pointer text-left shadow-sm">
+                            <div class="w-14 h-14 rounded-lg bg-muted flex items-center justify-center mb-6">
+                                <svg class="w-7 h-7 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 16H9m10 0h3v-3.15a1 1 0 00-.84-.99L16 11l-2.7-3.6a2 2 0 00-1.6-.8H8.3a2 2 0 00-1.6.8L4 11l-5.16.86a1 1 0 00-.84.99V16h3m10 0a2 2 0 11-4 0m4 0a2 2 0 10-4 0m-8 0a2 2 0 11-4 0m4 0a2 2 0 10-4 0"></path></svg>
+                            </div>
+                            <h3 class="font-display text-xl font-semibold text-foreground mb-2">Regular car</h3>
+                            <p class="text-muted-foreground mb-6 leading-relaxed">Optimized routes with gas stations and travel times.</p>
+                            <ul class="space-y-2">
+                                <li class="flex items-center gap-2 text-sm text-muted-foreground"><span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>Fuel calculation</li>
+                                <li class="flex items-center gap-2 text-sm text-muted-foreground"><span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>Fastest route</li>
+                            </ul>
                         </div>
-                        <h3 class="text-xl font-bold">@vehicle.Name</h3>
-                        <p class="text-sm text-muted-foreground mb-4">@vehicle.VehicleType</p>
-                        
-                        <div class="flex gap-4 text-xs font-mono opacity-70">
-                            <span>@vehicle.RangeKm km</span>
-                            <span>@vehicle.MaxHeightMeters m</span>
+                        <div class="group relative bg-background rounded-lg p-8 border border-border hover:border-neon-cyan/50 transition-colors duration-200 cursor-pointer text-left shadow-sm">
+                            <div class="w-14 h-14 rounded-lg bg-muted flex items-center justify-center mb-6">
+                                <svg class="w-7 h-7 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            </div>
+                            <h3 class="font-display text-xl font-semibold text-foreground mb-2">Electric car</h3>
+                            <p class="text-muted-foreground mb-6 leading-relaxed">Charging stations along the way with range planning.</p>
+                            <ul class="space-y-2">
+                                <li class="flex items-center gap-2 text-sm text-muted-foreground"><span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>Charging stop planning</li>
+                                <li class="flex items-center gap-2 text-sm text-muted-foreground"><span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>Range calculation</li>
+                            </ul>
                         </div>
-                    </div>
-                }
-            }
-            else
-            {
-                @* Visar mallar om användaren är tom *@
-                @foreach (var spec in Model.StandardSpecs?.Take(3) ?? new List<ZipTrip.Services.DTOs.Vehicle.VehicleResponse>())
-                {
-                    <div class="p-8 rounded-[2rem] border border-dashed border-border opacity-50 hover:opacity-100 transition-all">
-                        <h3 class="font-bold">@spec.Name</h3>
-                        <p class="text-xs">Klicka för att använda mall</p>
-                    </div>
-                }
-            }
-        </div>
-    </div>
-</section>
+                        <div class="group relative bg-background rounded-lg p-8 border border-border hover:border-neon-orange/50 transition-colors duration-200 cursor-pointer text-left shadow-sm">
+                            <div class="w-14 h-14 rounded-lg bg-muted flex items-center justify-center mb-6">
+                                <svg class="w-7 h-7 text-neon-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17h4V5H2v12h3"></path><path d="M20 17h2v-3.34a4 4 0 00-1.17-2.83L19 9h-5"></path><path d="M14 17h1"></path><circle cx="7.5" cy="17.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
+                            </div>
+                            <h3 class="font-display text-xl font-semibold text-foreground mb-2">Motor-home / Caravan</h3>
+                            <p class="text-muted-foreground mb-6 leading-relaxed">Tailored routes for height, weight, and campsites.</p>
+                            <ul class="space-y-2">
+                                <li class="flex items-center gap-2 text-sm text-muted-foreground"><span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>Height & weight restrictions</li>
+                                <li class="flex items-center gap-2 text-sm text-muted-foreground"><span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>Pitches & camping</li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+        <section id="features" aria-label="Features" class="py-24 px-4 bg-background">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-sm font-bold text-neon-cyan uppercase tracking-widest">Features</span>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold text-foreground mt-3">
+                        Everything you need for the trip
+                    </h2>
+                    <p class="text-muted-foreground mt-4 max-w-lg mx-auto text-lg">
+                        ZipTrip handles the practicalities so you can focus on the adventure.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    <article class="flex gap-4 p-6 rounded-lg bg-card border border-border hover:border-primary/40 transition-colors">
+                        <div class="w-11 h-11 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-foreground mb-1">Smart Routes</h3>
+                            <p class="text-sm text-muted-foreground leading-relaxed">Vehicle-adapted route suggestions based on your specific vehicle.</p>
+                        </div>
+                    </article>
+                    
+                    <article class="flex gap-4 p-6 rounded-lg bg-card border border-border hover:border-primary/40 transition-colors">
+                        <div class="w-11 h-11 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-neon-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"></line><line x1="4" y1="9" x2="14" y2="9"></line><path d="M14 22V4c0-.5-.2-1-.6-1.4C13 2.2 12.5 2 12 2H6c-.5 0-1 .2-1.4.6C4.2 3 4 3.5 4 4v18"></path><path d="M14 13h2a2 2 0 012 2v2a2 2 0 002 2h0a2 2 0 002-2V9.83a2 2 0 00-.59-1.42L18 5"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-foreground mb-1">Stop Planning</h3>
+                            <p class="text-sm text-muted-foreground leading-relaxed">Automatic stops for refueling, charging, or camping.</p>
+                        </div>
+                    </article>
+
+                    <article class="flex gap-4 p-6 rounded-lg bg-card border border-border hover:border-primary/40 transition-colors">
+                        <div class="w-11 h-11 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3l4 8 5-5 5 15H2L8 3z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-foreground mb-1">Attractions</h3>
+                            <p class="text-sm text-muted-foreground leading-relaxed">Discover hidden gems and scenic spots along the way.</p>
+                        </div>
+                    </article>
+
+                    <article class="flex gap-4 p-6 rounded-lg bg-card border border-border hover:border-primary/40 transition-colors">
+                        <div class="w-11 h-11 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-foreground mb-1">Height & Weight</h3>
+                            <p class="text-sm text-muted-foreground leading-relaxed">Avoid restricted roads for your motorhome or caravan.</p>
+                        </div>
+                    </article>
+
+                    <article class="flex gap-4 p-6 rounded-lg bg-card border border-border hover:border-primary/40 transition-colors">
+                        <div class="w-11 h-11 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-neon-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-foreground mb-1">Safety Tips</h3>
+                            <p class="text-sm text-muted-foreground leading-relaxed">Real-time information on road conditions and weather.</p>
+                        </div>
+                    </article>
+
+                    <article class="flex gap-4 p-6 rounded-lg bg-card border border-border hover:border-primary/40 transition-colors">
+                        <div class="w-11 h-11 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-neon-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-foreground mb-1">Offline Support</h3>
+                            <p class="text-sm text-muted-foreground leading-relaxed">Save your routes for use without an internet connection.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section id="how" aria-label="How it works" class="py-24 px-4 bg-background">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-sm font-bold text-accent uppercase tracking-widest">Guide</span>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold text-foreground mt-3">
+                        Three Simple Steps
+                    </h2>
+                </div>
+                <ol class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto list-none p-0">
+                    <li class="text-center">
+                        <span class="font-display text-7xl font-bold text-primary">1</span>
+                        <h3 class="font-display text-xl font-semibold text-foreground mt-4 mb-2">Choose vehicle</h3>
+                        <p class="text-muted-foreground leading-relaxed">Car, EV or Motorhome - we adapt everything for you.</p>
+                    </li>
+                    <li class="text-center">
+                        <span class="font-display text-7xl font-bold text-secondary">2</span>
+                        <h3 class="font-display text-xl font-semibold text-foreground mt-4 mb-2">Plan the route</h3>
+                        <p class="text-muted-foreground leading-relaxed">Enter start and end-destination, and we do the rest. Stops, attractions, everything.</p>
+                    </li>
+                    <li class="text-center">
+                        <span class="font-display text-7xl font-bold text-accent">3</span>
+                        <h3 class="font-display text-xl font-semibold text-foreground mt-4 mb-2">Hit the road</h3>
+                        <p class="text-muted-foreground leading-relaxed">Follow your tailored route with real-time updates.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+    </main>
+</div>
