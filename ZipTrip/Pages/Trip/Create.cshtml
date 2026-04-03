@@ -12,7 +12,144 @@
             <span class="text-xs font-bold text-accent uppercase tracking-widest">New Adventure</span>
             <h1 class="text-3xl font-display font-bold text-foreground">Plan Your Route</h1>
         </div>
+        <form method="post" class="space-y-6">
+            <div asp-validation-summary="ModelOnly" class="text-destructive text-sm font-bold p-3 bg-destructive/10 rounded-lg"></div>
 
+            <div>
+                <label asp-for="Input.Title" class="block text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">Trip Title</label>
+                <input asp-for="Input.Title" class="w-full bg-background border border-input rounded-xl px-4 py-2.5 text-sm text-foreground focus:ring-primary focus:outline-none transition-all" placeholder="Summer Vacation 2026" />
+                <span asp-validation-for="Input.Title" class="text-destructive text-sm mt-1 block"></span>
+            </div>
+
+            <div class="space-y-4 relative">
+                <div class="absolute left-[11px] top-10 bottom-10 w-0.5 bg-border z-0"></div>
+
+                <div class="relative z-10">
+                    <label asp-for="Input.StartLocation" class="sr-only">From</label>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 text-[#0f1219] text-xs font-bold shadow-[0_0_10px_rgba(31,214,85,0.4)]">A</div>
+                        <input asp-for="Input.StartLocation" id="start-location" class="w-full bg-background border border-input rounded-xl px-4 py-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none transition-all" placeholder="Starting Point" />
+                    </div>
+                    <span asp-validation-for="Input.StartLocation" class="text-destructive text-xs ml-9 mt-1 block"></span>
+                </div>
+
+                <div class="relative z-10">
+                    <label asp-for="Input.EndLocation" class="sr-only">To</label>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 text-[#0f1219] text-xs font-bold shadow-[0_0_10px_rgba(31,214,85,0.4)]">B</div>
+                        <input asp-for="Input.EndLocation" id="end-location" class="w-full bg-background border border-input rounded-xl px-4 py-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none transition-all" placeholder="Destination" />
+                    </div>
+                    <span asp-validation-for="Input.EndLocation" class="text-destructive text-xs ml-9 mt-1 block"></span>
+                </div>
+            </div>
+
+            <button type="button" id="btn-calc-route" class="w-full inline-flex items-center justify-center gap-2 rounded-xl text-sm font-bold bg-secondary/20 text-secondary hover:bg-secondary hover:text-white border border-secondary/50 h-10 transition-all cursor-pointer">
+                Preview Route on Map
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+            </button>
+
+            <hr class="border-border" />
+
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label asp-for="Input.StartDate" class="block text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">Departure</label>
+                        <input asp-for="Input.StartDate" type="datetime-local" class="w-full bg-background border border-input rounded-xl px-4 py-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none transition-all" />
+                        <span asp-validation-for="Input.StartDate" class="text-destructive text-xs mt-1 block"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Input.EndDate" class="block text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">Return (optional)</label>
+                        <input asp-for="Input.EndDate" type="datetime-local" class="w-full bg-background border border-input rounded-xl px-4 py-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none transition-all" />
+                        <span asp-validation-for="Input.EndDate" class="text-destructive text-xs mt-1 block"></span>
+                    </div>
+                </div>
+                <div>
+                    <label asp-for="Input.VehicleType" class="block text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">Vehicle Type</label>
+                    <select asp-for="Input.VehicleType" asp-items="Html.GetEnumSelectList<VehicleType>()" class="w-full bg-background border border-input rounded-xl px-4 py-2.5 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none transition-all"></select>
+                    <span asp-validation-for="Input.VehicleType" class="text-destructive text-xs mt-1 block"></span>
+                </div>
+                @if (Model.IsAuthenticated)
+                {
+                    <div class="p-4 rounded-xl bg-background border border-input">
+                        <label asp-for="Input.UserVehicleId" class="block text-xs font-bold text-neon-cyan mb-1 uppercase tracking-wider">Use Saved Vehicle</label>
+                        <select asp-for="Input.UserVehicleId" asp-items="Model.UserVehicles" class="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:ring-2 focus:ring-neon-cyan focus:outline-none transition-all"></select>
+                        <p class="text-xs text-muted-foreground mt-2 leading-relaxed">We will calculate routes based on this vehicle's specific range and dimensions.</p>
+                        <span asp-validation-for="Input.UserVehicleId" class="text-destructive text-xs mt-1 block"></span>
+                    </div>
+                }
+                else
+                {
+                    <div class="p-4 rounded-xl bg-background/50 border border-border border-dashed opacity-70">
+                        <label class="block text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider flex items-center gap-2">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            Use Saved Vehicle...
+                        </label>
+                        <select disabled class="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-muted-foreground cursor-not-allowed">
+                            <option>Log in to select your garage vehicles</option>
+                        </select>
+                    </div>
+                }
+                <div>
+                    <label asp-for="Input.Notes" class="block text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">Notes</label>
+                    <textarea asp-for="Input.Notes" rows="2" class="w-full bg-background border border-input rounded-xl px-4 py-2 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none transition resize-none"></textarea>
+                    <span asp-validation-for="Input.Notes" class="text-destructive text-xs mt-1 block"></span>
+                </div>
+
+                <div class="pt-4 mt-auto">
+                    @if (Model.IsAuthenticated)
+                    {
+                        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-xl text-base font-bold bg-primary text-[#0f1219] hover:scale-105 h-14 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] transition-all duration-200 cursor-pointer">
+                            Save Trip
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" onclick="showGuestModal()" class="w-full inline-flex items-center justify-center gap-2 rounded-xl text-base font-bold bg-muted text-foreground hover:bg-muted/80 border border-border h-14 transition-all duration-200 cursor-pointer">
+                            Save Trip
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </button>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="flex-grow relative h-[50vh] lg:h-auto z-0">
+        <div id="map" class="absolute inset-0 w-full h-full"></div>
+
+        <div class="absolute top-4 right-4 bg-background/90 backdrop-blur border border-border p-3 rounded-lg shadow-lg z-[400] text-sm max-w-xs hidden" id="route-info-card">
+            <h4 class="font-bold text-primary mb-1">Route Info</h4>
+            <p class="text-muted-foreground text-xs" id="route-details">Calculating...</p>
+        </div>
     </div>
 </div>
 
+<div id="guest-modal" class="fixed inset-0 z-[500] hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+    <div class="bg-card border border-border rounded-2xl p-8 max-w-md w-full shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="guest-modal-content">
+        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+        </div>
+        <h3 class="text-2xl font-display font-bold text-foreground text-center mb-2">Save your adventure</h3>
+        <p class="text-muted-foreground text-center mb-8">Create a free account to save this route, add your own vehicles, and get custom charging stops.</p>
+
+        <div class="space-y-3">
+            <a href="/Account/Register" class="w-full inline-flex items-center justify-center rounded-xl text-base font-bold bg-primary text-[#0f1219] hover:scale-105 h-12 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] transition-all">
+                Create Free Account
+            </a>
+            <a href="/Account/Login" class="w-full inline-flex items-center justify-center rounded-xl text-base font-bold bg-transparent text-foreground border border-border hover:bg-muted h-12 transition-all">
+                Log In
+            </a>
+            <button type="button" onclick="closeGuestModal()" class="w-full text-center text-sm text-muted-foreground hover:text-foreground mt-4 py-2 cursor-pointer">
+                Continue editing as guest
+            </button>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script src="~/js/trip-create.js" asp-append-version="true"></script>
+}

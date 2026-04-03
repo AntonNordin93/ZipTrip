@@ -10,6 +10,7 @@ namespace ZipTrip.Services.DTOs.Trip
         public string StartLocation { get; set; }=string.Empty;
         public string EndLocation { get; set; }=string.Empty;
         public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public VehicleType VehicleType { get; set; }
 
         public string? Notes { get; set; }

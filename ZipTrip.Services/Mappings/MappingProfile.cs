@@ -18,8 +18,8 @@ namespace ZipTrip.Services.Mappings
             .ForMember(dest => dest.User, opt => opt.Ignore())
             .ForMember(dest => dest.UserVehicle, opt => opt.Ignore())
             .ForMember(dest => dest.Stops, opt => opt.Ignore())
-            .ForMember(dest => dest.Status, opt => opt.Ignore())
-            .ForMember(dest => dest.EndDate, opt => opt.Ignore());
+            .ForMember(dest => dest.Status, opt => opt.Ignore());
+
 
             CreateMap<Trip, TripResponse>()
                 .ForMember(dest=> dest.UserFirstName, opt => opt.MapFrom(src => src.User.FirstName))

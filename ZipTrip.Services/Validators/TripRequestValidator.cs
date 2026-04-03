@@ -6,9 +6,9 @@ using ZipTrip.Services.DTOs.Trip;
 
 namespace ZipTrip.Services.Validators
 {
-    public class TripRequestValidator: AbstractValidator<TripRequest>
+    public class TripRequestValidator : AbstractValidator<TripRequest>
     {
-        public TripRequestValidator() 
+        public TripRequestValidator()
         {
             RuleFor(x => x.Title)
                 .NotEmpty().WithMessage("Title is required.")
@@ -25,10 +25,15 @@ namespace ZipTrip.Services.Validators
             RuleFor(x => x.StartDate)
                 .GreaterThan(DateTime.UtcNow).WithMessage("Start date must be in the future.");
 
+            RuleFor(x => x.EndDate)
+                .GreaterThan(x => x.StartDate)
+                .WithMessage("End date must be after start date.")
+                .When(x => x.EndDate.HasValue);
+
             RuleFor(x => x.VehicleType)
                 .IsInEnum().WithMessage("Invalid vehicle type.");
-             RuleFor(x => x.UserVehicleId)
-                .NotEmpty().When(x => x.UserVehicleId.HasValue).WithMessage("User vehicle ID cannot be empty if provided.");
+            RuleFor(x => x.UserVehicleId)
+               .NotEmpty().When(x => x.UserVehicleId.HasValue).WithMessage("User vehicle ID cannot be empty if provided.");
         }
     }
 }
