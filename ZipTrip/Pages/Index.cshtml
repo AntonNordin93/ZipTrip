@@ -9,8 +9,8 @@
                 <div class="hero-overlay"></div>
             </div>
 
-            <div class="relative z-10 container mx-auto px-4 pt-16">
-                <div class="max-w-3xl mx-auto text-center">
+            <div class="relative z-10 container  px-4 pt-16">
+                <div class="max-w-3xl mr-auto lg:ml-12">
                     <span class="text-accent font-bold tracking-widest uppercase text-sm mb-4 block">
                         Road trips through Sweden
                     </span>
@@ -19,7 +19,7 @@
                         <span class="text-primary">your vehicle,</span><br />
                         your road.
                     </h1>
-                    <p class="text-muted-foreground text-lg md:text-xl mb-10 max-w-lg mx-auto leading-relaxed">
+                    <p class="text-muted-foreground text-lg md:text-xl mb-10 max-w-lg  leading-relaxed">
                         Plan road trips tailored to your vehicle. Car, EV, or motorhome – we handle the rest.
                     </p>
                     <a href="/Trip/Create" class="inline-flex items-center justify-center gap-2 rounded-md text-base font-bold bg-primary text-[#0f1219] hover:scale-105 h-14 px-8 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] hover:shadow-[0_0_25px_hsl(150_100%_45%/0.5)] transition-all duration-200">
@@ -39,8 +39,17 @@
                     <a href="/Account/Vehicles/Add" class="inline-block mt-6 text-primary font-bold hover:underline">Add vehicle</a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                    @if (Model.UserVehicles != null && Model.UserVehicles.Any())
+                @{
+                    var hasVehicles = Model.UserVehicles != null && Model.UserVehicles.Any();
+                    var vehicleCount = hasVehicles ? Model.UserVehicles.Count() : 3;
+
+                    var gridClass = vehicleCount == 1 ? "grid grid-cols-1 gap-8 max-w-[24rem] mx-auto" :
+                                    vehicleCount == 2 ? "grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto" :
+                                    "grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto";
+                }
+
+                <div class="@gridClass">
+                    @if (hasVehicles)
                     {
                         foreach (var vehicle in Model.UserVehicles)
                         {

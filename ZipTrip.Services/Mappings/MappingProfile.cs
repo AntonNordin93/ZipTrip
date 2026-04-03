@@ -12,7 +12,7 @@ namespace ZipTrip.Services.Mappings
     {
         public MappingProfile() 
         {
-            CreateMap<CreateTripRequest, Trip>()
+            CreateMap<TripRequest, Trip>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.UserId, opt => opt.Ignore())
             .ForMember(dest => dest.User, opt => opt.Ignore())
@@ -21,7 +21,7 @@ namespace ZipTrip.Services.Mappings
             .ForMember(dest => dest.Status, opt => opt.Ignore())
             .ForMember(dest => dest.EndDate, opt => opt.Ignore());
 
-            CreateMap<Trip, TripDto>()
+            CreateMap<Trip, TripResponse>()
                 .ForMember(dest=> dest.UserFirstName, opt => opt.MapFrom(src => src.User.FirstName))
                 .ForMember(dest => dest.UserLastName, opt => opt.MapFrom(src => src.User.LastName))
                 .ForMember(dest=>dest.UserVehicleName, opt => opt.MapFrom(src => src.UserVehicle != null ? src.UserVehicle.Name : null))

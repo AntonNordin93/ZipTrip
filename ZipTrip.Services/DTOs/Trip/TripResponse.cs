@@ -4,7 +4,7 @@ using ZipTrip.Domain.Enums;
 
 namespace ZipTrip.Services.DTOs.Trip
 {
-    public class TripDto
+    public class TripResponse
     {
         public Guid Id { get; set; }
         public string Title { get; set; }= string.Empty;

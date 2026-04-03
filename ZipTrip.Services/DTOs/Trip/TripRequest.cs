@@ -4,7 +4,7 @@ using ZipTrip.Domain.Entities;
 
 namespace ZipTrip.Services.DTOs.Trip
 {
-    public class CreateTripRequest
+    public class TripRequest
     {
         public string Title { get; set; }= string.Empty;
         public string StartLocation { get; set; }=string.Empty;

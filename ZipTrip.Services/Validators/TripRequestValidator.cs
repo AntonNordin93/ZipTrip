@@ -6,9 +6,9 @@ using ZipTrip.Services.DTOs.Trip;
 
 namespace ZipTrip.Services.Validators
 {
-    public class CreateTripRequestValidator: AbstractValidator<CreateTripRequest>
+    public class TripRequestValidator: AbstractValidator<TripRequest>
     {
-        public CreateTripRequestValidator() 
+        public TripRequestValidator() 
         {
             RuleFor(x => x.Title)
                 .NotEmpty().WithMessage("Title is required.")
