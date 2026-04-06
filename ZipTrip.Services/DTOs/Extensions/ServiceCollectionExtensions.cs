@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddHttpClient<IRouteCalculatorService, RouteCalculatorService>();
+        services.AddHttpClient<IRouteStopService, RouteStopService>();
         services.AddScoped<ITripService, TripService>();
         services.AddScoped<IAIRecommendationService, AIRecommendationService>();
         services.AddScoped<ITripRepository,TripRepository>();

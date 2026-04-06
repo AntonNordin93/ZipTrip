@@ -14,7 +14,7 @@ namespace ZipTrip.Services.DTOs.Trip
         public DateTime? EndDate { get; set; }
         public VehicleType VehicleType { get; set; }
         public decimal TotalDistanceKm { get; set; }
-        public decimal TotalDurationHours { get; set; }
+        public decimal DurationHours { get; set; }
         public decimal EstimatedCost { get; set; }
         public string? Notes { get; set; }
         public TripStatus Status { get; set; }

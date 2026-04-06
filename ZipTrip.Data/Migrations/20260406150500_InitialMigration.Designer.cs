@@ -12,8 +12,8 @@ using ZipTrip.Data;
 namespace ZipTrip.Data.Migrations
 {
     [DbContext(typeof(ZipTripDbContext))]
-    [Migration("20260402015519_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260406150500_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,6 +172,9 @@ namespace ZipTrip.Data.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("ExternalId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -183,6 +186,9 @@ namespace ZipTrip.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Provider")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StopOrder")

@@ -169,6 +169,9 @@ namespace ZipTrip.Data.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("ExternalId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -180,6 +183,9 @@ namespace ZipTrip.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Provider")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StopOrder")
