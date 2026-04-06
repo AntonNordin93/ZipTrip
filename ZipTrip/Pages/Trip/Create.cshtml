@@ -134,10 +134,10 @@
         <p class="text-muted-foreground text-center mb-8">Create a free account to save this route, add your own vehicles, and get custom charging stops.</p>
 
         <div class="space-y-3">
-            <a href="/Account/Register" class="w-full inline-flex items-center justify-center rounded-xl text-base font-bold bg-primary text-[#0f1219] hover:scale-105 h-12 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] transition-all">
+            <a asp-area="Identity" asp-page="/Account/Register" class="w-full inline-flex items-center justify-center rounded-xl text-base font-bold bg-primary text-[#0f1219] hover:scale-105 h-12 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] transition-all">
                 Create Free Account
             </a>
-            <a href="/Account/Login" class="w-full inline-flex items-center justify-center rounded-xl text-base font-bold bg-transparent text-foreground border border-border hover:bg-muted h-12 transition-all">
+            <a asp-area="Identity" asp-page="/Account/Login" class="w-full inline-flex items-center justify-center rounded-xl text-base font-bold bg-transparent text-foreground border border-border hover:bg-muted h-12 transition-all">
                 Log In
             </a>
             <button type="button" onclick="closeGuestModal()" class="w-full text-center text-sm text-muted-foreground hover:text-foreground mt-4 py-2 cursor-pointer">
