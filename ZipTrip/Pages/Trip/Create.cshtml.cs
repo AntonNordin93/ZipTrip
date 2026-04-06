@@ -13,11 +13,13 @@ namespace ZipTrip.Pages.Trip
     {
         private readonly ITripService _tripService;
         private readonly IVehicleService _vehicleService;
+        private readonly IRouteCalculatorService _routeCalculatorService;
 
-        public CreateModel(ITripService tripService, IVehicleService vehicleService)
+        public CreateModel(ITripService tripService, IVehicleService vehicleService, IRouteCalculatorService routeCalculatorService)
         {
             _tripService = tripService;
             _vehicleService = vehicleService;
+            _routeCalculatorService = routeCalculatorService;
         }
 
         [BindProperty]
@@ -77,6 +79,12 @@ namespace ZipTrip.Pages.Trip
                 }).ToList();
             }
             UserVehicles.Insert(0, new SelectListItem { Value = "", Text = "Select a vehicle (optional)" });
+        }
+
+        public async Task<JsonResult> OnGetRoutePreviewAsync(string start, string end)
+        {
+            var result = await _routeCalculatorService.CalculateBaseRouteAsync(start, end);
+            return new JsonResult(result);
         }
     }
 }

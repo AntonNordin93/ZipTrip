@@ -14,17 +14,28 @@ namespace ZipTrip.Services.Implementations
     public class TripService : ITripService
     {
         private readonly ITripRepository _tripRepository;
+        private readonly IRouteCalculatorService _routeCalculatorService;
         private readonly IMapper _mapper;
-        public TripService(ITripRepository tripRepository, IMapper mapper)
+        public TripService(ITripRepository tripRepository, IRouteCalculatorService routeCalculatorService, IMapper mapper)
         {
             _tripRepository = tripRepository;
+            _routeCalculatorService = routeCalculatorService;
             _mapper = mapper;
         }
         public async Task<TripResponse> CreateTripAsync(TripRequest request, string userId)
         {
+            var routeData= await _routeCalculatorService.CalculateBaseRouteAsync(request.StartLocation, request.EndLocation);
             var trip = _mapper.Map<Trip>(request);
             trip.UserId = userId;
             trip.Status = TripStatus.Planned;
+
+            if(routeData != null) 
+            {
+                trip.TotalDistanceKm = routeData.DistanceKm;
+                trip.EstimatedDurationHours = routeData.DurationHours;
+                
+            }
+
             await _tripRepository.AddAsync(trip);
             return _mapper.Map<TripResponse>(trip);
         }
@@ -45,10 +56,18 @@ namespace ZipTrip.Services.Implementations
 
         public async Task<TripResponse?> UpdateTripAsync(Guid tripId, TripRequest request, string userId)
         {
+            var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(request.StartLocation, request.EndLocation);
             var trip = await _tripRepository.GetByIdAsync(tripId);
             if (trip == null || trip.UserId != userId)
                 return null;
             _mapper.Map(request, trip);
+
+            if (routeData != null)
+            {
+                trip.TotalDistanceKm = routeData.DistanceKm;
+                trip.EstimatedDurationHours = routeData.DurationHours;
+
+            }
             await _tripRepository.UpdateAsync(trip);
             return _mapper.Map<TripResponse>(trip);
         }
