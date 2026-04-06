@@ -24,8 +24,4 @@
     <ProjectReference Include="..\ZipTrip.Domain\ZipTrip.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\Common\" />
-  </ItemGroup>
-
 </Project>
