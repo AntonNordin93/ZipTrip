@@ -9,11 +9,11 @@ namespace ZipTrip.Services.Interfaces
 {
     public interface ITripService
     {
-        Task<TripDto> CreateTripAsync(CreateTripRequest request, string userId);
-        Task<TripDto?> GetTripByIdAsync(Guid tripId, string userId);
-        Task<IEnumerable<TripDto>> GetMyTripsAsync(string userId);
-        Task<TripDto?> UpdateTripAsync(Guid tripId, CreateTripRequest request, string userId);
-        Task<TripDto?> DeleteTripAsync(Guid tripId,string userId);
+        Task<TripResponse> CreateTripAsync(TripRequest request, string userId);
+        Task<TripResponse?> GetTripByIdAsync(Guid tripId, string userId);
+        Task<IEnumerable<TripResponse>> GetMyTripsAsync(string userId);
+        Task<TripResponse?> UpdateTripAsync(Guid tripId, TripRequest request, string userId);
+        Task<TripResponse?> DeleteTripAsync(Guid tripId,string userId);
         Task<bool> ChangeTripStatusAsync(Guid tripId, TripStatus newStatus, string userId);
 
     }

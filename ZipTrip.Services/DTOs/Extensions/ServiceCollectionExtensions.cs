@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions
         services.AddHttpClient<IWeatherRepository, WeatherRepository>();
         services.AddMemoryCache();
         services.AddAutoMapper(cfg=>cfg.AddProfile<MappingProfile>());
-        services.AddValidatorsFromAssemblyContaining<CreateTripRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<TripRequestValidator>();
         
 
         return services;
