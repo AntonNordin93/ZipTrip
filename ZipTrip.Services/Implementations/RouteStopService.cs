@@ -29,14 +29,20 @@ namespace ZipTrip.Services.Implementations
         {
             var allStops = new List<RouteStop>();
             if (routeGeometry == null || routeGeometry.Count == 0) return allStops;
-            var checkPoints = new List<CoordinatePoint>
+            var checkPoints = new List<CoordinatePoint>();
+
+            int maxCheckPoints = 10;
+            int step=Math.Max(1,routeGeometry.Count / maxCheckPoints);
+            for (int i = 0; i < routeGeometry.Count; i += step)
             {
-                routeGeometry[0],
-                routeGeometry[routeGeometry.Count / 4],
-                routeGeometry[routeGeometry.Count / 2],
-                routeGeometry[routeGeometry.Count * 3 / 4],
-                routeGeometry.Last()
-            };
+                checkPoints.Add(routeGeometry[i]);
+            }
+
+            if (!checkPoints.Contains(routeGeometry.Last()))
+            {
+                checkPoints.Add(routeGeometry.Last());
+            }
+            ;
 
 
             foreach (var point in checkPoints)
