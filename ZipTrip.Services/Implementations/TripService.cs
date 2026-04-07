@@ -36,16 +36,6 @@ namespace ZipTrip.Services.Implementations
                 trip.TotalDistanceKm = routeData.DistanceKm;
                 trip.EstimatedDurationHours = routeData.DurationHours;
 
-                var allStopTypes = Enum.GetValues(typeof(StopType)).Cast<StopType>().ToList();
-
-                var suggestedStops = await _routeStopService.GetSuggestedStopsAsync(routeData.Geometry, allStopTypes);
-                 int order=1;
-                foreach(var stop in suggestedStops)
-                {
-                    stop.StopOrder = order++;
-                    stop.TripId = trip.Id;
-                    trip.Stops.Add(stop);
-                }
             }
 
             await _tripRepository.AddAsync(trip);
@@ -80,16 +70,6 @@ namespace ZipTrip.Services.Implementations
                 trip.EstimatedDurationHours = routeData.DurationHours;
 
                 trip.Stops.Clear();
-                await _tripRepository.UpdateAsync(trip);
-                var allStopTypes = Enum.GetValues(typeof(StopType)).Cast<StopType>().ToList();
-
-                var suggestedStops = await _routeStopService.GetSuggestedStopsAsync(routeData.Geometry, allStopTypes);
-                int order = 1;
-                foreach (var stop in suggestedStops)
-                {
-                    stop.StopOrder = order++;
-                    trip.Stops.Add(stop);
-                }
 
             }
             await _tripRepository.UpdateAsync(trip);

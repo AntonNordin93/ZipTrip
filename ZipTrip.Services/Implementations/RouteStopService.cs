@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
@@ -31,7 +32,7 @@ namespace ZipTrip.Services.Implementations
             if (routeGeometry == null || routeGeometry.Count == 0) return allStops;
             var checkPoints = new List<CoordinatePoint>();
 
-            int maxCheckPoints = 10;
+            int maxCheckPoints = 25;
             int step=Math.Max(1,routeGeometry.Count / maxCheckPoints);
             for (int i = 0; i < routeGeometry.Count; i += step)
             {
@@ -48,22 +49,33 @@ namespace ZipTrip.Services.Implementations
             foreach (var point in checkPoints)
             {
                 var tasks = new List<Task<List<RouteStop>>>();
-                foreach (var type in typesToFind)
+
+                if(typesToFind.Contains(StopType.Charging))
                 {
-                    if (type == StopType.Charging)
-                        tasks.Add(GetNobilStopsAsync(point));
-                    else
-                        tasks.Add(GetOverpassStopsAsync(point, type));
+                    tasks.Add(GetNobilStopsAsync(point));
+                }
+
+                var overpassTypes = typesToFind.Where(t => t != StopType.Charging).ToList();
+
+                if (overpassTypes.Any())
+                {
+                    tasks.Add(GetCombinedOverpassStopsAsync(point, overpassTypes));
                 }
 
                 var results = await Task.WhenAll(tasks);
+
                 foreach (var stopList in results)
                 {
                     allStops.AddRange(stopList);
                 }
-                await Task.Delay(500);
+
+                await Task.Delay(100);
             }
-            return allStops.GroupBy(s => s.Name).Select(g => g.First()).Take(25).ToList();
+            return allStops
+                .GroupBy(s => $"{s.Latitude},{s.Longitude}")
+                .Select(g => g.First())
+                .Take(100)
+                .ToList();
         }
         private async Task<List<RouteStop>> GetNobilStopsAsync(CoordinatePoint point)
         {
@@ -100,21 +112,27 @@ namespace ZipTrip.Services.Implementations
             }
 
         }
-        private async Task<List<RouteStop>> GetOverpassStopsAsync(CoordinatePoint point, StopType type)
+        private async Task<List<RouteStop>> GetCombinedOverpassStopsAsync(CoordinatePoint point, List<StopType> types)
         {
-            var tag = type switch
+            var queryBuilder = new StringBuilder("[out:json];(");
+            foreach(var type in types)
             {
-                StopType.Fuel => "amenity=fuel",
-                StopType.Camping => "tourism=camp_site",
-                StopType.Lodging => "tourism=hotel",
-                StopType.Sightseeing => "tourism=attraction",
-                StopType.GrillArea => "amenity=bbq",
-                StopType.Restaurant => "amenity=restaurant",
-                StopType.RestArea => "highway=rest_area",
-                _ => "tourism=viewpoint"
-            };
-            var query = $"[out:json];node[{tag}](around:10000,{point.Latitude.ToString(CultureInfo.InvariantCulture)},{point.Longitude.ToString(CultureInfo.InvariantCulture)});out;";
-            var url = $"https://overpass-api.de/api/interpreter?data={Uri.EscapeDataString(query)}";
+                var tag = type switch
+                {
+                    StopType.Fuel => "amenity=fuel",
+                    StopType.Camping => "tourism=camp_site",
+                    StopType.Lodging => "tourism=hotel",
+                    StopType.Sightseeing => "tourism=attraction",
+                    StopType.GrillArea => "amenity=bbq",
+                    StopType.Restaurant => "amenity=restaurant",
+                    StopType.RestArea => "highway=rest_area",
+                    _ => "tourism=viewpoint"
+                };
+                queryBuilder.Append($"node[{tag}](around:10000,{point.Latitude.ToString(CultureInfo.InvariantCulture)},{point.Longitude.ToString(CultureInfo.InvariantCulture)});");
+            }
+            queryBuilder.Append(");out;");
+
+            var url = $"https://overpass-api.de/api/interpreter?data={Uri.EscapeDataString(queryBuilder.ToString())}";
 
             try
             {
@@ -122,19 +140,43 @@ namespace ZipTrip.Services.Implementations
                 var content = await response.Content.ReadAsStringAsync();
                 using var doc = JsonDocument.Parse(content);
                 var list = new List<RouteStop>();
+
                 foreach (var el in doc.RootElement.GetProperty("elements").EnumerateArray())
                 {
-                    list.Add(new RouteStop
+                    var determinedType = StopType.Other;
+                    if (el.TryGetProperty("tags", out var t))
                     {
-                        ExternalId = el.GetProperty("id").GetRawText(),
-                        Provider = "OpenStreetMap",
-                        Name = el.TryGetProperty("tags", out var t) && t.TryGetProperty("name", out var n)
-                        ? (n.GetString()!.Length > 190 ? n.GetString()!.Substring(0, 190) + "..." : n.GetString()!)
-                        : $"{type} Spot",
-                        Type = type,
-                        Latitude = el.GetProperty("lat").GetDouble(),
-                        Longitude = el.GetProperty("lon").GetDouble()
-                    });
+                        if (t.TryGetProperty("amenity", out var am))
+                        {
+                            var val = am.GetString();
+                            if (val == "fuel") determinedType = StopType.Fuel;
+                            else if (val == "bbq") determinedType = StopType.GrillArea;
+                            else if (val == "restaurant") determinedType = StopType.Restaurant;
+                        }
+                        else if (t.TryGetProperty("tourism", out var tou))
+                        {
+                            var val = tou.GetString();
+                            if (val == "camp_site") determinedType = StopType.Camping;
+                            else if (val == "hotel") determinedType = StopType.Lodging;
+                            else if (val == "attraction") determinedType = StopType.Sightseeing;
+                        }
+                        else if (t.TryGetProperty("highway", out var hw) && hw.GetString() == "rest_area")
+                        {
+                            determinedType = StopType.RestArea;
+                        }
+
+                        var rawName = t.TryGetProperty("name", out var n) ? n.GetString()! : $"{determinedType} Spot";
+
+                        list.Add(new RouteStop
+                        {
+                            ExternalId = el.GetProperty("id").GetRawText(),
+                            Provider = "OpenStreetMap",
+                            Name = rawName.Length > 190 ? rawName.Substring(0, 190) + "..." : rawName,
+                            Type = determinedType,
+                            Latitude = el.GetProperty("lat").GetDouble(),
+                            Longitude = el.GetProperty("lon").GetDouble()
+                        });
+                    }
                 }
                 return list;
             }
