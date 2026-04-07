@@ -43,6 +43,7 @@ namespace ZipTrip.Services.Implementations
                 foreach(var stop in suggestedStops)
                 {
                     stop.StopOrder = order++;
+                    stop.TripId = trip.Id;
                     trip.Stops.Add(stop);
                 }
             }

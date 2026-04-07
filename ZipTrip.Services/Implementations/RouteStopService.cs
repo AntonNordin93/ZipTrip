@@ -38,21 +38,24 @@ namespace ZipTrip.Services.Implementations
                 routeGeometry.Last()
             };
 
-            var tasks = new List<Task<List<RouteStop>>>();
-            foreach(var point in checkPoints)
+
+            foreach (var point in checkPoints)
             {
-                foreach(var type in typesToFind)
+                var tasks = new List<Task<List<RouteStop>>>();
+                foreach (var type in typesToFind)
                 {
                     if (type == StopType.Charging)
                         tasks.Add(GetNobilStopsAsync(point));
                     else
                         tasks.Add(GetOverpassStopsAsync(point, type));
                 }
-            }
-            var results = await Task.WhenAll(tasks);
-            foreach(var stopList in results)
-            {
-                allStops.AddRange(stopList);
+
+                var results = await Task.WhenAll(tasks);
+                foreach (var stopList in results)
+                {
+                    allStops.AddRange(stopList);
+                }
+                await Task.Delay(500);
             }
             return allStops.GroupBy(s => s.Name).Select(g => g.First()).Take(25).ToList();
         }
@@ -84,7 +87,11 @@ namespace ZipTrip.Services.Implementations
                 }
                 return list;
             }
-            catch { return new List<RouteStop>(); }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"API FEL: {ex.Message}");
+                return new List<RouteStop>();
+            }
 
         }
         private async Task<List<RouteStop>> GetOverpassStopsAsync(CoordinatePoint point, StopType type)
@@ -115,7 +122,9 @@ namespace ZipTrip.Services.Implementations
                     {
                         ExternalId = el.GetProperty("id").GetRawText(),
                         Provider = "OpenStreetMap",
-                        Name = el.TryGetProperty("tags", out var t) && t.TryGetProperty("name", out var n) ? n.GetString()! : $"{type} Spot",
+                        Name = el.TryGetProperty("tags", out var t) && t.TryGetProperty("name", out var n)
+                        ? (n.GetString()!.Length > 190 ? n.GetString()!.Substring(0, 190) + "..." : n.GetString()!)
+                        : $"{type} Spot",
                         Type = type,
                         Latitude = el.GetProperty("lat").GetDouble(),
                         Longitude = el.GetProperty("lon").GetDouble()
@@ -123,6 +132,11 @@ namespace ZipTrip.Services.Implementations
                 }
                 return list;
             }
-            catch { return new List<RouteStop>(); }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"API FEL: {ex.Message}");
+                return new List<RouteStop>();
             }
-        } }
+        }
+    }
+}
