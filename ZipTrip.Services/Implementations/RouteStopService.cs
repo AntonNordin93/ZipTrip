@@ -67,7 +67,7 @@ namespace ZipTrip.Services.Implementations
         }
         private async Task<List<RouteStop>> GetNobilStopsAsync(CoordinatePoint point)
         {
-            var url = $"https://nobil.no/api/server/search.php?apikey={_nobilApiKey}&apiver=3&action=near&lat={point.Latitude.ToString(CultureInfo.InvariantCulture)}&lon={point.Longitude.ToString(CultureInfo.InvariantCulture)}&radius=5000";
+            var url = $"https://nobil.no/api/server/search.php?apikey={_nobilApiKey}&apiver=3&action=near&lat={point.Latitude.ToString(CultureInfo.InvariantCulture)}&lon={point.Longitude.ToString(CultureInfo.InvariantCulture)}&radius=10000";
 
             try
             {
@@ -113,7 +113,7 @@ namespace ZipTrip.Services.Implementations
                 StopType.RestArea => "highway=rest_area",
                 _ => "tourism=viewpoint"
             };
-            var query = $"[out:json];node[{tag}](around:5000,{point.Latitude.ToString(CultureInfo.InvariantCulture)},{point.Longitude.ToString(CultureInfo.InvariantCulture)});out;";
+            var query = $"[out:json];node[{tag}](around:10000,{point.Latitude.ToString(CultureInfo.InvariantCulture)},{point.Longitude.ToString(CultureInfo.InvariantCulture)});out;";
             var url = $"https://overpass-api.de/api/interpreter?data={Uri.EscapeDataString(query)}";
 
             try
