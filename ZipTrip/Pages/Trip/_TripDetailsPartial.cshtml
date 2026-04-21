@@ -15,19 +15,34 @@
         </div>
         
         <div class="space-y-3">
-            <button type="button" class="fetch-stops-btn w-full group relative bg-background rounded-xl p-4 border border-border hover:border-primary transition-colors cursor-pointer text-left flex items-center gap-4" data-type="Fuel">
-                <div class="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-primary text-xl">⛽</div>
-                <div class="font-semibold text-sm">Gas Stations</div>
+            <button type="button" class="fetch-stops-btn w-full group relative bg-card rounded-xl p-4 border border-border hover:border-primary/50 transition-colors duration-200 cursor-pointer text-left flex items-center gap-4" data-type="Fuel">
+                <div class="w-10 h-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18"></path><path stroke-linecap="round" stroke-linejoin="round" d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
+                </div>
+                <div>
+                    <div class="font-semibold text-foreground text-sm">Gas Stations</div>
+                    <div class="text-xs text-muted-foreground">Find Fuel Stops</div>
+                </div>
             </button>
 
-            <button type="button" class="fetch-stops-btn w-full group relative bg-background rounded-xl p-4 border border-border hover:border-cyan-400 transition-colors cursor-pointer text-left flex items-center gap-4" data-type="Charging">
-                <div class="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-cyan-400 text-xl">⚡</div>
-                <div class="font-semibold text-sm">EV Charging</div>
+            <button type="button" class="fetch-stops-btn w-full group relative bg-card rounded-xl p-4 border border-border hover:border-neon-cyan/50 transition-colors duration-200 cursor-pointer text-left flex items-center gap-4" data-type="Charging">
+                <div class="w-10 h-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polygon stroke-linejoin="round" points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
+                <div>
+                    <div class="font-semibold text-foreground text-sm">EV Charging</div>
+                    <div class="text-xs text-muted-foreground">Fast charging along the route</div>
+                </div>
             </button>
 
-            <button type="button" class="fetch-stops-btn w-full group relative bg-background rounded-xl p-4 border border-border hover:border-orange-400 transition-colors cursor-pointer text-left flex items-center gap-4" data-type="Restaurant">
-                <div class="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-orange-400 text-xl">🍴</div>
-                <div class="font-semibold text-sm">Restaurants</div>
+            <button type="button" class="fetch-stops-btn w-full group relative bg-card rounded-xl p-4 border border-border hover:border-neon-orange/50 transition-colors duration-200 cursor-pointer text-left flex items-center gap-4" data-type="Restaurant">
+                <div class="w-10 h-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-neon-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <div>
+                    <div class="font-semibold text-foreground text-sm">Restaurants</div>
+                    <div class="text-xs text-muted-foreground">Places to eat</div>
+                </div>
             </button>
         </div>
     </div>
