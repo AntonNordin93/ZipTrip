@@ -6,7 +6,6 @@
     <title>@ViewData["Title"] - ZipTrip</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script>
-            
             if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
             } else {
@@ -17,78 +16,80 @@
 <body class="bg-background text-foreground flex flex-col min-h-screen font-sans antialiased">
 
     @{
+
         bool hideHeader = ViewData["HideHeader"] as bool? ?? false;
         bool hideFooter = ViewData["HideFooter"] as bool? ?? false;
-        string wrapperClass = hideHeader ? "fixed top-0 left-0 w-full h-8 z-[9999] group" : "contents";
-        string headerClass = hideHeader 
-            ? "absolute top-0 w-full bg-background/95 backdrop-blur-md border-b border-border transition-transform duration-300 -translate-y-full group-hover:translate-y-0 focus-within:translate-y-0 shadow-lg"
-            : "fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border";
+
+
+        bool isAccountPath = Context.Request.Path.Value != null &&
+                             Context.Request.Path.Value.Contains("/Account", StringComparison.OrdinalIgnoreCase);
+
+        bool removeHeader = hideHeader || isAccountPath;
     }
-    <div class="@wrapperClass">
-        <header class="@headerClass">
-            <nav aria-label="Main navigation" class="container mx-auto flex items-center justify-between h-16 px-4 relative">
-            <a href="/" class="flex items-center gap-2" aria-label="ZipTrip Home">
-                <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center" aria-hidden="true">
-                    <svg class="w-5 h-5 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                        </path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z">
-                        </path>
-                    </svg>
-                </div>
-                <span class="font-display text-xl font-bold text-primary tracking-wide">ZipTrip</span>
-            </a>
 
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground" role="list">
-                <a href="/#features" class="hover:text-foreground transition-colors" role="listitem">Features</a>
-                <a href="/#Vehicles" class="hover:text-foreground transition-colors" role="listitem">Vehicles</a>
-                <a href="/#How" class="hover:text-foreground transition-colors" role="listitem">How It Works</a>
-            </div>
+    @if (!removeHeader)
+    {
+        <div class="contents">
+            <header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
+                <nav aria-label="Main navigation" class="container mx-auto flex items-center justify-between h-16 px-4 relative">
+                    <a href="/" class="flex items-center gap-2" aria-label="ZipTrip Home">
+                        <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center" aria-hidden="true">
+                            <svg class="w-5 h-5 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="font-display text-xl font-bold text-primary tracking-wide">ZipTrip</span>
+                    </a>
 
-            <div class="flex items-center gap-3">
-                <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-md bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
-                    <span id="theme-icon" class="text-sm">🌙</span>
-                </button>
-                <partial name="_LoginPartial" />
+                    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground" role="list">
+                        <a href="/#features" class="hover:text-foreground transition-colors" role="listitem">Features</a>
+                        <a href="/#Vehicles" class="hover:text-foreground transition-colors" role="listitem">Vehicles</a>
+                        <a href="/#How" class="hover:text-foreground transition-colors" role="listitem">How It Works</a>
+                    </div>
 
-                <button id="mobile-menu-btn" class="md:hidden w-9 h-9 flex items-center justify-center rounded-md bg-muted text-foreground hover:bg-foreground/10">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
-            </div>
-            <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-background border-b border-border shadow-2xl flex-col py-4 px-6 gap-4">
-                <a href="/#features" class="text-foreground font-bold text-lg group-hover:text-primary" role="listitem">Features</a>
-                <a href="/#Vehicles" class="text-foreground font-bold text-lg group-hover:text-primary" role="listitem">Vehicles</a>
-                <a href="/#How" class="text-foreground font-bold text-lg group-hover:text-primary" role="listitem">How It Works</a>
-            </div>
-        </nav>
-    </header>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-md bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+                            <span id="theme-icon" class="text-sm">🌙</span>
+                        </button>
+                        <partial name="_LoginPartial" />
 
-    <main role="main" class="flex-1 flex flex-col">
+                        <button id="mobile-menu-btn" class="md:hidden w-9 h-9 flex items-center justify-center rounded-md bg-muted text-foreground hover:bg-foreground/10">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        </button>
+                    </div>
+                </nav>
+            </header>
+        </div>
+    }
+
+    <main role="main" class="flex-1 flex flex-col @(!removeHeader ? "pt-16" : "")">
         @RenderBody()
     </main>
+
     @if (!hideFooter)
     {
-    <footer class="bg-card border-t border-border py-8 px-4 mt-auto" role="contentinfo">
-        <div class="container mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="flex flex-col md:flex-row items-center gap-4">
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center" aria-hidden="true">
-                            <svg class="w-4 h-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+        <footer class="bg-card border-t border-border py-8 px-4 mt-auto" role="contentinfo">
+            <div class="container mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="flex flex-col md:flex-row items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center" aria-hidden="true">
+                                <svg class="w-4 h-4 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            </div>
+                            <span class="font-display text-lg font-bold text-primary">ZipTrip</span>
                         </div>
-                        <span class="font-display text-lg font-bold text-primary">ZipTrip</span>
+                        <span class="text-muted-foreground text-sm border-0 md:border-l md:border-border md:pl-4">&copy; 2026 ZipTrip. All rights reserved.</span>
                     </div>
-                    <span class="text-muted-foreground text-sm border-0 md:border-l md:border-border md:pl-4">&copy; 2026 ZipTrip. All rights reserved.</span>
+                    <nav aria-label="Footer" class="flex gap-6 text-sm">
+                        <a href="#" class="text-muted-foreground hover:text-primary transition-colors">About us</a>
+                        <a href="#" class="text-muted-foreground hover:text-primary transition-colors">Contact</a>
+                    </nav>
                 </div>
-                <nav aria-label="Footer" class="flex gap-6 text-sm">
-                    <a href="#" class="text-muted-foreground hover:text-primary transition-colors">About us</a>
-                    <a href="#" class="text-muted-foreground hover:text-primary transition-colors">Contact</a>
-                </nav>
             </div>
-        </div>
-    </footer>
+        </footer>
     }
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
