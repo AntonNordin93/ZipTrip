@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Security.Claims;
 using ZipTrip.Domain.Enums;
-using ZipTrip.Services.DTOs.Common;
 using ZipTrip.Services.DTOs.Trip;
 using ZipTrip.Services.Interfaces;
 
@@ -10,66 +8,72 @@ namespace ZipTrip.Pages.Trip
 {
     public class DetailsModel : PageModel
     {
-        private readonly ITripService _tripService;
         private readonly IRouteStopService _routeStopService;
         private readonly IRouteCalculatorService _routeCalculatorService;
 
-        public DetailsModel(ITripService tripService, IRouteStopService routeStopService, IRouteCalculatorService routeCalculatorService)
+        public DetailsModel(IRouteStopService routeStopService, IRouteCalculatorService routeCalculatorService)
         {
-            _tripService = tripService;
             _routeStopService = routeStopService;
             _routeCalculatorService = routeCalculatorService;
         }
 
-        public TripResponse? Trip { get; set; } = default!;
+        public TripResponse? Trip { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(Guid id)
+        public async Task<IActionResult> OnGetAsync(string start, string end)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-            {
-                return RedirectToPage("/Account/Login");
-            }
+            if (string.IsNullOrEmpty(start) || string.IsNullOrEmpty(end))
+                return RedirectToPage("/Trip/Create");
 
-            var trip = await _tripService.GetTripByIdAsync(id, userId);
-            if (trip == null)
+            Trip = new TripResponse
             {
-                return NotFound();
-            }
-            Trip = trip;
+                StartLocation = start,
+                EndLocation = end,
+                Title = "Din Resplan"
+            };
+
             return Page();
         }
+
         public async Task<JsonResult> OnGetFetchStopsAsync(string start, string end, string type)
         {
             try
             {
                 if (!Enum.TryParse<StopType>(type, true, out var stopType))
-                {
-                    return new JsonResult(new { success = false, message = "Invalid stop type" });
-                }
+                    return new JsonResult(new { success = false, message = "Ogiltig typ" });
 
+                // 1. Hämta ruttens geometri
                 var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end);
-                if (routeData == null || !routeData.Geometry.Any())
-                {
-                    return new JsonResult(new { success = false, message = "Failed to calculate route" });
-                }
 
-                var TypesToFind = new List<StopType> { stopType };
-                var stops = await _routeStopService.GetSuggestedStopsAsync(routeData.Geometry, TypesToFind);
+                // 2. Hämta stopp längs rutten via TomTom
+                var stops = await _routeStopService.GetSuggestedStopsAsync(routeData.Geometry, new List<StopType> { stopType });
 
-                return new JsonResult(new { success = true, stops });
+                // 3. Formatera datan så JavaScriptet förstår den (viktigt med gemener på namnen här)
+                var formattedStops = stops.Select(s => new {
+                    name = s.Name ?? "Okänd station",
+                    latitude = s.Latitude,
+                    longitude = s.Longitude
+                }).ToList();
 
-
+                return new JsonResult(new { success = true, stops = formattedStops });
             }
             catch (Exception ex)
             {
+                // Logga felet internt om det behövs
                 return new JsonResult(new { success = false, message = ex.Message });
             }
         }
+
         public async Task<JsonResult> OnGetRouteDataAsync(string start, string end)
         {
-            var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end);
-            return new JsonResult(routeData);
+            try
+            {
+                var data = await _routeCalculatorService.CalculateBaseRouteAsync(start, end);
+                return new JsonResult(data);
+            }
+            catch
+            {
+                return new JsonResult(null);
+            }
         }
     }
 }

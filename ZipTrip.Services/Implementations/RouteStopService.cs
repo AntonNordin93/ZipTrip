@@ -1,9 +1,6 @@
 ﻿using System.Globalization;
-using System.Text;
-using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using ZipTrip.Domain.Entities;
 using ZipTrip.Domain.Enums;
 using ZipTrip.Services.DTOs.Common;
@@ -14,177 +11,97 @@ namespace ZipTrip.Services.Implementations
     public class RouteStopService : IRouteStopService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _nobilApiKey;
+        private readonly string _tomtomApiKey;
 
         public RouteStopService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _nobilApiKey = configuration["Nobil:ApiKey"] ?? "anon";
-
-            if (!_httpClient.DefaultRequestHeaders.Contains("User-Agent"))
-            {
-                _httpClient.DefaultRequestHeaders.Add("User-Agent", "ZipTripApp/1.0");
-            }
+            _tomtomApiKey = configuration["TomTom:ApiKey"] ?? throw new ArgumentNullException("ApiKey saknas");
         }
+
         public async Task<List<RouteStop>> GetSuggestedStopsAsync(List<CoordinatePoint> routeGeometry, List<StopType> typesToFind)
         {
             var allStops = new List<RouteStop>();
-            if (routeGeometry == null || routeGeometry.Count == 0) return allStops;
-            var checkPoints = new List<CoordinatePoint>();
+            if (routeGeometry == null || routeGeometry.Count < 2) return allStops;
 
-            int maxCheckPoints = 25;
-            int step=Math.Max(1,routeGeometry.Count / maxCheckPoints);
-            for (int i = 0; i < routeGeometry.Count; i += step)
+            string searchTerm = typesToFind.FirstOrDefault() switch
             {
-                checkPoints.Add(routeGeometry[i]);
-            }
+                StopType.Fuel => "gas station",
+                StopType.Charging => "ev charging station",
+                StopType.Restaurant => "restaurant",
+                _ => "poi"
+            };
 
-            if (!checkPoints.Contains(routeGeometry.Last()))
+
+            int numSegments = 20;
+            int segmentSize = routeGeometry.Count / numSegments;
+
+
+            for (int i = 0; i < numSegments; i++)
             {
-                checkPoints.Add(routeGeometry.Last());
-            }
-            ;
+                var segment = routeGeometry.Skip(i * segmentSize).Take(segmentSize + 1).ToList();
 
 
-            foreach (var point in checkPoints)
-            {
-                var tasks = new List<Task<List<RouteStop>>>();
+                var stops = await SearchSegmentAsync(segment, searchTerm, typesToFind.FirstOrDefault());
 
-                if(typesToFind.Contains(StopType.Charging))
+                foreach (var stop in stops)
                 {
-                    tasks.Add(GetNobilStopsAsync(point));
+                    if (!allStops.Any(x => x.ExternalId == stop.ExternalId))
+                    {
+                        allStops.Add(stop);
+                    }
                 }
 
-                var overpassTypes = typesToFind.Where(t => t != StopType.Charging).ToList();
 
-                if (overpassTypes.Any())
-                {
-                    tasks.Add(GetCombinedOverpassStopsAsync(point, overpassTypes));
-                }
-
-                var results = await Task.WhenAll(tasks);
-
-                foreach (var stopList in results)
-                {
-                    allStops.AddRange(stopList);
-                }
-
-                await Task.Delay(100);
+                await Task.Delay(200);
             }
-            return allStops
-                .GroupBy(s => $"{s.Latitude},{s.Longitude}")
-                .Select(g => g.First())
-                .Take(100)
-                .ToList();
+
+            return allStops;
         }
-        private async Task<List<RouteStop>> GetNobilStopsAsync(CoordinatePoint point)
+
+        private async Task<List<RouteStop>> SearchSegmentAsync(List<CoordinatePoint> segment, string searchTerm, StopType type)
         {
-            var url = $"https://nobil.no/api/server/search.php?apikey={_nobilApiKey}&apiver=3&action=near&lat={point.Latitude.ToString(CultureInfo.InvariantCulture)}&lon={point.Longitude.ToString(CultureInfo.InvariantCulture)}&radius=10000";
+            var stops = new List<RouteStop>();
+
+
+            string url = $"https://api.tomtom.com/search/2/searchAlongRoute/{searchTerm}.json?key={_tomtomApiKey}&maxDetourTime=1800&limit=2";
+
+            var points = segment.Select(p => new { lat = p.Latitude, lon = p.Longitude }).ToList();
+
+            if (points.Count > 30)
+            {
+                int step = points.Count / 30;
+                points = points.Where((x, i) => i % step == 0).ToList();
+            }
+
+            var payload = new { route = new { points = points } };
+            var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
 
             try
             {
-                var response = await _httpClient.GetAsync(url);
-                var content = await response.Content.ReadAsStringAsync();
-                using var doc = JsonDocument.Parse(content);
-                var list = new List<RouteStop>();
-                if (doc.RootElement.TryGetProperty("chargerstations", out var stations))
+                var response = await _httpClient.PostAsync(url, content);
+                if (response.IsSuccessStatusCode)
                 {
-                    foreach (var s in stations.EnumerateArray())
+                    var json = await response.Content.ReadAsStringAsync();
+                    using var doc = JsonDocument.Parse(json);
+                    if (doc.RootElement.TryGetProperty("results", out var results))
                     {
-                        var m = s.GetProperty("cs");
-                        list.Add(new RouteStop
+                        foreach (var item in results.EnumerateArray())
                         {
-                            ExternalId = m.GetProperty("id").GetRawText(),
-                            Provider = "Nobil",
-                            Name = m.GetProperty("name").GetString() ?? "Chargingstation",
-                            Type = StopType.Charging,
-                            Latitude = double.Parse(m.GetProperty("lat").GetString()!, CultureInfo.InvariantCulture),
-                            Longitude = double.Parse(m.GetProperty("lon").GetString()!, CultureInfo.InvariantCulture)
-                        });
+                            stops.Add(new RouteStop
+                            {
+                                ExternalId = item.GetProperty("id").GetString(),
+                                Name = item.GetProperty("poi").GetProperty("name").GetString(),
+                                Latitude = item.GetProperty("position").GetProperty("lat").GetDouble(),
+                                Longitude = item.GetProperty("position").GetProperty("lon").GetDouble(),
+                                Type = type
+                            });
+                        }
                     }
                 }
-                return list;
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"API FEL: {ex.Message}");
-                return new List<RouteStop>();
-            }
-
-        }
-        private async Task<List<RouteStop>> GetCombinedOverpassStopsAsync(CoordinatePoint point, List<StopType> types)
-        {
-            var queryBuilder = new StringBuilder("[out:json];(");
-            foreach(var type in types)
-            {
-                var tag = type switch
-                {
-                    StopType.Fuel => "amenity=fuel",
-                    StopType.Camping => "tourism=camp_site",
-                    StopType.Lodging => "tourism=hotel",
-                    StopType.Sightseeing => "tourism=attraction",
-                    StopType.GrillArea => "amenity=bbq",
-                    StopType.Restaurant => "amenity=restaurant",
-                    StopType.RestArea => "highway=rest_area",
-                    _ => "tourism=viewpoint"
-                };
-                queryBuilder.Append($"node[{tag}](around:10000,{point.Latitude.ToString(CultureInfo.InvariantCulture)},{point.Longitude.ToString(CultureInfo.InvariantCulture)});");
-            }
-            queryBuilder.Append(");out;");
-
-            var url = $"https://overpass-api.de/api/interpreter?data={Uri.EscapeDataString(queryBuilder.ToString())}";
-
-            try
-            {
-                var response = await _httpClient.GetAsync(url);
-                var content = await response.Content.ReadAsStringAsync();
-                using var doc = JsonDocument.Parse(content);
-                var list = new List<RouteStop>();
-
-                foreach (var el in doc.RootElement.GetProperty("elements").EnumerateArray())
-                {
-                    var determinedType = StopType.Other;
-                    if (el.TryGetProperty("tags", out var t))
-                    {
-                        if (t.TryGetProperty("amenity", out var am))
-                        {
-                            var val = am.GetString();
-                            if (val == "fuel") determinedType = StopType.Fuel;
-                            else if (val == "bbq") determinedType = StopType.GrillArea;
-                            else if (val == "restaurant") determinedType = StopType.Restaurant;
-                        }
-                        else if (t.TryGetProperty("tourism", out var tou))
-                        {
-                            var val = tou.GetString();
-                            if (val == "camp_site") determinedType = StopType.Camping;
-                            else if (val == "hotel") determinedType = StopType.Lodging;
-                            else if (val == "attraction") determinedType = StopType.Sightseeing;
-                        }
-                        else if (t.TryGetProperty("highway", out var hw) && hw.GetString() == "rest_area")
-                        {
-                            determinedType = StopType.RestArea;
-                        }
-
-                        var rawName = t.TryGetProperty("name", out var n) ? n.GetString()! : $"{determinedType} Spot";
-
-                        list.Add(new RouteStop
-                        {
-                            ExternalId = el.GetProperty("id").GetRawText(),
-                            Provider = "OpenStreetMap",
-                            Name = rawName.Length > 190 ? rawName.Substring(0, 190) + "..." : rawName,
-                            Type = determinedType,
-                            Latitude = el.GetProperty("lat").GetDouble(),
-                            Longitude = el.GetProperty("lon").GetDouble()
-                        });
-                    }
-                }
-                return list;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"API FEL: {ex.Message}");
-                return new List<RouteStop>();
-            }
+            catch { }
+            return stops;
         }
     }
 }

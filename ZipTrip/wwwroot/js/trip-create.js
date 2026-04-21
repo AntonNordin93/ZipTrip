@@ -1,105 +1,139 @@
-﻿// --- MODAL LOGIK ---
-function showGuestModal() {
-    const modal = document.getElementById('guest-modal');
-    const content = document.getElementById('guest-modal-content');
-    if (!modal || !content) return;
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    setTimeout(() => {
-        content.classList.remove('scale-95', 'opacity-0');
-        content.classList.add('scale-100', 'opacity-100');
-    }, 10);
-}
-
-function closeGuestModal() {
-    const modal = document.getElementById('guest-modal');
-    const content = document.getElementById('guest-modal-content');
-    if (!modal || !content) return;
-    content.classList.remove('scale-100', 'opacity-100');
-    content.classList.add('scale-95', 'opacity-0');
-    setTimeout(() => {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-    }, 300);
-}
-
-// --- KART LOGIK ---
-document.addEventListener("DOMContentLoaded", function () {
-    const mapElement = document.getElementById("map");
+﻿document.addEventListener("DOMContentLoaded", function () {
+    const mapElement = document.getElementById("trip-map");
     if (!mapElement) return;
 
-    let startMarker, endMarker, routeLine;
-    const map = L.map("map", { zoomControl: true }).setView([62.0, 15.0], 5);
+    // UI Referenser
+    const sidebarContainer = document.getElementById("sidebar-container");
+    const loadingOverlay = document.getElementById("loading-overlay");
+    const loadingTitle = document.getElementById("loading-title");
+    const loadingDesc = document.getElementById("loading-desc");
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; CARTO',
-        subdomains: 'abcd',
-        maxZoom: 20
-    }).addTo(map);
+    // Spara rutt-variabler globalt för denna sida
+    let currentStart = "";
+    let currentEnd = "";
 
-    // --- PREVIEW ROUTE KNAPPEN (UPPDATERAD) ---
-    const calcBtn = document.getElementById("btn-calc-route");
-    if (calcBtn) {
-        calcBtn.addEventListener("click", async function () {
-            const startInput = document.getElementById("start-location").value;
-            const endInput = document.getElementById("end-location").value;
+    // Initiera Kartan
+    const map = L.map('trip-map', { zoomControl: true }).setView([62.0, 15.0], 5);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+    let routeLayer = L.layerGroup().addTo(map);
+    let stopsLayer = L.layerGroup().addTo(map);
 
-            if (!startInput || !endInput) {
-                alert("Please enter both Start and Destination.");
-                return;
-            }
+    setTimeout(() => { map.invalidateSize(); }, 500);
 
-            const infoCard = document.getElementById("route-info-card");
-            const infoDetails = document.getElementById("route-details");
-            infoCard.classList.remove("hidden");
-            infoDetails.innerText = "Calculating optimal route...";
+    // --- EVENT LISTENER FÖR SKAPA-FORMULÄRET ---
+    // Eftersom formuläret är laddat från start, fäster vi eventet på "document" (Event Delegation)
+    document.addEventListener("submit", async function (e) {
+        if (e.target && e.target.id === "trip-create-form") {
+            e.preventDefault(); // STOPPA SIDAN FRÅN ATT LADDA OM!
+
+            const form = e.target;
+            currentStart = form.querySelector("#start-location").value;
+            currentEnd = form.querySelector("#end-location").value;
+
+            if (!currentStart || !currentEnd) { alert("Fyll i start och mål"); return; }
+
+            showLoading("Planerar rutt...", "Beräknar avstånd och rutt via satellit.");
+            const formData = new FormData(form);
 
             try {
-                // ANROPAR DIN BACKEND HANDLER
-                const url = `?handler=RoutePreview&start=${encodeURIComponent(startInput)}&end=${encodeURIComponent(endInput)}`;
-                const response = await fetch(url);
-                const data = await response.json();
+                // 1. Skicka formuläret till servern (OnPostAsync) för att spara & hämta rutt-karta
+                const routeResponse = await fetch('?handler=OnPostAsync', {
+                    method: 'POST',
+                    body: formData
+                });
+                const routeResult = await routeResponse.json();
 
-                if (data && data.geometry && data.geometry.length > 0) {
-                    // Rensa gamla objekt
-                    if (startMarker) map.removeLayer(startMarker);
-                    if (endMarker) map.removeLayer(endMarker);
-                    if (routeLine) map.removeLayer(routeLine);
+                if (routeResult.success) {
+                    // Rita kartan direkt!
+                    drawRouteOnMap(routeResult.geometry, currentStart, currentEnd);
 
-                    // Konvertera backends format till Leaflets format [[lat, lng], ...]
-                    const latLngs = data.geometry.map(p => [p.latitude, p.longitude]);
+                    // 2. HÄR ÄR MAGIN: Hämta Delvyn (Partial View) med Stopp-knapparna!
+                    showLoading("Förbereder meny...", "Laddar in reseverktygen.");
+                    const htmlResponse = await fetch('?handler=DetailsMenu');
+                    const htmlText = await htmlResponse.text(); // Vi hämtar det som ren HTML-text
 
-                    // RITA DEN RIKTIGA RUTTEN
-                    routeLine = L.polyline(latLngs, {
-                        color: '#18db67',
-                        weight: 5,
-                        opacity: 0.8,
-                        lineJoin: 'round'
-                    }).addTo(map);
+                    // Byt ut hela sidebarens innehåll mot den nya HTML-koden
+                    sidebarContainer.innerHTML = htmlText;
 
-                    // Sätt markörer vid ruttens start och slut
-                    startMarker = L.marker(latLngs[0]).addTo(map).bindPopup(`Start: ${startInput}`);
-                    endMarker = L.marker(latLngs[latLngs.length - 1]).addTo(map).bindPopup(`Mål: ${endInput}`);
+                    // Uppdatera texten i den nya HTML-koden vi nyss klistrade in
+                    document.getElementById("display-title").innerText = `${currentStart} ➔ ${currentEnd}`;
+                    document.getElementById("display-distance").innerText = `${Math.round(routeResult.distanceKm)} km total distance`;
 
-                    // Zooma så hela rutan syns
-                    map.fitBounds(routeLine.getBounds(), { padding: [50, 50] });
-
-                    // Visa riktig distans och tid från backenden
-                    infoDetails.innerHTML = `
-                        <b>Distance:</b> ${data.distanceKm.toFixed(1)} km<br>
-                        <b>Time:</b> ${Math.floor(data.durationHours)}h ${Math.round((data.durationHours % 1) * 60)}m<br>
-                        <span class='text-neon-cyan'>Optimal road route found!</span>`;
+                    // Eftersom knapparna är helt nya i webbläsaren måste vi koppla klick-eventen på nytt
+                    attachStopButtonsListeners();
+                    attachEditButtonListener();
                 } else {
-                    infoDetails.innerText = "Could not find a route. Please be more specific with location names.";
+                    alert(routeResult.message);
                 }
             } catch (error) {
-                console.error("Error fetching route:", error);
-                infoDetails.innerText = "Error calculating route. Please try again.";
+                console.error(error); alert("Ett fel uppstod.");
+            } finally {
+                hideLoading();
             }
+        }
+    });
+
+    // --- KOPPLA KLICK TILL STOPP-KNAPPARNA (Körs när nya menyn har laddats in) ---
+    function attachStopButtonsListeners() {
+        document.querySelectorAll('.fetch-stops-btn').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                const type = this.getAttribute('data-type');
+                showLoading(`Söker efter ${type}...`, `Kommunicerar med TomTom API.`);
+
+                try {
+                    // Anropar din backend
+                    const url = `?handler=FetchStops&start=${encodeURIComponent(currentStart)}&end=${encodeURIComponent(currentEnd)}&type=${type}`;
+                    const response = await fetch(url);
+                    const result = await response.json();
+
+                    stopsLayer.clearLayers();
+
+                    if (result.success && result.stops && result.stops.length > 0) {
+                        result.stops.forEach(s => {
+                            L.marker([s.latitude, s.longitude]).addTo(stopsLayer).bindPopup(`<b>${s.name}</b>`);
+                        });
+                    } else {
+                        alert("Inga stopp hittades för " + type);
+                    }
+                } catch (e) {
+                    alert("Kunde inte hämta stopp.");
+                } finally {
+                    hideLoading();
+                }
+            });
         });
     }
 
-    window.addEventListener("resize", () => {
-        setTimeout(() => { map.invalidateSize(); }, 100);
-    });
+    // --- KOPPLA "TILLBAKA"-KNAPPEN ---
+    function attachEditButtonListener() {
+        const btnEdit = document.getElementById("btn-edit-trip");
+        if (btnEdit) {
+            btnEdit.addEventListener("click", function () {
+                // Vi laddar om hela sidan för att börja om (Enkelt och stabilt)
+                window.location.reload();
+            });
+        }
+    }
+
+    // --- RITA KARTAN ---
+    function drawRouteOnMap(geometry, startName, endName) {
+        routeLayer.clearLayers();
+        const latLngs = geometry.map(p => [p.latitude, p.longitude]);
+        L.polyline(latLngs, { color: '#18db67', weight: 6, opacity: 0.8 }).addTo(routeLayer);
+        L.circleMarker(latLngs[0], { radius: 10, color: '#18db67', fillOpacity: 1 }).addTo(routeLayer).bindPopup("START: " + startName);
+        L.circleMarker(latLngs[latLngs.length - 1], { radius: 10, color: '#ff4444', fillOpacity: 1 }).addTo(routeLayer).bindPopup("MÅL: " + endName);
+        map.fitBounds(L.polyline(latLngs).getBounds(), { padding: [50, 50] });
+    }
+
+    function showLoading(title, desc) {
+        loadingTitle.innerText = title;
+        loadingDesc.innerText = desc;
+        loadingOverlay.classList.remove('hidden');
+        loadingOverlay.classList.add('flex');
+    }
+
+    function hideLoading() {
+        loadingOverlay.classList.add('hidden');
+        loadingOverlay.classList.remove('flex');
+    }
 });

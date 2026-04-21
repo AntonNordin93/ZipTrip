@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Security.Claims;
 using ZipTrip.Domain.Enums;
 using ZipTrip.Services.DTOs.Trip;
 using ZipTrip.Services.Interfaces;
@@ -11,80 +10,69 @@ namespace ZipTrip.Pages.Trip
 {
     public class CreateModel : PageModel
     {
-        private readonly ITripService _tripService;
         private readonly IVehicleService _vehicleService;
         private readonly IRouteCalculatorService _routeCalculatorService;
+        private readonly IRouteStopService _routeStopService; // <-- VIKTIGT: Lägg till denna
 
-        public CreateModel(ITripService tripService, IVehicleService vehicleService, IRouteCalculatorService routeCalculatorService)
+        public CreateModel(IVehicleService vehicleService, IRouteCalculatorService routeCalculatorService, IRouteStopService routeStopService)
         {
-            _tripService = tripService;
             _vehicleService = vehicleService;
             _routeCalculatorService = routeCalculatorService;
+            _routeStopService = routeStopService;
         }
 
         [BindProperty]
         public TripRequest Input { get; set; } = new TripRequest();
-        public List<SelectListItem> UserVehicles { get; set; } = new List<SelectListItem>();
 
-        public bool IsAuthenticated => User.Identity?.IsAuthenticated ?? false;
+        public void OnGet() { }
 
-        public async Task<IActionResult> OnGetAsync()
-        {
-            if (IsAuthenticated)
-            {
-                await LoadVehiclesDropdownAsync();
-            }
-            Input.StartDate = DateTime.Now.AddDays(1);
-            return Page();
-        }
+        // HANDLER 1: Tar emot formuläret (via AJAX) och skickar tillbaka Ruttens kooridnater (JSON)
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!IsAuthenticated)
-            {
-                return RedirectToPage("/Account/Login");
-            }
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-            {
-                return RedirectToPage("/Account/Login");
-            }
             if (!ModelState.IsValid)
             {
-                await LoadVehiclesDropdownAsync();
-                return Page();
+                return new JsonResult(new { success = false, message = "Fyll i alla fält korrekt." });
             }
-            try
+
+            // Exempel på din arkitektur:
+            // Spara till DB här: await _tripRepository.SaveTripAsync(Input);
+
+            var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(Input.StartLocation, Input.EndLocation);
+
+            return new JsonResult(new
             {
-                var newTrip = await _tripService.CreateTripAsync(Input, userId);
-                TempData["SuccessMessage"] = "Trip created successfully!";
-                return RedirectToPage("/Index");
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError(string.Empty, "An error occurred while creating the trip. Please try again.");
-                await LoadVehiclesDropdownAsync();
-                return Page();
-            }
-        }
-        private async Task LoadVehiclesDropdownAsync()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId != null)
-            {
-                var vehicles = await _vehicleService.GetUserVehiclesAsync(userId);
-                UserVehicles = vehicles.Select(v => new SelectListItem
-                {
-                    Value = v.Id.ToString(),
-                    Text = $"{v.Name} ({v.VehicleType})"
-                }).ToList();
-            }
-            UserVehicles.Insert(0, new SelectListItem { Value = "", Text = "Select a vehicle (optional)" });
+                success = true,
+                geometry = routeData.Geometry,
+                distanceKm = routeData.DistanceKm
+            });
         }
 
-        public async Task<JsonResult> OnGetRoutePreviewAsync(string start, string end)
+        // HANDLER 2: När JavaScriptet ber om nästa meny, skickar vi HTML-koden för "_TripDetailsPartial"
+        public IActionResult OnGetDetailsMenu()
         {
-            var result = await _routeCalculatorService.CalculateBaseRouteAsync(start, end);
-            return new JsonResult(result);
+            return Partial("_TripDetailsPartial", this);
+        }
+
+        // HANDLER 3: När kunden klickar på "Gas Stations", hämtar vi mackarna från TomTom
+        public async Task<JsonResult> OnGetFetchStopsAsync(string start, string end, string type)
+        {
+            try
+            {
+                if (!Enum.TryParse<StopType>(type, true, out var stopType))
+                    return new JsonResult(new { success = false });
+
+                var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end);
+                var stops = await _routeStopService.GetSuggestedStopsAsync(routeData.Geometry, new List<StopType> { stopType });
+
+                var formatted = stops.Select(s => new {
+                    name = s.Name ?? "Station",
+                    latitude = s.Latitude,
+                    longitude = s.Longitude
+                }).ToList();
+
+                return new JsonResult(new { success = true, stops = formatted });
+            }
+            catch { return new JsonResult(new { success = false }); }
         }
     }
 }
