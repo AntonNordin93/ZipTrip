@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="sv">
 <head>
     <meta charset="utf-8" />
@@ -17,15 +17,14 @@
 <body class="bg-background text-foreground flex flex-col min-h-screen font-sans antialiased">
 
     @{
-        bool isAccount = Context.Request.Path.Value != null && Context.Request.Path.Value.Contains("/Account", StringComparison.OrdinalIgnoreCase);
-        bool hideHeader = ViewData["HideHeader"] as bool? ?? false; bool removeHeader = isAccount;
-        bool hideFooter = (ViewData["HideFooter"] as bool? ?? false) || isAccount;
+        bool hideHeader = ViewData["HideHeader"] as bool? ?? false;
+        bool hideFooter = ViewData["HideFooter"] as bool? ?? false;
         string wrapperClass = hideHeader ? "fixed top-0 left-0 w-full h-8 z-[9999] group" : "contents";
         string headerClass = hideHeader 
             ? "absolute top-0 w-full bg-background/95 backdrop-blur-md border-b border-border transition-transform duration-300 -translate-y-full group-hover:translate-y-0 focus-within:translate-y-0 shadow-lg"
             : "fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border";
     }
-    @if (!removeHeader) { <div class="@wrapperClass">
+    <div class="@wrapperClass">
         <header class="@headerClass">
             <nav aria-label="Main navigation" class="container mx-auto flex items-center justify-between h-16 px-4 relative">
             <a href="/" class="flex items-center gap-2" aria-label="ZipTrip Home">
@@ -48,7 +47,7 @@
 
             <div class="flex items-center gap-3">
                 <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-md bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
-                    <span id="theme-icon" class="text-sm">??</span>
+                    <span id="theme-icon" class="text-sm">🌙</span>
                 </button>
                 <partial name="_LoginPartial" />
 
