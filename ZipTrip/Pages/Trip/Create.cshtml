@@ -7,8 +7,7 @@
 }
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-<div class="flex flex-col lg:flex-row flex-1 bg-background pt-8 lg:pt-0 h-screen">
-    
+<div class="flex flex-col lg:flex-row flex-1 bg-background pt-8 lg:pt-0 h-screen overflow-hidden text-foreground">
     <div id="sidebar-container" class="w-full lg:w-1/3 xl:w-1/4 p-6 overflow-y-auto border-r border-border bg-card z-10 shadow-xl relative">
         <partial name="_CreateFormPartial" model="Model" />
     </div>
@@ -16,26 +15,31 @@
     <div class="flex-grow relative h-[50vh] lg:h-auto z-0">
         <div id="trip-map" class="absolute inset-0 w-full h-full"></div>
 
-        <div id="loading-overlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-[1000] hidden items-center justify-center">
-            <div class="bg-card border border-primary/50 px-8 py-6 rounded-2xl shadow-[0_0_30px_rgba(31,214,85,0.3)] flex flex-col items-center gap-4 text-center">
-                <svg class="animate-spin h-10 w-10 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                <h3 class="text-xl font-bold text-foreground" id="loading-title">Laddar...</h3>
-                <p class="text-sm text-muted-foreground" id="loading-desc">Vänta ett ögonblick.</p>
+<div id="loading-overlay" style="display: none; z-index: 99999;" class="fixed inset-0 bg-background/90 backdrop-blur-md items-center justify-center flex-col">
+    <div id="loader-box" class="bg-card border border-border px-10 py-8 rounded-[32px] flex flex-col items-center gap-6 text-center max-w-xs w-full transition-shadow duration-300">
+        
+        <div class="relative w-16 h-16">
+            <div id="loader-ring-bg" class="absolute inset-0 border-4 rounded-full opacity-20"></div>
+            <div id="loader-ring-spin" class="absolute inset-0 border-4 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+        
+        <div class="w-full">
+            <h3 class="text-2xl font-display font-bold text-foreground mb-1" id="loading-title">Scanning...</h3>
+            
+            <div class="flex justify-between items-end mb-2 mt-4">
+                <span id="loading-status-text" class="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Connecting...</span>
+                <span id="loading-percentage" class="text-lg font-bold">0%</span>
+            </div>
+            
+            <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                <div id="loader-progress" class="h-full w-0 transition-all duration-300 ease-out"></div>
             </div>
         </div>
+        
     </div>
 </div>
-
-<style>
-    /* Smidig animation när vi byter vy */
-    .fade-in { animation: fadeIn 0.4s ease-in-out; }
-    
-    /* Använd @@ för att Razor ska förstå att det är CSS och inte C# */
-    @@keyframes fadeIn { 
-        from { opacity: 0; transform: translateX(-10px); } 
-        to { opacity: 1; transform: translateX(0); } 
-    }
-</style>
+    </div>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
