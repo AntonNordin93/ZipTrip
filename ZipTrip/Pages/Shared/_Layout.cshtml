@@ -6,31 +6,29 @@
     <title>@ViewData["Title"] - ZipTrip</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script>
-            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
+            // TVINGA DARK MODE SOM STANDARD
+            // Om användaren uttryckligen har klickat på "light" sparas det, annars är det alltid mörkt.
+            if (localStorage.getItem('theme') === 'light') {
                 document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
             }
     </script>
 </head>
 <body class="bg-background text-foreground flex flex-col min-h-screen font-sans antialiased">
 
     @{
-
         bool hideHeader = ViewData["HideHeader"] as bool? ?? false;
         bool hideFooter = ViewData["HideFooter"] as bool? ?? false;
-
-
         bool isAccountPath = Context.Request.Path.Value != null &&
                              Context.Request.Path.Value.Contains("/Account", StringComparison.OrdinalIgnoreCase);
-
         bool removeHeader = hideHeader || isAccountPath;
     }
 
     @if (!removeHeader)
     {
         <div class="contents">
-            <header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
+            <header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border transition-colors duration-500">
                 <nav aria-label="Main navigation" class="container mx-auto flex items-center justify-between h-16 px-4 relative">
                     <a href="/" class="flex items-center gap-2" aria-label="ZipTrip Home">
                         <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center" aria-hidden="true">
@@ -50,7 +48,7 @@
 
                     <div class="flex items-center gap-3">
                         <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-md bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
-                            <span id="theme-icon" class="text-sm">🌙</span>
+                            <span id="theme-icon" class="text-sm">☀️</span>
                         </button>
                         <partial name="_LoginPartial" />
 
@@ -69,7 +67,7 @@
 
     @if (!hideFooter)
     {
-        <footer class="bg-card border-t border-border py-8 px-4 mt-auto" role="contentinfo">
+        <footer class="bg-card border-t border-border py-8 px-4 mt-auto transition-colors duration-500" role="contentinfo">
             <div class="container mx-auto">
                 <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                     <div class="flex flex-col md:flex-row items-center gap-4">
@@ -91,5 +89,34 @@
     }
     
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const themeToggleBtn = document.getElementById('theme-toggle');
+                const themeIcon = document.getElementById('theme-icon');
+                const htmlEl = document.documentElement;
+
+                // Sätt rätt ikon vid sidladdning
+                if (htmlEl.classList.contains('dark')) {
+                    themeIcon.textContent = '☀️'; // Lyser upp alternativet att byta till light mode
+                } else {
+                    themeIcon.textContent = '🌙'; // Alternativet att byta till dark mode
+                }
+
+                if(themeToggleBtn) {
+                    themeToggleBtn.addEventListener('click', () => {
+                        // Byt klass på HTML-taggen
+                        htmlEl.classList.toggle('dark');
+                        const isDark = htmlEl.classList.contains('dark');
+                    
+                        // Spara valet till nästa gång
+                        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                    
+                        // Byt ikonen
+                        themeIcon.textContent = isDark ? '☀️' : '🌙';
+                    });
+                }
+            });
+    </script>
 </body>
 </html>
