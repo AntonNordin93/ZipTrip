@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Caching.Memory;
 using ZipTrip.Domain.Entities;
 using ZipTrip.Domain.Enums;
 using ZipTrip.Services.DTOs.Common;
@@ -12,10 +13,12 @@ namespace ZipTrip.Services.Implementations
     {
         private readonly HttpClient _httpClient;
         private readonly string _tomtomApiKey;
+        private readonly IMemoryCache _cache; // 1. Lägg till IMemoryCache
 
-        public RouteStopService(HttpClient httpClient, IConfiguration configuration)
+        public RouteStopService(HttpClient httpClient, IConfiguration configuration, IMemoryCache cache)
         {
             _httpClient = httpClient;
+            _cache = cache; // 2. Injicera cachen
             _tomtomApiKey = configuration["TomTom:ApiKey"] ?? throw new ArgumentNullException("ApiKey saknas");
         }
 
@@ -24,7 +27,21 @@ namespace ZipTrip.Services.Implementations
             var allStops = new List<RouteStop>();
             if (routeGeometry == null || routeGeometry.Count < 2) return allStops;
 
-            string searchTerm = typesToFind.FirstOrDefault() switch
+            var type = typesToFind.FirstOrDefault();
+
+            // 3. SKAPA CACHE-NYCKEL
+            // Nyckeln bygger på Startkoordinat + Slutkoordinat + Typ av stopp
+            var firstPoint = routeGeometry.First();
+            var lastPoint = routeGeometry.Last();
+            string cacheKey = $"Stops_{firstPoint.Latitude}_{firstPoint.Longitude}_{lastPoint.Latitude}_{lastPoint.Longitude}_{type}";
+
+            // 4. KOLLA OM DET FINNS I CACHEN
+            if (_cache.TryGetValue(cacheKey, out List<RouteStop>? cachedStops) && cachedStops != null)
+            {
+                return cachedStops; // Returnera direkt om vi redan har hämtat detta!
+            }
+
+            string searchTerm = type switch
             {
                 StopType.Fuel => "gas station",
                 StopType.Charging => "ev charging station",
@@ -32,17 +49,15 @@ namespace ZipTrip.Services.Implementations
                 _ => "poi"
             };
 
-
+            // --- BEHÅLLER DIN ORIGINALLOGIK FÖR SEGMENTERING ---
             int numSegments = 20;
             int segmentSize = routeGeometry.Count / numSegments;
-
 
             for (int i = 0; i < numSegments; i++)
             {
                 var segment = routeGeometry.Skip(i * segmentSize).Take(segmentSize + 1).ToList();
 
-
-                var stops = await SearchSegmentAsync(segment, searchTerm, typesToFind.FirstOrDefault());
+                var stops = await SearchSegmentAsync(segment, searchTerm, type);
 
                 foreach (var stop in stops)
                 {
@@ -52,9 +67,15 @@ namespace ZipTrip.Services.Implementations
                     }
                 }
 
-
-                await Task.Delay(200);
+                await Task.Delay(200); // Behövs så TomTom inte blockerar oss
             }
+            // --- SLUT PÅ ORIGINALLOGIK ---
+
+            // 5. SPARA RESULTATET I CACHEN I 30 MINUTER
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(30));
+
+            _cache.Set(cacheKey, allStops, cacheOptions);
 
             return allStops;
         }
@@ -62,7 +83,6 @@ namespace ZipTrip.Services.Implementations
         private async Task<List<RouteStop>> SearchSegmentAsync(List<CoordinatePoint> segment, string searchTerm, StopType type)
         {
             var stops = new List<RouteStop>();
-
 
             string url = $"https://api.tomtom.com/search/2/searchAlongRoute/{searchTerm}.json?key={_tomtomApiKey}&maxDetourTime=1800&limit=2";
 
@@ -101,6 +121,7 @@ namespace ZipTrip.Services.Implementations
                 }
             }
             catch { }
+
             return stops;
         }
     }
