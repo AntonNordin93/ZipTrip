@@ -93,10 +93,10 @@
                             L.marker([s.latitude, s.longitude]).addTo(stopsLayer).bindPopup(`<b>${s.name}</b>`);
                         });
                     } else {
-                        alert("Inga stopp hittades för " + type);
+                        alert("No Stops were found for " + type);
                     }
                 } catch (e) {
-                    alert("Kunde inte hämta stopp.");
+                    alert("Couldn't fetch stops for " + type);
                 } finally {
                     hideLoading();
                 }
