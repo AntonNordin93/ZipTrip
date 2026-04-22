@@ -6,10 +6,15 @@
     let currentStart = "";
     let currentEnd = "";
 
+    // Karta och lager
     const map = L.map('trip-map', { zoomControl: true }).setView([62.0, 15.0], 5);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
     let routeLayer = L.layerGroup().addTo(map);
     let stopsLayer = L.layerGroup().addTo(map);
+
+    // GPS Variabler
+    let userLocationMarker = null;
+    let gpsWatchId = null;
 
     setTimeout(() => { map.invalidateSize(); }, 500);
 
@@ -20,11 +25,13 @@
         'Default': '#18db67'
     };
 
-    let progressInterval; // Variabel för att hålla koll på tickandet
+    let progressInterval;
 
-    // DYNAMISK PROCENT-LOADER
+    // --- LOADER LOGIK ---
     function toggleLoader(show, title = "Scanning...", type = "Default") {
         const overlay = document.getElementById("loading-overlay");
+        if (!overlay) return;
+
         const titleEl = document.getElementById("loading-title");
         const statusEl = document.getElementById("loading-status-text");
         const percentEl = document.getElementById("loading-percentage");
@@ -33,9 +40,6 @@
         const ringSpin = document.getElementById("loader-ring-spin");
         const box = document.getElementById("loader-box");
 
-        if (!overlay) return;
-
-        // Rensa alltid föregående timer
         clearInterval(progressInterval);
 
         if (show) {
@@ -48,26 +52,17 @@
                 ringSpin.style.borderTopColor = 'transparent';
             }
             if (box) box.style.boxShadow = `0 0 50px ${color}40`;
-            if (percentEl) {
-                percentEl.style.color = color;
-                percentEl.innerText = "0%";
-            }
-            if (progress) {
-                progress.style.backgroundColor = color;
-                progress.style.width = "0%";
-            }
+            if (percentEl) { percentEl.style.color = color; percentEl.innerText = "0%"; }
+            if (progress) { progress.style.backgroundColor = color; progress.style.width = "0%"; }
             if (statusEl) statusEl.innerText = "Connecting to satellites...";
 
             overlay.style.setProperty('display', 'flex', 'important');
             overlay.classList.remove('hidden');
 
-            // --- FAKE PROGRESS LOGIC ---
-            // Simulerar laddning upp till 99%
             let currentVal = 0;
             progressInterval = setInterval(() => {
-                // Går snabbare i början, saktar ner ju närmare 99% den kommer
-                if (currentVal < 40) currentVal += Math.random() * 4;
-                else if (currentVal < 70) currentVal += Math.random() * 2;
+                if (currentVal < 40) currentVal += Math.random() * 2;
+                else if (currentVal < 70) currentVal += Math.random() * 1.5;
                 else if (currentVal < 95) currentVal += Math.random() * 0.5;
 
                 if (currentVal > 99) currentVal = 99;
@@ -76,7 +71,6 @@
                 if (progress) progress.style.width = roundedVal + "%";
                 if (percentEl) percentEl.innerText = roundedVal + "%";
 
-                // Byt text för att det ska se "smart" ut
                 if (statusEl) {
                     if (roundedVal > 20 && roundedVal < 60) statusEl.innerText = "Scanning route area...";
                     else if (roundedVal >= 60 && roundedVal < 85) statusEl.innerText = "Filtering results...";
@@ -85,12 +79,10 @@
             }, 300);
 
         } else {
-            // Sätt direkt till 100% innan den stängs ner
             if (progress) progress.style.width = "100%";
             if (percentEl) percentEl.innerText = "100%";
             if (statusEl) statusEl.innerText = "Complete!";
 
-            // Låt användaren se "100%" i en halv sekund innan den försvinner
             setTimeout(() => {
                 overlay.style.setProperty('display', 'none', 'important');
                 overlay.classList.add('hidden');
@@ -98,7 +90,74 @@
         }
     }
 
-    // SKAPA RUTT
+    // --- LIVE GPS FUNKTION ---
+    function toggleNavigation() {
+        if (!navigator.geolocation) {
+            console.warn("Din webbläsare stöder inte platstjänster.");
+            return;
+        }
+
+        const btn = document.getElementById("start-gps-btn");
+
+        // STOPPA GPS
+        if (gpsWatchId !== null) {
+            navigator.geolocation.clearWatch(gpsWatchId);
+            gpsWatchId = null;
+            if (userLocationMarker) map.removeLayer(userLocationMarker);
+            userLocationMarker = null;
+
+            btn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg> START NAVIGATION`;
+            btn.classList.replace("bg-destructive", "bg-primary");
+            btn.classList.replace("text-white", "text-[#0f1219]");
+
+            if (routeLayer.getLayers().length > 0) {
+                const latLngs = routeLayer.getLayers()[0].getLatLngs();
+                map.fitBounds(L.polyline(latLngs).getBounds(), { padding: [50, 50] });
+            }
+            return;
+        }
+
+        // STARTA GPS
+        btn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg> STOP NAVIGATION`;
+        btn.classList.replace("bg-primary", "bg-destructive");
+        btn.classList.replace("text-[#0f1219]", "text-white");
+
+        // Tvinga Leaflet att uppdatera storleken innan vi zoomar in (ifall fönstret buggat)
+        map.invalidateSize();
+
+        gpsWatchId = navigator.geolocation.watchPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                // FIX: Om emulatorn ballar ur och skickar 0,0, strunta i det!
+                if (lat === 0 && lng === 0) return;
+
+                if (!userLocationMarker) {
+                    userLocationMarker = L.circleMarker([lat, lng], {
+                        radius: 8,
+                        fillColor: "#4285F4",
+                        color: "#ffffff",
+                        weight: 3,
+                        opacity: 1,
+                        fillOpacity: 1
+                    }).addTo(map);
+                } else {
+                    userLocationMarker.setLatLng([lat, lng]);
+                }
+
+                map.setView([lat, lng], 15);
+            },
+            (error) => {
+                // FIX: Ingen alert som låser webbläsaren!
+                console.warn("GPS Varning (Emulator strul?):", error.message);
+            },
+            // Lite slappare inställningar för att göra Chrome-emulatorn nöjd
+            { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 }
+        );
+    }
+
+    // --- FORMULÄR - SKAPA RUTT ---
     document.addEventListener("submit", async function (e) {
         if (e.target && e.target.id === "trip-create-form") {
             e.preventDefault();
@@ -121,22 +180,24 @@
                     const menuRes = await fetch('?handler=DetailsMenu');
                     const menuHtml = await menuRes.text();
                     sidebarContainer.innerHTML = menuHtml;
+
                     document.getElementById("display-title").innerText = `${currentStart} ➔ ${currentEnd}`;
                     document.getElementById("display-distance").innerText = `${Math.round(result.distanceKm)} km`;
 
                     attachStopButtons();
+                    const gpsBtn = document.getElementById("start-gps-btn");
+                    if (gpsBtn) gpsBtn.addEventListener("click", toggleNavigation);
                 }
             } catch (err) { console.error(err); }
             finally { toggleLoader(false); }
         }
     });
 
-    // HÄMTA STOPP
+    // --- STOPP-KNAPPAR ---
     function attachStopButtons() {
         document.querySelectorAll('.fetch-stops-btn').forEach(btn => {
             btn.addEventListener('click', async function () {
                 const type = this.getAttribute('data-type');
-
                 toggleLoader(true, `Locating ${type}s...`, type);
 
                 try {
@@ -149,9 +210,7 @@
                         });
                     }
                 } catch (err) { console.error(err); }
-                finally {
-                    toggleLoader(false);
-                }
+                finally { toggleLoader(false); }
             });
         });
     }
@@ -161,5 +220,13 @@
         const latLngs = geometry.map(p => [p.latitude, p.longitude]);
         L.polyline(latLngs, { color: '#18db67', weight: 6 }).addTo(routeLayer);
         map.fitBounds(L.polyline(latLngs).getBounds(), { padding: [50, 50] });
+
+        // --- FUSK FÖR ATT TESTA GPS ---
+        console.log("📍 HÄR ÄR TEST-KOORDINATER PÅ DIN EXAKTA GRÖNA LINJE:");
+        console.log("1. Start:", latLngs[0][0].toFixed(4), latLngs[0][1].toFixed(4));
+        console.log("2. En fjärdedel in:", latLngs[Math.floor(latLngs.length * 0.25)][0].toFixed(4), latLngs[Math.floor(latLngs.length * 0.25)][1].toFixed(4));
+        console.log("3. Halvvägs:", latLngs[Math.floor(latLngs.length * 0.5)][0].toFixed(4), latLngs[Math.floor(latLngs.length * 0.5)][1].toFixed(4));
+        console.log("4. Tre fjärdedelar in:", latLngs[Math.floor(latLngs.length * 0.75)][0].toFixed(4), latLngs[Math.floor(latLngs.length * 0.75)][1].toFixed(4));
+        console.log("5. Mål:", latLngs[latLngs.length - 1][0].toFixed(4), latLngs[latLngs.length - 1][1].toFixed(4));
     }
 });

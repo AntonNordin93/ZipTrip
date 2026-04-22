@@ -1,42 +1,51 @@
 ﻿@model ZipTrip.Pages.Trip.CreateModel
 
-<div id="details-menu" class="fade-in space-y-8">
+<div id="details-menu" class="fade-in space-y-8 pb-10">
     <div class="border-b border-border pb-6">
         <span class="text-xs font-bold text-primary uppercase tracking-widest block mb-2">Trip Ready</span>
         <h1 class="text-3xl font-display font-bold text-foreground truncate" id="display-title">Resplan</h1>
         <p class="text-muted-foreground mt-2 font-medium" id="display-distance">0 km</p>
         <button type="button" onclick="window.location.reload()" class="mt-4 text-xs font-bold text-accent hover:text-white transition-colors cursor-pointer uppercase underline">← Back / Edit</button>
+        
+        <button type="button" id="start-gps-btn" class="mt-6 w-full bg-primary hover:bg-primary/90 text-[#0f1219] font-bold text-lg rounded-xl p-4 shadow-[0_0_20px_rgba(24,219,103,0.4)] transition-all hover:scale-105 flex justify-center items-center gap-2 cursor-pointer">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg>
+            START NAVIGATION
+        </button>
     </div>
 
-    <div class="space-y-3">
-        <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#18db67]/10 border border-border hover:border-[#18db67] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Fuel">
-            <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#18db67] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(24,219,103,0.2)]">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
-            </div>
-            <div class="text-left">
-                <div class="font-bold text-foreground group-hover:text-[#18db67] transition-colors">Gas Stations</div>
-                <div class="text-xs text-muted-foreground">Find fuel stops</div>
-            </div>
-        </button>
+    <div class="space-y-6">
+        <h3 class="text-xl font-display font-bold text-foreground">Find Stops</h3>
+        
+        <div class="space-y-3">
+            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#18db67]/10 border border-border hover:border-[#18db67] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Fuel">
+                <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#18db67] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(24,219,103,0.2)]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M3 3v18h18"></path><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path></svg>
+                </div>
+                <div class="text-left">
+                    <div class="font-bold text-foreground group-hover:text-[#18db67] transition-colors">Gas Stations</div>
+                    <div class="text-xs text-muted-foreground">Find fuel stops</div>
+                </div>
+            </button>
 
-        <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#30e5f2]/10 border border-border hover:border-[#30e5f2] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Charging">
-            <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#30e5f2] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(48,229,242,0.2)]">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-            </div>
-            <div class="text-left">
-                <div class="font-bold text-foreground group-hover:text-[#30e5f2] transition-colors">EV Charging</div>
-                <div class="text-xs text-muted-foreground">Fast chargers along way</div>
-            </div>
-        </button>
+            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#30e5f2]/10 border border-border hover:border-[#30e5f2] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Charging">
+                <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#30e5f2] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(48,229,242,0.2)]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
+                <div class="text-left">
+                    <div class="font-bold text-foreground group-hover:text-[#30e5f2] transition-colors">EV Charging</div>
+                    <div class="text-xs text-muted-foreground">Fast chargers along way</div>
+                </div>
+            </button>
 
-        <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#f89e21]/10 border border-border hover:border-[#f89e21] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Restaurant">
-            <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#f89e21] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(248,158,33,0.2)]">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            </div>
-            <div class="text-left">
-                <div class="font-bold text-foreground group-hover:text-[#f89e21] transition-colors">Restaurants</div>
-                <div class="text-xs text-muted-foreground">Dining options</div>
-            </div>
-        </button>
+            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#f89e21]/10 border border-border hover:border-[#f89e21] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Restaurant">
+                <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#f89e21] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(248,158,33,0.2)]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <div class="text-left">
+                    <div class="font-bold text-foreground group-hover:text-[#f89e21] transition-colors">Restaurants</div>
+                    <div class="text-xs text-muted-foreground">Dining options</div>
+                </div>
+            </button>
+        </div>
     </div>
 </div>

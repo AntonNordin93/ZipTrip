@@ -13,12 +13,12 @@ namespace ZipTrip.Services.Implementations
     {
         private readonly HttpClient _httpClient;
         private readonly string _tomtomApiKey;
-        private readonly IMemoryCache _cache; // 1. Lägg till IMemoryCache
+        private readonly IMemoryCache _cache;
 
         public RouteStopService(HttpClient httpClient, IConfiguration configuration, IMemoryCache cache)
         {
             _httpClient = httpClient;
-            _cache = cache; // 2. Injicera cachen
+            _cache = cache;
             _tomtomApiKey = configuration["TomTom:ApiKey"] ?? throw new ArgumentNullException("ApiKey saknas");
         }
 
@@ -29,16 +29,15 @@ namespace ZipTrip.Services.Implementations
 
             var type = typesToFind.FirstOrDefault();
 
-            // 3. SKAPA CACHE-NYCKEL
-            // Nyckeln bygger på Startkoordinat + Slutkoordinat + Typ av stopp
+            // 1. Skapa unik Cache-nyckel
             var firstPoint = routeGeometry.First();
             var lastPoint = routeGeometry.Last();
             string cacheKey = $"Stops_{firstPoint.Latitude}_{firstPoint.Longitude}_{lastPoint.Latitude}_{lastPoint.Longitude}_{type}";
 
-            // 4. KOLLA OM DET FINNS I CACHEN
+            // 2. Kolla Cache - Blixtsnabb laddning om datan redan finns!
             if (_cache.TryGetValue(cacheKey, out List<RouteStop>? cachedStops) && cachedStops != null)
             {
-                return cachedStops; // Returnera direkt om vi redan har hämtat detta!
+                return cachedStops;
             }
 
             string searchTerm = type switch
@@ -49,14 +48,13 @@ namespace ZipTrip.Services.Implementations
                 _ => "poi"
             };
 
-            // --- BEHÅLLER DIN ORIGINALLOGIK FÖR SEGMENTERING ---
+            // 3. Original-loopen (Täcker hela vägen, säkert och stabilt)
             int numSegments = 20;
             int segmentSize = routeGeometry.Count / numSegments;
 
             for (int i = 0; i < numSegments; i++)
             {
                 var segment = routeGeometry.Skip(i * segmentSize).Take(segmentSize + 1).ToList();
-
                 var stops = await SearchSegmentAsync(segment, searchTerm, type);
 
                 foreach (var stop in stops)
@@ -67,14 +65,11 @@ namespace ZipTrip.Services.Implementations
                     }
                 }
 
-                await Task.Delay(200); // Behövs så TomTom inte blockerar oss
+                await Task.Delay(250); // Paus så TomTom inte blockerar
             }
-            // --- SLUT PÅ ORIGINALLOGIK ---
 
-            // 5. SPARA RESULTATET I CACHEN I 30 MINUTER
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromMinutes(30));
-
+            // 4. Spara resultatet i cachen i 30 minuter
+            var cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30));
             _cache.Set(cacheKey, allStops, cacheOptions);
 
             return allStops;
@@ -83,7 +78,6 @@ namespace ZipTrip.Services.Implementations
         private async Task<List<RouteStop>> SearchSegmentAsync(List<CoordinatePoint> segment, string searchTerm, StopType type)
         {
             var stops = new List<RouteStop>();
-
             string url = $"https://api.tomtom.com/search/2/searchAlongRoute/{searchTerm}.json?key={_tomtomApiKey}&maxDetourTime=1800&limit=2";
 
             var points = segment.Select(p => new { lat = p.Latitude, lon = p.Longitude }).ToList();
@@ -121,7 +115,6 @@ namespace ZipTrip.Services.Implementations
                 }
             }
             catch { }
-
             return stops;
         }
     }
