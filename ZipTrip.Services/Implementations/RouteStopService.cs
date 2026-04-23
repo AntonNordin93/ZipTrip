@@ -45,6 +45,8 @@ namespace ZipTrip.Services.Implementations
                 StopType.Fuel => "gas station",
                 StopType.Charging => "ev charging station",
                 StopType.Restaurant => "restaurant",
+                StopType.Attraction => "tourist attraction",
+                StopType.Camping => "campground",
                 _ => "poi"
             };
 

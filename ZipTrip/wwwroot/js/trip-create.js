@@ -26,6 +26,8 @@
         'Fuel': '#18db67',
         'Charging': '#30e5f2',
         'Restaurant': '#f89e21',
+        'Attraction': '#ce60f8',
+        'Camping': '#4d8df5',
         'Default': '#18db67'
     };
 

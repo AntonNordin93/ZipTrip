@@ -14,6 +14,7 @@ namespace ZipTrip.Domain.Enums
         GrillArea,
         Restaurant,
         RestArea,
+        Attraction,
         Other
 
     }

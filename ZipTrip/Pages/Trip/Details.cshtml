@@ -20,6 +20,13 @@
                     <span class="opacity-30">|</span>
                     <span id="trip-distance" class="font-bold text-foreground">Beräknar...</span>
                 </p>
+                @if (!string.IsNullOrEmpty(Model.AIRecommendation))
+                {
+                    <div class="mt-4 p-4 rounded-xl border border-secondary/30 bg-secondary/5 text-sm text-foreground flex items-center gap-3">
+                        <svg class="w-6 h-6 text-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <span>@Model.AIRecommendation</span>
+                    </div>
+                }
             </div>
             <div class="mt-6 md:mt-0">
                 <a href="/Account/Manage/Trips" class="inline-flex items-center justify-center gap-2 rounded-lg text-sm font-bold bg-muted text-foreground hover:bg-foreground/10 h-10 px-6 border border-border transition-all">

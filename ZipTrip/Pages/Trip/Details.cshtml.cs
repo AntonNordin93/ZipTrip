@@ -10,14 +10,17 @@ namespace ZipTrip.Pages.Trip
     {
         private readonly IRouteStopService _routeStopService;
         private readonly IRouteCalculatorService _routeCalculatorService;
+        private readonly IAIRecommendationService _aiRecommendationService;
 
-        public DetailsModel(IRouteStopService routeStopService, IRouteCalculatorService routeCalculatorService)
+        public DetailsModel(IRouteStopService routeStopService, IRouteCalculatorService routeCalculatorService, IAIRecommendationService aiRecommendationService)
         {
             _routeStopService = routeStopService;
             _routeCalculatorService = routeCalculatorService;
+            _aiRecommendationService = aiRecommendationService;
         }
 
         public TripResponse? Trip { get; set; }
+        public string? AIRecommendation { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string start, string end)
         {
@@ -30,6 +33,16 @@ namespace ZipTrip.Pages.Trip
                 EndLocation = end,
                 Title = "Din Resplan"
             };
+
+            try 
+            {
+                var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end);
+                AIRecommendation = await _aiRecommendationService.GetAIContextRecommendationsAsync(routeData.Geometry);
+            }
+            catch 
+            {
+                AIRecommendation = null;
+            }
 
             return Page();
         }
