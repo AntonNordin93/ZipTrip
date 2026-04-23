@@ -1739,6 +1739,9 @@
   .text-\[\#f24694\] {
     color: #f24694;
   }
+  .text-\[\#ff4757\] {
+    color: #ff4757;
+  }
   .text-accent {
     color: var(--color-accent);
   }
@@ -1940,6 +1943,10 @@
     --tw-shadow: 0 0 15px var(--tw-shadow-color, rgba(248,158,33,0.3));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .shadow-\[0_0_15px_rgba\(255\,71\,87\,0\.3\)\] {
+    --tw-shadow: 0 0 15px var(--tw-shadow-color, rgba(255,71,87,0.3));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   .shadow-\[0_0_20px_rgba\(24\,219\,103\,0\.4\)\] {
     --tw-shadow: 0 0 20px var(--tw-shadow-color, rgba(24,219,103,0.4));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -2123,6 +2130,13 @@
       }
     }
   }
+  .group-hover\:text-\[\#ff4757\] {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: #ff4757;
+      }
+    }
+  }
   .group-hover\:text-primary {
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
@@ -2254,6 +2268,13 @@
       }
     }
   }
+  .hover\:border-\[\#ff4757\] {
+    &:hover {
+      @media (hover: hover) {
+        border-color: #ff4757;
+      }
+    }
+  }
   .hover\:border-neon-cyan\/50 {
     &:hover {
       @media (hover: hover) {
@@ -2340,6 +2361,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: color-mix(in oklab, #f24694 10%, transparent);
+      }
+    }
+  }
+  .hover\:bg-\[\#ff4757\]\/10 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: color-mix(in oklab, #ff4757 10%, transparent);
       }
     }
   }
