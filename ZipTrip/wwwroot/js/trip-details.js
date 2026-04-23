@@ -7,8 +7,12 @@
     const spinner = document.getElementById('loading-spinner');
 
     // 1. Initiera kartan
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    const tileUrl = isDarkMode 
+        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' 
+        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
     const map = L.map('trip-map', { zoomControl: true }).setView([62.0, 15.0], 5);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    L.tileLayer(tileUrl, {
         attribution: '&copy; CARTO'
     }).addTo(map);
 
