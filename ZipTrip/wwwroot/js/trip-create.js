@@ -28,6 +28,8 @@
         'Restaurant': '#f89e21',
         'Attraction': '#ce60f8',
         'Camping': '#4d8df5',
+        'Lodging': '#f24694',
+        'RestArea': '#eab308',
         'Default': '#18db67'
     };
 

@@ -47,6 +47,8 @@ namespace ZipTrip.Services.Implementations
                 StopType.Restaurant => "restaurant",
                 StopType.Attraction => "tourist attraction",
                 StopType.Camping => "campground",
+                StopType.Lodging => "hotel",
+                StopType.RestArea => "rest area",
                 _ => "poi"
             };
 

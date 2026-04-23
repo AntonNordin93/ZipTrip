@@ -8,14 +8,10 @@ namespace ZipTrip.Domain.Enums
     {
         Charging,
         Fuel,
+        Restaurant,
+        Attraction,
         Camping,
         Lodging,
-        Sightseeing,
-        GrillArea,
-        Restaurant,
-        RestArea,
-        Attraction,
-        Other
-
+        RestArea
     }
 }
