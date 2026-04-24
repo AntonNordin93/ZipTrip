@@ -46,13 +46,29 @@
                 // Rita själva linjen
                 L.polyline(latLngs, { color: '#18db67', weight: 6, opacity: 0.8 }).addTo(routeLayer);
 
-                // Rita START (Blå ring med mörk mitt)
-                L.circleMarker(latLngs[0], { radius: 10, color: '#3b82f6', fillColor: '#000', fillOpacity: 1, weight: 3 })
+                const startIcon = L.divIcon({
+                    className: 'bg-transparent border-0',
+                    html: `<div style="color:#3b82f6; filter:drop-shadow(0 0 8px rgba(59,130,246,0.8));"><svg width="28" height="28" viewBox="0 0 24 24" fill="#0f1219" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg></div>`,
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 14],
+                    popupAnchor: [0, -14]
+                });
+
+                const endIcon = L.divIcon({
+                    className: 'bg-transparent border-0',
+                    html: `<div style="color:#ffffff; filter:drop-shadow(0 0 8px rgba(255,255,255,0.8));"><svg width="28" height="28" viewBox="0 0 24 24" fill="#0f1219" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3" fill="currentColor"></circle></svg></div>`,
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 28],
+                    popupAnchor: [0, -28]
+                });
+
+                // Rita START (Ikon)
+                L.marker(latLngs[0], { icon: startIcon })
                     .addTo(routeLayer)
                     .bindPopup("<b>START:</b> " + startLoc);
 
-                // Rita MÅL (Vit ring med mörk mitt)
-                L.circleMarker(latLngs[latLngs.length - 1], { radius: 10, color: '#ffffff', fillColor: '#000', fillOpacity: 1, weight: 3 })
+                // Rita MÅL (Ikon)
+                L.marker(latLngs[latLngs.length - 1], { icon: endIcon })
                     .addTo(routeLayer)
                     .bindPopup("<b>MÅL:</b> " + endLoc);
 

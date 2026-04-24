@@ -20,12 +20,16 @@
 
         <div class="space-y-4">
             <div class="flex items-center gap-3">
-                <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 text-[#0f1219] text-xs font-bold">A</div>
-                <input asp-for="Input.StartLocation" id="start-location" class="w-full bg-background border border-input rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary" placeholder="Starting Point" />
+                <div class="w-8 h-8 rounded-full bg-[#3b82f6]/10 border border-[#3b82f6]/30 flex items-center justify-center flex-shrink-0" style="color: #3b82f6; box-shadow: 0 0 10px rgba(59,130,246,0.3);">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3" fill="currentColor"></circle></svg>
+                </div>
+                <input asp-for="Input.StartLocation" id="start-location" class="w-full bg-background border border-input rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#3b82f6] outline-none transition-all" placeholder="Starting Point" />
             </div>
             <div class="flex items-center gap-3">
-                <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 text-[#0f1219] text-xs font-bold">B</div>
-                <input asp-for="Input.EndLocation" id="end-location" class="w-full bg-background border border-input rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary" placeholder="Destination" />
+                <div class="w-8 h-8 rounded-full bg-white/5 border border-white/20 flex items-center justify-center flex-shrink-0 text-white shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3" fill="currentColor"></circle></svg>
+                </div>
+                <input asp-for="Input.EndLocation" id="end-location" class="w-full bg-background border border-input rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-white/50 focus:border-transparent outline-none transition-all" placeholder="Destination" />
             </div>
         </div>
 
