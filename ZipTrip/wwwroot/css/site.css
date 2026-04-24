@@ -2466,6 +2466,16 @@
       }
     }
   }
+  .hover\:bg-destructive\/90 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: color-mix(in srgb, #f03333 90%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-destructive) 90%, transparent);
+        }
+      }
+    }
+  }
   .hover\:bg-foreground\/5 {
     &:hover {
       @media (hover: hover) {
@@ -2833,6 +2843,11 @@
       height: calc(var(--spacing) * 14);
     }
   }
+  .lg\:h-\[100vh\] {
+    @media (width >= 64rem) {
+      height: 100vh;
+    }
+  }
   .lg\:h-full {
     @media (width >= 64rem) {
       height: 100%;
@@ -2846,6 +2861,11 @@
   .lg\:max-h-none {
     @media (width >= 64rem) {
       max-height: none;
+    }
+  }
+  .lg\:min-h-screen {
+    @media (width >= 64rem) {
+      min-height: 100vh;
     }
   }
   .lg\:w-1\/3 {
