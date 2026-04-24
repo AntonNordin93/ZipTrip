@@ -116,6 +116,8 @@
 
             btn.innerHTML = `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg> <span class="hidden lg:inline truncate">START NAVIGATION</span>`;
             btn.classList.replace("bg-destructive", "bg-primary");
+            btn.classList.replace("hover:bg-destructive/90", "hover:bg-primary/90");
+            btn.classList.replace("shadow-[0_0_15px_rgba(240,51,51,0.4)]", "shadow-[0_0_15px_rgba(24,219,103,0.4)]");
             btn.classList.replace("text-white", "text-[#0f1219]");
 
             if (routeLayer.getLayers().length > 0) {
@@ -128,6 +130,8 @@
         // STARTA GPS
         btn.innerHTML = `<svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg> <span class="hidden lg:inline truncate">STOP NAVIGATION</span>`;
         btn.classList.replace("bg-primary", "bg-destructive");
+        btn.classList.replace("hover:bg-primary/90", "hover:bg-destructive/90");
+        btn.classList.replace("shadow-[0_0_15px_rgba(24,219,103,0.4)]", "shadow-[0_0_15px_rgba(240,51,51,0.4)]");
         btn.classList.replace("text-[#0f1219]", "text-white");
 
         // Tvinga Leaflet att uppdatera storleken innan vi zoomar in (ifall fönstret buggat)
