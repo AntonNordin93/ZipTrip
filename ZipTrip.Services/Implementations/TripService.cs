@@ -15,11 +15,13 @@ namespace ZipTrip.Services.Implementations
     {
         private readonly ITripRepository _tripRepository;
         private readonly IRouteCalculatorService _routeCalculatorService;
+        private readonly IRouteStopService _routeStopService;
         private readonly IMapper _mapper;
-        public TripService(ITripRepository tripRepository, IRouteCalculatorService routeCalculatorService, IMapper mapper)
+        public TripService(ITripRepository tripRepository, IRouteCalculatorService routeCalculatorService, IRouteStopService routeStopService, IMapper mapper)
         {
             _tripRepository = tripRepository;
             _routeCalculatorService = routeCalculatorService;
+            _routeStopService = routeStopService;
             _mapper = mapper;
         }
         public async Task<TripResponse> CreateTripAsync(TripRequest request, string userId)
@@ -33,7 +35,7 @@ namespace ZipTrip.Services.Implementations
             {
                 trip.TotalDistanceKm = routeData.DistanceKm;
                 trip.EstimatedDurationHours = routeData.DurationHours;
-                
+
             }
 
             await _tripRepository.AddAsync(trip);
@@ -66,6 +68,8 @@ namespace ZipTrip.Services.Implementations
             {
                 trip.TotalDistanceKm = routeData.DistanceKm;
                 trip.EstimatedDurationHours = routeData.DurationHours;
+
+                trip.Stops.Clear();
 
             }
             await _tripRepository.UpdateAsync(trip);

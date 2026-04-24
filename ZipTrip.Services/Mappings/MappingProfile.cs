@@ -25,6 +25,7 @@ namespace ZipTrip.Services.Mappings
                 .ForMember(dest=> dest.UserFirstName, opt => opt.MapFrom(src => src.User.FirstName))
                 .ForMember(dest => dest.UserLastName, opt => opt.MapFrom(src => src.User.LastName))
                 .ForMember(dest=>dest.UserVehicleName, opt => opt.MapFrom(src => src.UserVehicle != null ? src.UserVehicle.Name : null))
+                .ForMember(dest => dest.DurationHours, opt => opt.MapFrom(src => src.EstimatedDurationHours))
                 .ForMember(dest => dest.Stops, opt => opt.MapFrom(src => src.Stops));
 
             CreateMap<RouteStop, StopDto>();

@@ -1,20 +1,29 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using ZipTrip.Domain.Entities;
+@using ZipTrip.Domain.Entities
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<div class="flex items-center space-x-4">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <a class="text-gray-600 hover:text-blue-600 text-sm font-medium" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-            Hej @User.Identity?.Name!
+<ul class="flex items-center gap-4 m-0 p-0 list-none">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li>
+        <a class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+            <svg class="h-5 w-5 hover:text-primary transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </a>
-        <form class="m-0 p-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button type="submit" class="text-gray-600 hover:text-red-600 text-sm font-medium transition-colors">Logga ut</button>
+    </li>
+    <li>
+        <form class="m-0 flex" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+            <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-md text-sm font-bold bg-primary text-[#0f1219] hover:scale-105 h-9 px-6 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] hover:shadow-[0_0_25px_hsl(150_100%_45%/0.5)] transition-all duration-200 border-none m-0">Logout</button>
         </form>
-    }
-    else
-    {
-        <a class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm" asp-area="Identity" asp-page="/Account/Login">Logga in</a>
-    }
-</div>
+    </li>
+}
+else
+{
+    <li>
+        <a class="text-sm font-bold text-muted-foreground hover:text-foreground transition-colors" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li>
+        <a class="inline-flex items-center justify-center gap-2 rounded-md text-sm font-bold bg-primary text-[#0f1219] hover:scale-105 h-9 px-6 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] hover:shadow-[0_0_25px_hsl(150_100%_45%/0.5)] transition-all duration-200" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+</ul>

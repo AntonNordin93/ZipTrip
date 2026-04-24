@@ -15,6 +15,8 @@ namespace ZipTrip.Domain.Entities
         public decimal? EstimatedStopTimesMinutes { get; set; }
         public string? Notes { get; set; }
 
+        public string? ExternalId { get; set; }
+        public string? Provider { get; set; }
         public Guid TripId { get; set; }
         public Trip Trip { get; set; }= null!;
     }

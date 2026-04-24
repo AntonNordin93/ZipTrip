@@ -20,7 +20,7 @@ namespace ZipTrip.Data.Repositories.Implementations
 
             return await _context.Trips
                 .Include(t => t.Stops)
-                .Include(t => t.UserVehicleId)
+                .Include(t => t.UserVehicle)
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
@@ -28,7 +28,7 @@ namespace ZipTrip.Data.Repositories.Implementations
         {
             return await _context.Trips
                 .Include(t => t.Stops)
-                .Include(t => t.UserVehicleId)
+                .Include(t => t.UserVehicle)
                 .Where(t => t.UserId == userId)
                 .OrderByDescending(t => t.StartDate)
                 .ToListAsync();
@@ -38,7 +38,7 @@ namespace ZipTrip.Data.Repositories.Implementations
         {
             return await _context.Trips
                 .Include(t => t.Stops)
-                .Include(t => t.UserVehicleId)
+                .Include(t => t.UserVehicle)
                 .OrderByDescending(t => t.StartDate)
                 .ToListAsync();
         }

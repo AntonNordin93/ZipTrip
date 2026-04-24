@@ -33,6 +33,7 @@
     --color-neon-cyan: #30e5f2; 
     --color-neon-pink: #f24694; 
     --color-neon-blue: #4d8df5; 
+    --color-neon-yellow: #eab308;
 
     --radius-lg: 0.5rem;
     --radius-md: calc(0.5rem - 2px);
