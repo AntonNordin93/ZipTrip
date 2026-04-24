@@ -20,6 +20,17 @@
     let routeLayer = L.layerGroup().addTo(map);
     let stopsLayer = L.layerGroup().addTo(map);
 
+    const themeColors = {
+        'Fuel': '#18db67',
+        'Charging': '#30e5f2',
+        'Restaurant': '#f89e21',
+        'Attraction': '#ce60f8',
+        'Camping': '#4d8df5',
+        'Lodging': '#f24694',
+        'RestArea': '#ff4757',
+        'Default': '#18db67'
+    };
+
     // Tvinga kartan att rita ut sig korrekt i containern
     setTimeout(() => { map.invalidateSize(); }, 500);
 
@@ -35,13 +46,13 @@
                 // Rita själva linjen
                 L.polyline(latLngs, { color: '#18db67', weight: 6, opacity: 0.8 }).addTo(routeLayer);
 
-                // Rita START (Grön ring med mörk mitt)
-                L.circleMarker(latLngs[0], { radius: 10, color: '#18db67', fillColor: '#000', fillOpacity: 1, weight: 3 })
+                // Rita START (Blå ring med mörk mitt)
+                L.circleMarker(latLngs[0], { radius: 10, color: '#3b82f6', fillColor: '#000', fillOpacity: 1, weight: 3 })
                     .addTo(routeLayer)
                     .bindPopup("<b>START:</b> " + startLoc);
 
-                // Rita MÅL (Röd ring med mörk mitt)
-                L.circleMarker(latLngs[latLngs.length - 1], { radius: 10, color: '#ff4444', fillColor: '#000', fillOpacity: 1, weight: 3 })
+                // Rita MÅL (Vit ring med mörk mitt)
+                L.circleMarker(latLngs[latLngs.length - 1], { radius: 10, color: '#ffffff', fillColor: '#000', fillOpacity: 1, weight: 3 })
                     .addTo(routeLayer)
                     .bindPopup("<b>MÅL:</b> " + endLoc);
 
@@ -77,12 +88,19 @@
                 stopsLayer.clearLayers();
 
                 if (result.success && result.stops && result.stops.length > 0) {
+                    const targetColor = themeColors[type] || themeColors['Default'];
+
                     result.stops.forEach(s => {
-                        // Använder standard Leaflet-nålar (L.marker)
-                        // Dessa ritas ALLTID ut, oavsett om Tailwind-CSS bråkar eller inte.
-                        L.marker([s.latitude, s.longitude])
-                            .addTo(stopsLayer)
-                            .bindPopup(`<b>${s.name || "Station"}</b>`);
+                        L.circleMarker([s.latitude, s.longitude], {
+                            radius: 8,
+                            color: targetColor,
+                            fillColor: '#0f1219',
+                            fillOpacity: 0.9,
+                            weight: 2,
+                            opacity: 1
+                        })
+                        .addTo(stopsLayer)
+                        .bindPopup(`<strong style="color:${targetColor}">${s.name || "Station"}</strong>`);
                     });
                 } else {
                     alert("Inga stopp hittades. TomTom returnerade tomt för denna kategori.");

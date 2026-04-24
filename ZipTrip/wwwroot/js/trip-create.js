@@ -29,7 +29,7 @@
         'Attraction': '#ce60f8',
         'Camping': '#4d8df5',
         'Lodging': '#f24694',
-        'RestArea': '#eab308',
+        'RestArea': '#ff4757',
         'Default': '#18db67'
     };
 
@@ -206,7 +206,8 @@
         document.querySelectorAll('.fetch-stops-btn').forEach(btn => {
             btn.addEventListener('click', async function () {
                 const type = this.getAttribute('data-type');
-                toggleLoader(true, `Locating ${type}s...`, type);
+                const displayType = type === 'RestArea' ? 'Rest Area' : type;
+                toggleLoader(true, `Locating ${displayType}s...`, type);
 
                 try {
                     const res = await fetch(`?handler=FetchStops&start=${encodeURIComponent(currentStart)}&end=${encodeURIComponent(currentEnd)}&type=${type}`);
@@ -240,13 +241,13 @@
         const latLngs = geometry.map(p => [p.latitude, p.longitude]);
         L.polyline(latLngs, { color: '#18db67', weight: 6 }).addTo(routeLayer);
 
-        // Rita Start-punkt (Grön med svart mitt)
-        L.circleMarker(latLngs[0], { radius: 10, color: '#18db67', fillColor: '#000', fillOpacity: 1, weight: 3 })
+        // Rita Start-punkt (Stark Blå med svart mitt, så den utmärker sig från mackar)
+        L.circleMarker(latLngs[0], { radius: 10, color: '#3b82f6', fillColor: '#000', fillOpacity: 1, weight: 3 })
             .addTo(routeLayer)
             .bindPopup("<b>START:</b> " + currentStart);
 
-        // Rita Mål-punkt (Slut) (Accent/Varning med svart mitt)
-        L.circleMarker(latLngs[latLngs.length - 1], { radius: 10, color: '#f89e21', fillColor: '#000', fillOpacity: 1, weight: 3 })
+        // Rita Mål-punkt (Slut) (Ren Vit med svart mitt)
+        L.circleMarker(latLngs[latLngs.length - 1], { radius: 10, color: '#ffffff', fillColor: '#000', fillOpacity: 1, weight: 3 })
             .addTo(routeLayer)
             .bindPopup("<b>DESTINATION:</b> " + currentEnd);
 
