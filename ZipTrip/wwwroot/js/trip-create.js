@@ -213,8 +213,20 @@
                     const result = await res.json();
                     stopsLayer.clearLayers();
                     if (result.success && result.stops) {
+                        const targetColor = themeColors[type] || themeColors['Default'];
+
                         result.stops.forEach(s => {
-                            L.marker([s.latitude, s.longitude]).addTo(stopsLayer).bindPopup(`<b>${s.name}</b>`);
+                            // Skapa en visuell snygg cirkel anpassad efter vald färg
+                            L.circleMarker([s.latitude, s.longitude], {
+                                radius: 8,
+                                color: targetColor,
+                                fillColor: '#0f1219',
+                                fillOpacity: 0.9,
+                                weight: 2,
+                                opacity: 1
+                            })
+                            .addTo(stopsLayer)
+                            .bindPopup(`<strong style="color:${targetColor}">${s.name}</strong>`);
                         });
                     }
                 } catch (err) { console.error(err); }
@@ -227,6 +239,17 @@
         routeLayer.clearLayers();
         const latLngs = geometry.map(p => [p.latitude, p.longitude]);
         L.polyline(latLngs, { color: '#18db67', weight: 6 }).addTo(routeLayer);
+
+        // Rita Start-punkt (Grön med svart mitt)
+        L.circleMarker(latLngs[0], { radius: 10, color: '#18db67', fillColor: '#000', fillOpacity: 1, weight: 3 })
+            .addTo(routeLayer)
+            .bindPopup("<b>START:</b> " + currentStart);
+
+        // Rita Mål-punkt (Slut) (Accent/Varning med svart mitt)
+        L.circleMarker(latLngs[latLngs.length - 1], { radius: 10, color: '#f89e21', fillColor: '#000', fillOpacity: 1, weight: 3 })
+            .addTo(routeLayer)
+            .bindPopup("<b>DESTINATION:</b> " + currentEnd);
+
         map.fitBounds(L.polyline(latLngs).getBounds(), { padding: [50, 50] });
 
         // --- FUSK FÖR ATT TESTA GPS ---
