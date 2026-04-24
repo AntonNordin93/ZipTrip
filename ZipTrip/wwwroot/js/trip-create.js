@@ -114,7 +114,7 @@
             if (userLocationMarker) map.removeLayer(userLocationMarker);
             userLocationMarker = null;
 
-            btn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg> START NAVIGATION`;
+            btn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg> <span class="hidden lg:inline">START NAVIGATION</span>`;
             btn.classList.replace("bg-destructive", "bg-primary");
             btn.classList.replace("text-white", "text-[#0f1219]");
 
@@ -126,7 +126,7 @@
         }
 
         // STARTA GPS
-        btn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg> STOP NAVIGATION`;
+        btn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg> <span class="hidden lg:inline">STOP NAVIGATION</span>`;
         btn.classList.replace("bg-primary", "bg-destructive");
         btn.classList.replace("text-[#0f1219]", "text-white");
 
@@ -180,10 +180,21 @@
                     body: new FormData(e.target),
                     headers: { 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value }
                 });
-                const result = await response.json();
+                    const result = await response.json();
 
                 if (result.success) {
-                    drawRoute(result.geometry);
+
+                    // Gör så kartan syns på mobilen när rutten är genererad (visas innan display var hidden)
+                    const mapContainer = document.getElementById('map-container');
+                    const sidebarContainer = document.getElementById('sidebar-container');
+                    if (mapContainer) mapContainer.classList.remove('hidden');
+                    if (sidebarContainer && window.innerWidth < 1024) {
+                        sidebarContainer.classList.remove('h-full', 'overflow-y-auto');
+                        sidebarContainer.classList.add('h-auto', 'overflow-visible'); // Krymp menyn på mobil så kartan syns!
+                    }
+
+                    // Se till att Leaflet ritar om ordentligt
+                    setTimeout(() => { map.invalidateSize(); drawRoute(result.geometry); }, 300);
 
                     const menuRes = await fetch('?handler=DetailsMenu');
                     const menuHtml = await menuRes.text();
@@ -195,6 +206,31 @@
                     attachStopButtons();
                     const gpsBtn = document.getElementById("start-gps-btn");
                     if (gpsBtn) gpsBtn.addEventListener("click", toggleNavigation);
+
+                    // Lägg till mobil-dropdown logik för Stops-menyn om den finns
+                    const toggleBtn = document.getElementById('toggle-stops-menu');
+                    const stopsContainer = document.getElementById('stops-container');
+                    const chevron = document.getElementById('stops-chevron');
+                    if(toggleBtn && stopsContainer && chevron) {
+                        toggleBtn.addEventListener('click', () => {
+                            stopsContainer.classList.toggle('hidden');
+                            if(stopsContainer.classList.contains('hidden')) {
+                                chevron.style.transform = "rotate(0deg)";
+                            } else {
+                                chevron.style.transform = "rotate(180deg)";
+                            }
+                        });
+
+                        // Dölj dropdownen igen när man valt något i mobilen och rensa menyn från skärmen
+                        document.querySelectorAll('.fetch-stops-btn').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                if(window.innerWidth < 1024) {
+                                    stopsContainer.classList.add('hidden');
+                                    chevron.style.transform = "rotate(0deg)";
+                                }
+                            });
+                        });
+                    }
                 }
             } catch (err) { console.error(err); }
             finally { toggleLoader(false); }

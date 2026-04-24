@@ -1,22 +1,34 @@
 ﻿@model ZipTrip.Pages.Trip.CreateModel
 
-<div id="details-menu" class="fade-in space-y-8 pb-10">
-    <div class="border-b border-border pb-6">
-        <span class="text-xs font-bold text-primary uppercase tracking-widest block mb-2">Trip Ready</span>
-        <h1 class="text-3xl font-display font-bold text-foreground truncate" id="display-title">Resplan</h1>
-        <p class="text-muted-foreground mt-2 font-medium" id="display-distance">0 km</p>
-        <button type="button" onclick="window.location.reload()" class="mt-4 text-xs font-bold text-accent hover:text-white transition-colors cursor-pointer uppercase underline">← Back / Edit</button>
-        
-        <button type="button" id="start-gps-btn" class="mt-6 w-full bg-primary hover:bg-primary/90 text-[#0f1219] font-bold text-lg rounded-xl p-4 shadow-[0_0_20px_rgba(24,219,103,0.4)] transition-all hover:scale-105 flex justify-center items-center gap-2 cursor-pointer">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg>
-            START NAVIGATION
-        </button>
+<div id="details-menu" class="fade-in pb-4 flex flex-col h-full bg-card">
+    <div class="border-b border-border pb-4 flex justify-between items-center lg:items-start lg:flex-col lg:space-y-2">
+        <div class="flex-1 min-w-0">
+            <span class="text-[10px] font-bold text-primary uppercase tracking-widest block mb-1">Trip Ready</span>
+            <h1 class="text-xl lg:text-3xl font-display font-bold text-foreground truncate" id="display-title">Resplan</h1>
+            <p class="text-xs lg:text-sm text-muted-foreground font-medium" id="display-distance">0 km</p>
+        </div>
+        <div class="flex flex-col items-end lg:items-start lg:w-full space-y-2">
+            <button type="button" onclick="window.location.reload()" class="text-[10px] font-bold text-accent hover:text-white transition-colors cursor-pointer uppercase underline">← Back/Edit</button>
+            <button type="button" id="start-gps-btn" class="w-12 h-12 lg:w-full lg:h-14 bg-primary hover:bg-primary/90 text-[#0f1219] font-bold rounded-xl lg:text-lg shadow-[0_0_15px_rgba(24,219,103,0.4)] transition-all hover:scale-105 flex justify-center items-center gap-2 cursor-pointer">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg>
+                <span class="hidden lg:inline">START NAVIGATION</span>
+            </button>
+        </div>
     </div>
 
-    <div class="space-y-6">
-        <h3 class="text-xl font-display font-bold text-foreground">Find Stops</h3>
-        
-        <div class="space-y-3">
+    <!-- Mobil Dropdown Toggle Knapp & Stops Lista -->
+    <div class="relative w-full flex-1 flex flex-col mt-4 lg:mt-0 z-50">
+        <div class="lg:hidden">
+            <button id="toggle-stops-menu" class="w-full bg-muted/50 border border-border text-foreground font-bold p-3 rounded-xl flex items-center justify-between">
+                <span>Find Stops</span>
+                <svg id="stops-chevron" class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+        </div>
+
+        <div id="stops-container" class="hidden lg:block absolute lg:relative left-0 right-0 top-full lg:top-auto mt-2 lg:mt-6 bg-card/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none border border-border lg:border-none rounded-xl shadow-2xl lg:shadow-none p-4 lg:p-0 z-[100] max-h-[50vh] overflow-y-auto lg:h-full lg:max-h-none w-full">
+            <h3 class="text-xl font-display font-bold text-foreground hidden lg:block mb-4">Find Stops</h3>
+
+            <div class="space-y-2 lg:space-y-3 pb-8">
             <!-- Fuel Button -->
             <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#18db67]/10 border border-border hover:border-[#18db67] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Fuel">
                 <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#18db67] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(24,219,103,0.3)] shrink-0">
@@ -84,13 +96,13 @@
             </button>
 
             <!-- RestArea Button -->
-            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#ff4757]/10 border border-border hover:border-[#ff4757] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="RestArea">
-                <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#ff4757] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(255,71,87,0.3)] shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12V6"></path><path stroke-linecap="round" stroke-linejoin="round" d="M9 12V6"></path><path stroke-linecap="round" stroke-linejoin="round" d="M4 12h16"></path><path stroke-linecap="round" stroke-linejoin="round" d="M5 12c0 3.866 3.134 7 7 7s7-3.134 7-7"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 19v3"></path><path stroke-linecap="round" stroke-linejoin="round" d="M8 22h8"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 6c-1.5 0-1.5-2-1.5-2s-1.5 2-1.5 2 1.5 2 1.5 2 1.5-2 1.5-2z"></path></svg>
+            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#ff4757]/10 border border-border hover:border-[#ff4757] rounded-xl lg:rounded-2xl p-3 lg:p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="RestArea">
+                <div class="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-card flex items-center justify-center text-[#ff4757] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(255,71,87,0.3)] shrink-0">
+                    <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12V6"></path><path stroke-linecap="round" stroke-linejoin="round" d="M9 12V6"></path><path stroke-linecap="round" stroke-linejoin="round" d="M4 12h16"></path><path stroke-linecap="round" stroke-linejoin="round" d="M5 12c0 3.866 3.134 7 7 7s7-3.134 7-7"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 19v3"></path><path stroke-linecap="round" stroke-linejoin="round" d="M8 22h8"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 6c-1.5 0-1.5-2-1.5-2s-1.5 2-1.5 2 1.5 2 1.5 2 1.5-2 1.5-2z"></path></svg>
                 </div>
                 <div class="text-left flex-1">
-                    <div class="font-bold text-foreground group-hover:text-[#ff4757] transition-colors">Rest Areas</div>
-                    <div class="text-xs text-muted-foreground">Take a break</div>
+                    <div class="font-bold text-foreground group-hover:text-[#ff4757] transition-colors text-sm lg:text-base">Rest Areas</div>
+                    <div class="text-[10px] lg:text-xs text-muted-foreground w-max truncate">Take a break</div>
                 </div>
             </button>
         </div>
