@@ -51,7 +51,21 @@ namespace ZipTrip.Data.Repositories.Implementations
 
         public async Task UpdateAsync(Trip trip)
         {
-            _context.Trips.Update(trip);
+            // _context.Trips.Update(trip);
+            // EF Core will track the changes we made in the service layer
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ClearStopsForTripAsync(Guid tripId)
+        {
+            var stops = await _context.RouteStops.Where(s => s.TripId == tripId).ToListAsync();
+            _context.RouteStops.RemoveRange(stops);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddStopsDirectlyAsync(IEnumerable<RouteStop> stops)
+        {
+            await _context.RouteStops.AddRangeAsync(stops);
             await _context.SaveChangesAsync();
         }
 

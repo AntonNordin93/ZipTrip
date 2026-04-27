@@ -12,6 +12,8 @@ namespace ZipTrip.Data.Repositories.Interfaces
         Task<IEnumerable<Trip>> GetAllAsync();
         Task AddAsync(Trip trip);
         Task UpdateAsync(Trip trip);
+        Task ClearStopsForTripAsync(Guid tripId);
+        Task AddStopsDirectlyAsync(IEnumerable<RouteStop> stops);
         Task DeleteAsync(Guid id);
         Task <bool> ExistsAsync(Guid id);
     }

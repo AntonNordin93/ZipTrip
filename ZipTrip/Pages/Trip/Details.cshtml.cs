@@ -11,19 +11,33 @@ namespace ZipTrip.Pages.Trip
         private readonly IRouteStopService _routeStopService;
         private readonly IRouteCalculatorService _routeCalculatorService;
         private readonly IAIRecommendationService _aiRecommendationService;
+        private readonly ITripService _tripService;
 
-        public DetailsModel(IRouteStopService routeStopService, IRouteCalculatorService routeCalculatorService, IAIRecommendationService aiRecommendationService)
+        public DetailsModel(IRouteStopService routeStopService, IRouteCalculatorService routeCalculatorService, IAIRecommendationService aiRecommendationService, ITripService tripService)
         {
             _routeStopService = routeStopService;
             _routeCalculatorService = routeCalculatorService;
             _aiRecommendationService = aiRecommendationService;
+            _tripService = tripService;
         }
 
         public TripResponse? Trip { get; set; }
         public string? AIRecommendation { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string start, string end)
+        public async Task<IActionResult> OnGetAsync(Guid? id, string? start, string? end)
         {
+            // IF SPARA FRÅN PROFILEN VIA GUID ID:
+            if (id.HasValue && id.Value != Guid.Empty && User.Identity?.IsAuthenticated == true)
+            {
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    Trip = await _tripService.GetTripByIdAsync(id.Value, userId);
+                    if (Trip != null) return Page();
+                }
+            }
+
+            // GAMLA LOGIKEN FÖR DETAILS (FALLBACK IFALL SPARA INTE ÄR AKTIVERAT)
             if (string.IsNullOrEmpty(start) || string.IsNullOrEmpty(end))
                 return RedirectToPage("/Trip/Create");
 
@@ -31,12 +45,14 @@ namespace ZipTrip.Pages.Trip
             {
                 StartLocation = start,
                 EndLocation = end,
-                Title = "Din Resplan"
+                Title = "Your Trip Plan"
             };
 
             try 
             {
                 var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end);
+                Trip.DurationHours = routeData.DurationHours;
+                Trip.TotalDistanceKm = routeData.DistanceKm;
                 AIRecommendation = await _aiRecommendationService.GetAIContextRecommendationsAsync(routeData.Geometry);
             }
             catch 
@@ -45,6 +61,23 @@ namespace ZipTrip.Pages.Trip
             }
 
             return Page();
+        }
+        
+        public async Task<IActionResult> OnPostUpdateTripAsync([FromBody] TripRequest request, Guid id)
+        {
+            if (User.Identity?.IsAuthenticated != true)
+                return new JsonResult(new { success = false, message = "Not authenticated" });
+
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return new JsonResult(new { success = false, message = "User not found" });
+
+            var updatedTrip = await _tripService.UpdateTripAsync(id, request, userId);
+            
+            if (updatedTrip != null)
+                return new JsonResult(new { success = true });
+
+            return new JsonResult(new { success = false, message = "Could not update trip" });
         }
 
         public async Task<JsonResult> OnGetFetchStopsAsync(string start, string end, string type)

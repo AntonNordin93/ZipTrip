@@ -19,6 +19,7 @@
     // Skapa separata lager för rutten och stoppen så de inte krockar
     let routeLayer = L.layerGroup().addTo(map);
     let stopsLayer = L.layerGroup().addTo(map);
+    let selectedStopsLayer = L.layerGroup().addTo(map);
 
     const themeColors = {
         'Fuel': '#18db67',
@@ -30,6 +31,25 @@
         'RestArea': '#ff4757',
         'Default': '#18db67'
     };
+
+    let selectedStopsArray = [];
+
+    // Parse pre-saved stops if we are entering an existing trip
+    const existingStopsAttr = mapElement.getAttribute("data-stops");
+    if(existingStopsAttr && existingStopsAttr !== "") {
+        try {
+            // Un-escape any potential HTML encoded characters just safely parse it
+            const preSaved = JSON.parse(existingStopsAttr);
+            if(preSaved && Array.isArray(preSaved)) {
+                selectedStopsArray = preSaved.map(s => ({
+                    Name: s.Name,
+                    Latitude: s.Lat,
+                    Longitude: s.Lng,
+                    Type: s.Type
+                }));
+            }
+        } catch(e) { console.error("Could not parse existing stops", e, existingStopsAttr); }
+    }
 
     // Tvinga kartan att rita ut sig korrekt i containern
     setTimeout(() => { map.invalidateSize(); }, 500);
@@ -75,13 +95,87 @@
                 // Zooma in kartan så att hela rutten syns
                 map.fitBounds(L.polyline(latLngs).getBounds(), { padding: [50, 50] });
 
-                const distanceEl = document.getElementById('trip-distance');
-                if (distanceEl) {
-                    distanceEl.innerText = Math.round(data.distanceKm) + " km";
-                }
             }
         } catch (e) {
             console.error("Fel vid laddning av rutt:", e);
+        }
+    }
+
+    // Rita ut de redan sparade stoppen!
+    function renderSavedStops() {
+        selectedStopsLayer.clearLayers();
+        selectedStopsArray.forEach(s => {
+            const targetColor = themeColors[s.Type] || themeColors['Default'];
+            L.circleMarker([s.Latitude, s.Longitude], {
+                radius: 10,
+                color: '#ffffff',
+                fillColor: targetColor,
+                fillOpacity: 1,
+                weight: 3,
+                opacity: 1
+            }).addTo(selectedStopsLayer).bindPopup(`<b>${s.Name}</b> (Selected)`);
+        });
+    }
+
+    let progressInterval;
+
+    // Lång overlay loader identisk med Create vyn
+    function toggleLoader(show, title = "Scanning...", type = "Default") {
+        const overlay = document.getElementById("loading-overlay");
+        if (!overlay) return;
+
+        const titleEl = document.getElementById("loading-title");
+        const statusEl = document.getElementById("loading-status-text");
+        const percentEl = document.getElementById("loading-percentage");
+        const progress = document.getElementById("loader-progress");
+        const ringBg = document.getElementById("loader-ring-bg");
+        const ringSpin = document.getElementById("loader-ring-spin");
+        const box = document.getElementById("loader-box");
+
+        clearInterval(progressInterval);
+
+        if (show) {
+            const color = themeColors[type] || themeColors['Default'];
+
+            if (titleEl) titleEl.innerText = title;
+            if (ringBg) ringBg.style.borderColor = color;
+            if (ringSpin) {
+                ringSpin.style.borderColor = color;
+                ringSpin.style.borderTopColor = 'transparent';
+            }
+            if (box) box.style.boxShadow = `0 0 50px ${color}40`;
+            if (percentEl) { percentEl.style.color = color; percentEl.innerText = "0%"; }
+            if (progress) { progress.style.backgroundColor = color; progress.style.width = "0%"; }
+            if (statusEl) statusEl.innerText = "Connecting to satellites...";
+
+            overlay.style.setProperty('display', 'flex', 'important');
+            overlay.classList.remove('hidden');
+
+            let currentVal = 0;
+            progressInterval = setInterval(() => {
+                if (currentVal < 40) currentVal += Math.random() * 2;
+                else if (currentVal < 70) currentVal += Math.random() * 1.5;
+                else if (currentVal < 95) currentVal += Math.random() * 0.5;
+                if (currentVal > 99) currentVal = 99;
+
+                let roundedVal = Math.floor(currentVal);
+                if (progress) progress.style.width = roundedVal + "%";
+                if (percentEl) percentEl.innerText = roundedVal + "%";
+
+                if (statusEl) {
+                    if (roundedVal > 20 && roundedVal < 60) statusEl.innerText = "Scanning route area...";
+                    else if (roundedVal >= 60 && roundedVal < 85) statusEl.innerText = "Filtering results...";
+                    else if (roundedVal >= 85) statusEl.innerText = "Finalizing data...";
+                }
+            }, 300);
+        } else {
+            if (progress) progress.style.width = "100%";
+            if (percentEl) percentEl.innerText = "100%";
+            if (statusEl) statusEl.innerText = "Complete!";
+            setTimeout(() => {
+                overlay.style.setProperty('display', 'none', 'important');
+                overlay.classList.add('hidden');
+            }, 400);
         }
     }
 
@@ -89,12 +183,9 @@
     document.querySelectorAll('.fetch-stops-btn').forEach(btn => {
         btn.addEventListener('click', async function () {
             const type = this.getAttribute('data-type');
+            const displayType = type === 'RestArea' ? 'Rest Area' : type;
 
-            // Visa laddningssnurran
-            if (spinner) {
-                spinner.classList.remove('hidden');
-                spinner.classList.add('flex');
-            }
+            toggleLoader(true, `Locating ${displayType}s...`, type);
 
             try {
                 const response = await fetch(`?handler=FetchStops&start=${encodeURIComponent(startLoc)}&end=${encodeURIComponent(endLoc)}&type=${type}`);
@@ -116,7 +207,12 @@
                             opacity: 1
                         })
                         .addTo(stopsLayer)
-                        .bindPopup(`<strong style="color:${targetColor}">${s.name || "Station"}</strong>`);
+                        .bindPopup(`
+                            <div style="text-align:center;">
+                                <strong style="color:${targetColor}">${s.name || "Stop"}</strong><br>
+                                <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:${targetColor}; color:#000; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${s.name}" data-lat="${s.latitude}" data-lng="${s.longitude}" data-type="${type}">Add to Trip</button>
+                            </div>
+                        `);
                     });
                 } else {
                     alert("Inga stopp hittades. TomTom returnerade tomt för denna kategori.");
@@ -125,15 +221,93 @@
                 console.error("Fel vid hämtning av API:", e);
                 alert("Nätverksfel vid hämtning av stopp.");
             } finally {
-                // Dölj laddningssnurran
-                if (spinner) {
-                    spinner.classList.add('hidden');
-                    spinner.classList.remove('flex');
-                }
+                toggleLoader(false);
             }
         });
     });
 
+    // Lyssna på klick för "Add to Trip" i popups
+    document.addEventListener('click', function(e) {
+        if(e.target && e.target.classList.contains('add-stop-btn')) {
+            const btn = e.target;
+            const name = btn.getAttribute('data-name');
+            const lat = parseFloat(btn.getAttribute('data-lat'));
+            const lng = parseFloat(btn.getAttribute('data-lng'));
+            const type = btn.getAttribute('data-type');
+
+            // Spara i arrayen if it doesn't already exist
+            if(!selectedStopsArray.find(s => s.Latitude === lat && s.Longitude === lng)) {
+                selectedStopsArray.push({
+                    Name: name,
+                    Latitude: lat,
+                    Longitude: lng,
+                    Type: type
+                });
+            }
+
+            // Immediately visually update!
+            renderSavedStops();
+            map.closePopup();
+        }
+    });
+
+    // Hantera spara knappen 
+    const updateBtn = document.getElementById("update-trip-btn");
+    const updateForm = document.getElementById("update-form");
+    if(updateBtn) {
+        updateBtn.addEventListener("click", async () => {
+            updateBtn.innerHTML = '<span class="text-[#0f1219] font-bold">SAVING...</span>';
+            const tripId = mapElement.getAttribute("data-trip-id");
+
+            // Mocking a Request since we only have start/end logic available right here
+            // On a real payload you want to fill these values from the server form
+            const requestPayload = {
+                StartLocation: startLoc,
+                EndLocation: endLoc,
+                SelectedStops: selectedStopsArray
+            };
+
+            const tokenInput = updateForm ? updateForm.querySelector('input[name="__RequestVerificationToken"]') : null;
+            // Get the token from script tag if the form input failed to mount for some reason
+            const token = (tokenInput ? tokenInput.value : "") || (window.antiForgeryToken || "");
+
+            try {
+                const res = await fetch(`?handler=UpdateTrip&id=${tripId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify(requestPayload)
+                });
+
+                if(!res.ok) {
+                    throw new Error("HTTP error " + res.status);
+                }
+
+                const svResult = await res.json();
+                if(svResult.success) {
+                    updateBtn.innerHTML = '<span class="text-[#0f1219] font-bold">SAVED ✓</span>';
+                    setTimeout(() => updateBtn.innerHTML = `
+                        <svg class="w-5 h-5 shrink-0 text-[#0f1219]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                        <span class="hidden lg:inline truncate">SAVE CHANGES</span>
+                    `, 2000);
+                } else {
+                    updateBtn.innerHTML = '<span class="text-[#0f1219] font-bold">ERROR</span>';
+                    setTimeout(() => updateBtn.innerHTML = `
+                        <svg class="w-5 h-5 shrink-0 text-[#0f1219]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                        <span class="hidden lg:inline truncate">SAVE CHANGES</span>
+                    `, 2000);
+                }
+            } catch(e) {
+                console.error(e);
+                updateBtn.innerHTML = '<span class="text-[#0f1219] font-bold">FAILED</span>';
+                setTimeout(() => updateBtn.innerHTML = `
+                    <svg class="w-5 h-5 shrink-0 text-[#0f1219]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    <span class="hidden lg:inline truncate">SAVE CHANGES</span>
+                `, 2000);
+            }
+        });
+    }
+
     // Kör igång kartan!
     initMap();
+    renderSavedStops();
 });

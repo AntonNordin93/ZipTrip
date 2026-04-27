@@ -46,11 +46,9 @@
                         </div>
 
                         <div class="flex items-center gap-3 shrink-0 self-end md:self-auto w-full md:w-auto justify-end">
-                            <button type="button" 
-                                    data-trip-id="@trip.Id" 
-                                    class="view-trip-btn px-4 py-2 bg-foreground/10 hover:bg-foreground/20 text-foreground text-sm font-bold rounded-xl transition-colors">
+                            <a href="/Trip/Details?id=@trip.Id" class="px-4 py-2 bg-foreground/10 hover:bg-foreground/20 text-foreground text-sm font-bold rounded-xl transition-colors">
                                 View
-                            </button>
+                            </a>
     
                             <form method="post" asp-page-handler="Delete" class="m-0" onsubmit="return confirm('Are you sure you want to delete this trip?');">
                                 <input type="hidden" name="id" value="@trip.Id" />
@@ -74,66 +72,6 @@
     </div>
 </div>
 
-<!-- Modal Container for Partial View -->
-<div id="trip-modal" class="fixed inset-0 z-50 hidden bg-background/90 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-card w-full max-w-5xl h-[85vh] rounded-[32px] shadow-2xl flex flex-col overflow-hidden relative border border-border">
-        <!-- Close Button -->
-        <button id="close-modal-btn" class="absolute top-4 right-4 z-50 w-10 h-10 bg-background/50 hover:bg-destructive text-foreground hover:text-white rounded-full flex items-center justify-center transition-colors shadow">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-        <!-- Content injected here -->
-        <div id="modal-content" class="w-full h-full flex flex-col md:flex-row">
-            <div class="flex items-center justify-center w-full h-full">
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const modal = document.getElementById("trip-modal");
-            const modalContent = document.getElementById("modal-content");
-            const closeBtn = document.getElementById("close-modal-btn");
-
-            document.querySelectorAll(".view-trip-btn").forEach(btn => {
-                btn.addEventListener("click", async function (e) {
-                    const tripId = this.getAttribute("data-trip-id");
-                    
-                    // Show modal with loading state
-                    modalContent.innerHTML = '<div class="flex items-center justify-center w-full h-full"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>';
-                    modal.classList.remove("hidden");
-                    document.body.style.overflow = "hidden"; // Prevent background scrolling
-
-                    try {
-                        const response = await fetch(`?handler=TripDetails&id=${tripId}`);
-                        if(response.ok) {
-                            const html = await response.text();
-                            modalContent.innerHTML = html;
-                            
-                            // Re-initialize map if the script is loaded or fire an event
-                            if(typeof initModalMap === 'function') {
-                                setTimeout(initModalMap, 200);
-                            } else {
-                                // Fallback: dispatch custom event if scripts manage themselves
-                                document.dispatchEvent(new CustomEvent('tripModalLoaded', { detail: { tripId: tripId }}));
-                            }
-                        } else {
-                            modalContent.innerHTML = '<div class="p-8 text-center text-destructive">Failed to load trip details.</div>';
-                        }
-                    } catch (error) {
-                        modalContent.innerHTML = '<div class="p-8 text-center text-destructive">Network error occurred.</div>';
-                    }
-                });
-            });
-
-            closeBtn.addEventListener("click", () => {
-                modal.classList.add("hidden");
-                document.body.style.overflow = "auto";
-                modalContent.innerHTML = ""; // Clear content to destroy map instances
-            });
-        });
-    </script>
 }
