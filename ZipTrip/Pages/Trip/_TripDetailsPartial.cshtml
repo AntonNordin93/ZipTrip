@@ -4,11 +4,15 @@
     <div class="border-b border-border pb-4 flex justify-between items-center lg:items-start lg:flex-col lg:space-y-2">
         <div class="flex-1 min-w-0">
             <span class="text-[10px] font-bold text-primary uppercase tracking-widest block mb-1">Trip Ready</span>
-            <h1 class="text-xl lg:text-3xl font-display font-bold text-foreground truncate" id="display-title">Resplan</h1>
+            <h1 class="text-xl lg:text-3xl font-display font-bold text-foreground truncate" id="display-title">Trip Plan</h1>
             <p class="text-xs lg:text-sm text-muted-foreground font-medium" id="display-distance">0 km</p>
         </div>
         <div class="flex flex-col items-end lg:items-start lg:w-full space-y-2">
-            <button type="button" onclick="window.location.reload()" class="text-[10px] font-bold text-accent hover:text-white transition-colors cursor-pointer uppercase underline">← Back/Edit</button>
+            <button type="button" onclick="window.location.reload()" class="text-[10px] font-bold text-accent hover:text-white transition-colors cursor-pointer uppercase underline">&larr; BACK/EDIT</button>
+            <button type="button" id="save-trip-btn" class="w-12 h-12 lg:w-full lg:h-10 bg-primary hover:bg-primary/90 text-[#0f1219] font-bold rounded-xl lg:text-sm transition-all hover:scale-105 flex justify-center items-center gap-2 cursor-pointer mb-2 shadow-[0_0_15px_rgba(24,219,103,0.4)]">
+                <svg class="w-5 h-5 shrink-0 text-[#0f1219]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                <span class="hidden lg:inline truncate">SAVE TRIP</span>
+            </button>
             <button type="button" id="start-gps-btn" class="w-12 h-12 lg:w-full lg:h-14 bg-primary hover:bg-primary/90 text-[#0f1219] font-bold rounded-xl lg:text-lg shadow-[0_0_15px_rgba(24,219,103,0.4)] transition-all hover:scale-105 flex justify-center items-center gap-2 cursor-pointer overflow-hidden">
                 <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg>
                 <span class="hidden lg:inline truncate">START NAVIGATION</span>

@@ -56,5 +56,8 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        var savedTripDetails = null; // Store trip payload globally
+    </script>
     <script src="~/js/trip-create.js" asp-append-version="true"></script>
 }

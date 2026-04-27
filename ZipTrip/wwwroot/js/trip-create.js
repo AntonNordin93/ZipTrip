@@ -176,13 +176,24 @@
             currentStart = document.getElementById("start-location").value;
             currentEnd = document.getElementById("end-location").value;
 
+            // Hämta formulärdata och token INNAN formuläret kapas från DOM:en!
+            const fd = new FormData(e.target);
+            const antiForgeryToken = document.querySelector('input[name="__RequestVerificationToken"]')?.value || "";
+            const tripRequestPayload = {
+                Title: fd.get("Input.Title") || "My Trip",
+                StartLocation: currentStart,
+                EndLocation: currentEnd,
+                StartDate: new Date().toISOString(),
+                VehicleType: parseInt(fd.get("Input.VehicleType")) || 0
+            };
+
             toggleLoader(true, "Planning Route...", "Default");
 
             try {
                 const response = await fetch('?handler=OnPostAsync', {
                     method: 'POST',
-                    body: new FormData(e.target),
-                    headers: { 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value }
+                    body: fd,
+                    headers: { 'RequestVerificationToken': antiForgeryToken }
                 });
                     const result = await response.json();
 
@@ -222,7 +233,6 @@
                             }
                         });
 
-                        // Dölj dropdownen igen när man valt något i mobilen och rensa menyn från skärmen
                         document.querySelectorAll('.fetch-stops-btn').forEach(btn => {
                             btn.addEventListener('click', () => {
                                 if(window.innerWidth < 1024) {
@@ -232,6 +242,51 @@
                             });
                         });
                     }
+
+                    // SPARA RESA FUNKTION
+                    const saveTripBtn = document.getElementById("save-trip-btn");
+                    if (saveTripBtn) {
+                        saveTripBtn.addEventListener('click', async () => {
+                            const originalHtml = saveTripBtn.innerHTML;
+                            saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">SAVING...</span>';
+                            saveTripBtn.disabled = true;
+
+                            try {
+                                const res = await fetch('?handler=SaveTrip', {
+                                    method: 'POST',
+                                    headers: { 
+                                        'Content-Type': 'application/json',
+                                        // Använd token vi sparat från ovan!
+                                        'RequestVerificationToken': antiForgeryToken
+                                    },
+                                    body: JSON.stringify(tripRequestPayload)
+                                });
+
+                                const svResult = await res.json();
+                                if(svResult.success) {
+                                    saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">SAVED ✓</span>';
+                                    saveTripBtn.classList.replace("bg-primary/90", "bg-primary");
+                                } else {
+                                    if(svResult.message == "Not authenticated") {
+                                        alert("You must be logged in to save trips!");
+                                    }
+                                    saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">FAILED!</span>';
+                                    setTimeout(() => {
+                                        saveTripBtn.innerHTML = originalHtml;
+                                        saveTripBtn.disabled = false;
+                                    }, 2000);
+                                }
+                            } catch(err) {
+                                console.error(err);
+                                saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">ERROR</span>';
+                                setTimeout(() => {
+                                        saveTripBtn.innerHTML = originalHtml;
+                                        saveTripBtn.disabled = false;
+                                    }, 2000);
+                            }
+                        });
+                    }
+
                 }
             } catch (err) { console.error(err); }
             finally { toggleLoader(false); }

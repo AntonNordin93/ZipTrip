@@ -37,6 +37,7 @@ namespace  ZipTrip.Areas.Identity.Pages.Account.Manage
         /// </summary>
         
         public static string Vehicles => "Vehicles";
+        public static string Trips => "Trips";
         public static string DownloadPersonalData => "DownloadPersonalData";
 
         /// <summary>
@@ -117,6 +118,7 @@ namespace  ZipTrip.Areas.Identity.Pages.Account.Manage
         /// </summary>
         
         public static string VehiclesNavClass(ViewContext viewContext) => PageNavClass(viewContext, Vehicles);
+        public static string TripsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Trips);
         public static string PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string
