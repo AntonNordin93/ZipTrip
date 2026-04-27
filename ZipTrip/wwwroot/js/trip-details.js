@@ -182,6 +182,12 @@
     // 3. Hantera knapptryckningarna för att hämta stopp
     document.querySelectorAll('.fetch-stops-btn').forEach(btn => {
         btn.addEventListener('click', async function () {
+            // Close dropdown if open
+            const stopsContainer = document.getElementById('stops-container');
+            const stopsChevron = document.getElementById('stops-chevron');
+            if(stopsContainer) stopsContainer.classList.add('hidden');
+            if(stopsChevron) stopsChevron.style.transform = "rotate(0deg)";
+
             const type = this.getAttribute('data-type');
             const displayType = type === 'RestArea' ? 'Rest Area' : type;
 

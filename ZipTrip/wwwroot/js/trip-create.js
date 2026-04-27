@@ -18,6 +18,8 @@
     let selectedStopsLayer = L.layerGroup().addTo(map);
 
     let selectedStopsArray = [];
+    window.selectedStopsArray = selectedStopsArray;
+    let selectedRouteType = "fastest";
 
     // GPS Variabler
     let userLocationMarker = null;
@@ -188,7 +190,7 @@
                 EndLocation: currentEnd,
                 StartDate: new Date().toISOString(),
                 VehicleType: parseInt(fd.get("Input.VehicleType")) || 0,
-                SelectedStops: selectedStopsArray
+                SelectedStops: window.selectedStopsArray || []
             };
             window.tripRequestPayloadRef = tripRequestPayload;
 
@@ -224,26 +226,102 @@
                     const gpsBtn = document.getElementById("start-gps-btn");
                     if (gpsBtn) gpsBtn.addEventListener("click", toggleNavigation);
 
-                    // Lägg till mobil-dropdown logik för Stops-menyn om den finns
-                    const toggleBtn = document.getElementById('toggle-stops-menu');
+                    // DROPDOWN LOGIC FÖR ROUTES (Ny)
+                    const toggleRoutesBtn = document.getElementById('toggle-routes-menu');
+                    const routesContainer = document.getElementById('routes-container');
+                    const routesChevron = document.getElementById('routes-chevron');
+                    if(toggleRoutesBtn && routesContainer && routesChevron) {
+                        toggleRoutesBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            routesContainer.classList.toggle('hidden');
+                            if(routesContainer.classList.contains('hidden')) {
+                                routesChevron.style.transform = "rotate(0deg)";
+                            } else {
+                                routesChevron.style.transform = "rotate(180deg)";
+                            }
+                        });
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', (e) => {
+                           if(!toggleRoutesBtn.contains(e.target) && !routesContainer.contains(e.target) && !routesContainer.classList.contains('hidden')) {
+                               routesContainer.classList.add('hidden');
+                               routesChevron.style.transform = "rotate(0deg)";
+                           }
+                        });
+
+                        // Event listeners for route option buttons (mockup function)
+                        document.querySelectorAll('.route-type-btn').forEach(btn => {
+                            btn.addEventListener('click', async () => {
+                                // Close dropdown
+                                routesContainer.classList.add('hidden');
+                                routesChevron.style.transform = "rotate(0deg)";
+
+                                // Update active state visually
+                                document.querySelectorAll('.route-type-btn').forEach(b => b.classList.remove('bg-primary/10', 'border-primary', 'active'));
+                                document.querySelectorAll('.route-type-btn').forEach(b => b.classList.add('bg-muted/30', 'border-border'));
+                                btn.classList.remove('bg-muted/30', 'border-border');
+                                btn.classList.add('bg-primary/10', 'border-primary', 'active');
+
+                                const selectedType = btn.getAttribute('data-type');
+                                const displayNavText = btn.querySelector('.font-bold').innerText;
+                                selectedRouteType = selectedType;
+
+                                // Update display text to selected route
+                                document.getElementById('selected-route-display').innerHTML = `
+                                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    <span>${displayNavText} Route</span>
+                                `;
+
+                                // Request new route calculation!
+                                toggleLoader(true, `Calculating ${displayNavText} Route...`, "Default");
+                                try {
+                                  // Example API endpoint integration for routes. 
+                                  // Real URL should be placed here reflecting TomTom implementation
+                                  console.log("Fetching new route shape for:", selectedType);
+                                  // For now, reload route line by simulating a basic geometry response
+                                  // Replace this below block when RouteType parameter is backed up on backend side
+                                  // let newRouteUrl = `?handler=CalculateRoute&start=${encodeURIComponent(currentStart)}&end=${encodeURIComponent(currentEnd)}&routeType=${selectedType}`;
+                                  // const routeRes = await fetch(newRouteUrl);
+                                  // const routeResult = await routeRes.json();
+                                  // drawRoute(routeResult.geometry);
+                                  // document.getElementById("display-distance").innerText = `${Math.round(routeResult.distanceKm)} km`;
+                                } catch (e) {
+                                  console.error("Failed to alter route type:", e);
+                                } finally {
+                                  toggleLoader(false);
+                                }
+
+                            });
+                        });
+                    }
+
+                    // DROPDOWN LOGIC FÖR STOPS
+                    const toggleStopsBtn = document.getElementById('toggle-stops-menu');
                     const stopsContainer = document.getElementById('stops-container');
-                    const chevron = document.getElementById('stops-chevron');
-                    if(toggleBtn && stopsContainer && chevron) {
-                        toggleBtn.addEventListener('click', () => {
+                    const stopsChevron = document.getElementById('stops-chevron');
+                    if(toggleStopsBtn && stopsContainer && stopsChevron) {
+                        toggleStopsBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
                             stopsContainer.classList.toggle('hidden');
                             if(stopsContainer.classList.contains('hidden')) {
-                                chevron.style.transform = "rotate(0deg)";
+                                stopsChevron.style.transform = "rotate(0deg)";
                             } else {
-                                chevron.style.transform = "rotate(180deg)";
+                                stopsChevron.style.transform = "rotate(180deg)";
                             }
+                        });
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', (e) => {
+                           if(!toggleStopsBtn.contains(e.target) && !stopsContainer.contains(e.target) && !stopsContainer.classList.contains('hidden')) {
+                               stopsContainer.classList.add('hidden');
+                               stopsChevron.style.transform = "rotate(0deg)";
+                           }
                         });
 
                         document.querySelectorAll('.fetch-stops-btn').forEach(btn => {
                             btn.addEventListener('click', () => {
-                                if(window.innerWidth < 1024) {
-                                    stopsContainer.classList.add('hidden');
-                                    chevron.style.transform = "rotate(0deg)";
-                                }
+                                stopsContainer.classList.add('hidden');
+                                stopsChevron.style.transform = "rotate(0deg)";
                             });
                         });
                     }
