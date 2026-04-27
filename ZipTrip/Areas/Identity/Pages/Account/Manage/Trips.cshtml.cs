@@ -11,6 +11,12 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
         private readonly ITripService _tripService;
         private readonly IRouteCalculatorService _routeCalculatorService;
 
+        [BindProperty(SupportsGet = true)]
+        public string? SearchQuery { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string SortOrder { get; set; } = "newest";
+
         public TripsModel(ITripService tripService, IRouteCalculatorService routeCalculatorService)
         {
             _tripService = tripService;
@@ -29,7 +35,35 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{userId}'.");
             }
 
-            Trips = await _tripService.GetMyTripsAsync(userId);
+            var allTrips = await _tripService.GetMyTripsAsync(userId);
+            
+            // Apply Search filter
+            if (!string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                var query = SearchQuery.ToLower();
+                allTrips = allTrips.Where(t => 
+                    (t.Title != null && t.Title.ToLower().Contains(query)) || 
+                    (t.StartLocation != null && t.StartLocation.ToLower().Contains(query)) || 
+                    (t.EndLocation != null && t.EndLocation.ToLower().Contains(query))
+                );
+            }
+
+            // Apply Sort Order (GetMyTripsAsync already sorts by StartDate Descending as default)
+            if (SortOrder == "oldest")
+            {
+                allTrips = allTrips.OrderBy(t => t.StartDate);
+            } 
+            else if (SortOrder == "distance")
+            {
+                allTrips = allTrips.OrderByDescending(t => t.TotalDistanceKm);
+            }
+            else 
+            {
+                // Default to newest
+                allTrips = allTrips.OrderByDescending(t => t.StartDate);
+            }
+
+            Trips = allTrips;
             return Page();
         }
 

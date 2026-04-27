@@ -14,14 +14,45 @@
     <partial name="_StatusMessage" for="StatusMessage" />
 
     <div class="bg-card border border-border rounded-[32px] p-8 md:p-10 shadow-2xl">
-        <div class="flex items-center justify-between mb-8">
-            <div class="flex items-center gap-3">
+        <div class="flex flex-col xl:flex-row items-start xl:items-center justify-between mb-8 gap-5">
+            <div class="flex items-center gap-3 shrink-0">
                 <div class="h-6 w-1 bg-primary rounded-full"></div>
                 <h4 class="text-xl font-bold text-foreground">Saved Trips</h4>
             </div>
-            <a href="/Trip/Create" class="px-5 py-2.5 bg-primary/10 text-primary hover:bg-primary hover:text-[#0f1219] font-bold rounded-xl text-sm transition-all shadow-[0_0_10px_rgba(24,219,103,0.1)] hover:shadow-[0_0_15px_rgba(24,219,103,0.3)]">
+            
+            <!-- Filters & Search Form -->
+            <form method="get" id="trips-filter-form" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full xl:justify-end xl:w-auto flex-1 max-w-2xl">
+                <div class="relative flex-1 min-w-[250px] w-full">
+                    <svg class="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" name="SearchQuery" value="@Model.SearchQuery" id="searchInput" placeholder="Search trips, cities..." class="w-full bg-background border border-border text-foreground text-sm rounded-xl focus:ring-primary focus:border-primary block pl-10 p-3 md:p-2.5 transition-all box-border outline-offset-[-2px] focus-visible:outline-none focus:ring-1"/>
+                </div>
+
+                <select name="SortOrder" class="w-full sm:w-auto min-w-[160px] bg-background border border-border text-foreground text-sm rounded-xl focus:ring-primary focus:border-primary block p-3 md:p-2.5 outline-offset-[-2px] focus-visible:outline-none focus:ring-1" onchange="document.getElementById('trips-filter-form').submit()">
+                    <option value="newest" selected="@(Model.SortOrder == "newest")">Newest First</option>
+                    <option value="oldest" selected="@(Model.SortOrder == "oldest")">Oldest First</option>
+                    <option value="distance" selected="@(Model.SortOrder == "distance")">Longest Distance</option>
+                </select>
+                
+                @if(!string.IsNullOrEmpty(Model.SearchQuery)) 
+                {
+                    <a href="/Identity/Account/Manage/Trips" class="text-sm px-2 text-muted-foreground hover:text-foreground underline shrink-0 hidden sm:block">Clear</a>
+                }
+            </form>
+
+            <a href="/Trip/Create" class="w-full px-5 py-3 md:py-2.5 bg-primary/10 text-primary hover:bg-primary hover:text-[#0f1219] font-bold rounded-xl text-sm transition-all shadow-[0_0_10px_rgba(24,219,103,0.1)] hover:shadow-[0_0_15px_rgba(24,219,103,0.3)] shrink-0 whitespace-nowrap text-center xl:w-auto hidden xl:block">
                 + New Trip
             </a>
+
+            <!-- Mobile specific clear/new button row -->
+            <div class="flex flex-col items-stretch w-full xl:hidden gap-3">
+               @if(!string.IsNullOrEmpty(Model.SearchQuery)) 
+                {
+                    <a href="/Identity/Account/Manage/Trips" class="w-full text-sm px-3 py-2 border border-border rounded-xl text-muted-foreground hover:bg-foreground/5 hover:text-foreground text-center">Clear Search</a>
+                }
+                 <a href="/Trip/Create" class="w-full px-5 py-2.5 bg-primary/10 text-primary hover:bg-primary hover:text-[#0f1219] font-bold rounded-xl text-sm transition-all text-center">
+                    + New Trip
+                </a>
+            </div>
         </div>
     
         @if (Model.Trips.Any())
@@ -74,4 +105,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/trips-manage.js" asp-append-version="true"></script>
 }
