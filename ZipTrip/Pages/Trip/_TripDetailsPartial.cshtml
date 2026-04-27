@@ -42,9 +42,37 @@
                     {
                         @foreach (var vehicle in Model.UserVehicles)
                         {
-                            <button type="button" class="vehicle-type-btn w-full bg-muted/30 border border-border hover:border-accent hover:bg-accent/10 text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-id="@vehicle.Id">
-                                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-accent group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(48,229,242,0.3)] shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z"></path><circle cx="8.5" cy="16.5" r="1.5"></circle><circle cx="15.5" cy="16.5" r="1.5"></circle><path d="M4 11h16"></path></svg>
+                            string colorClass;
+                            string svgPath;
+
+                            switch (vehicle.VehicleType)
+                            {
+                                case ZipTrip.Domain.Enums.VehicleType.OrdinaryCar:
+                                    colorClass = "text-[#18db67]"; // Green for gas
+                                    svgPath = "M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z";
+                                    break;
+                                case ZipTrip.Domain.Enums.VehicleType.ElectricCar:
+                                    colorClass = "text-[#30e5f2]"; // Cyan for EV
+                                    svgPath = "M13 2L3 14h9l-1 8 10-12h-9l1-8z";
+                                    break;
+                                case ZipTrip.Domain.Enums.VehicleType.MotorHome:
+                                case ZipTrip.Domain.Enums.VehicleType.Caravan:
+                                    colorClass = "text-[#f89e21]"; // Orange for RV/Caravan
+                                    svgPath = "M3 13h18V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5zm0 0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5M8 21v-2M16 21v-2";
+                                    break;
+                                default:
+                                    colorClass = "text-accent";
+                                    svgPath = "M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z";
+                                    break;
+                            }
+
+                            string bgClass = colorClass == "text-[#18db67]" ? "hover:bg-[#18db67]/10" : 
+                                             colorClass == "text-[#30e5f2]" ? "hover:bg-[#30e5f2]/10" : 
+                                             colorClass == "text-[#f89e21]" ? "hover:bg-[#f89e21]/10" : "hover:bg-accent/10";
+
+                            <button type="button" class="vehicle-type-btn w-full bg-muted/30 border border-border @bgClass text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-id="@vehicle.Id">
+                                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center @colorClass group-hover:scale-110 transition-transform shadow-[0_0_10px_currentColor] shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="@svgPath"></path></svg>
                                 </div>
                                 <div class="text-left flex-1 min-w-0">
                                     <span class="font-medium font-display text-sm truncate">@vehicle.Name</span>
@@ -54,11 +82,40 @@
                     }
                     else
                     {
-                        @foreach (var type in Enum.GetValues(typeof(ZipTrip.Domain.Enums.VehicleType)))
+                        @foreach (var typeObj in Enum.GetValues(typeof(ZipTrip.Domain.Enums.VehicleType)))
                         {
-                            <button type="button" class="vehicle-type-btn w-full bg-muted/30 border border-border hover:border-accent hover:bg-accent/10 text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-val="@type">
-                                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-accent group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(48,229,242,0.3)] shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z"></path><circle cx="8.5" cy="16.5" r="1.5"></circle><circle cx="15.5" cy="16.5" r="1.5"></circle><path d="M4 11h16"></path></svg>
+                            var type = (ZipTrip.Domain.Enums.VehicleType)typeObj;
+                            string colorClass;
+                            string svgPath;
+
+                            switch (type)
+                            {
+                                case ZipTrip.Domain.Enums.VehicleType.OrdinaryCar:
+                                    colorClass = "text-[#18db67]"; // Green
+                                    svgPath = "M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z";
+                                    break;
+                                case ZipTrip.Domain.Enums.VehicleType.ElectricCar:
+                                    colorClass = "text-[#30e5f2]"; // Cyan
+                                    svgPath = "M13 2L3 14h9l-1 8 10-12h-9l1-8z";
+                                    break;
+                                case ZipTrip.Domain.Enums.VehicleType.MotorHome:
+                                case ZipTrip.Domain.Enums.VehicleType.Caravan:
+                                    colorClass = "text-[#f89e21]"; // Orange
+                                    svgPath = "M3 13h18V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5zm0 0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5M8 21v-2M16 21v-2";
+                                    break;
+                                default:
+                                    colorClass = "text-accent";
+                                    svgPath = "M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z";
+                                    break;
+                            }
+
+                            string bgClass = colorClass == "text-[#18db67]" ? "hover:bg-[#18db67]/10" : 
+                                             colorClass == "text-[#30e5f2]" ? "hover:bg-[#30e5f2]/10" : 
+                                             colorClass == "text-[#f89e21]" ? "hover:bg-[#f89e21]/10" : "hover:bg-accent/10";
+
+                            <button type="button" class="vehicle-type-btn w-full bg-muted/30 border border-border @bgClass text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-val="@type">
+                                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center @colorClass group-hover:scale-110 transition-transform shadow-[0_0_10px_currentColor] shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="@svgPath"></path></svg>
                                 </div>
                                 <div class="text-left flex-1 min-w-0">
                                     <span class="font-medium font-display text-sm truncate">@type.ToString()</span>
@@ -74,31 +131,31 @@
         <div class="relative w-full flex flex-col z-[80]">
             <button id="toggle-routes-menu" class="w-full bg-card hover:bg-muted/50 border border-border text-foreground font-bold p-3 rounded-xl flex items-center justify-between shadow-sm transition-colors group">
                 <div id="selected-route-display" class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <svg class="w-5 h-5 text-[#18db67]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     <span>Fastest Route</span>
                 </div>
                 <svg id="routes-chevron" class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div id="routes-container" class="hidden absolute left-0 right-0 top-full mt-2 bg-card/95 backdrop-blur-md border border-border rounded-xl shadow-2xl p-2 z-[100] max-h-[40vh] overflow-y-auto w-full origin-top">
                 <div class="space-y-1 pb-1">
-                    <button type="button" class="route-type-btn w-full bg-primary/10 border border-primary text-foreground hover:bg-primary/20 transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer active" data-type="fastest">
-                        <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-primary shadow-[0_0_10px_rgba(24,219,103,0.3)] shrink-0">
+                    <button type="button" class="route-type-btn w-full bg-muted/30 border border-border hover:bg-[#18db67]/10 hover:border-[#18db67] text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer active" data-type="fastest">
+                        <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#18db67] shadow-[0_0_10px_rgba(24,219,103,0.3)] shrink-0 group-hover:scale-110 transition-transform">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         </div>
                         <div class="text-left flex-1 min-w-0">
                             <div class="font-medium font-display text-sm truncate">Fastest</div>
                         </div>
                     </button>
-                    <button type="button" class="route-type-btn w-full bg-muted/30 border border-border hover:border-[#18db67] hover:bg-[#18db67]/10 text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-type="scenic">
-                        <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#18db67] group-hover:scale-110 shadow-[0_0_10px_rgba(24,219,103,0.3)] shrink-0">
+                    <button type="button" class="route-type-btn w-full bg-muted/30 border border-border hover:bg-[#f89e21]/10 hover:border-[#f89e21] text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-type="scenic">
+                        <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#f89e21] group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(248,158,33,0.3)] shrink-0">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         </div>
                         <div class="text-left flex-1 min-w-0">
                             <div class="font-medium font-display text-sm truncate">Scenic</div>
                         </div>
                     </button>
-                    <button type="button" class="route-type-btn w-full bg-muted/30 border border-border hover:border-[#30e5f2] hover:bg-[#30e5f2]/10 text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-type="eco">
-                        <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#30e5f2] shadow-[0_0_10px_rgba(48,229,242,0.3)] shrink-0">
+                    <button type="button" class="route-type-btn w-full bg-muted/30 border border-border hover:bg-[#30e5f2]/10 hover:border-[#30e5f2] text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-type="eco">
+                        <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#30e5f2] group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(48,229,242,0.3)] shrink-0">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                         <div class="text-left flex-1 min-w-0">
