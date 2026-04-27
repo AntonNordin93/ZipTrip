@@ -10,11 +10,13 @@ namespace ZipTrip.Pages.Trip
     {
         private readonly IRouteCalculatorService _routeCalculatorService;
         private readonly IRouteStopService _routeStopService;
+        private readonly ITripService _tripService;
 
-        public CreateModel(IRouteCalculatorService routeCalculatorService, IRouteStopService routeStopService)
+        public CreateModel(IRouteCalculatorService routeCalculatorService, IRouteStopService routeStopService, ITripService tripService)
         {
             _routeCalculatorService = routeCalculatorService;
             _routeStopService = routeStopService;
+            _tripService = tripService;
         }
 
         [BindProperty]
@@ -25,8 +27,37 @@ namespace ZipTrip.Pages.Trip
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid) return new JsonResult(new { success = false });
+
             var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(Input.StartLocation, Input.EndLocation);
+
             return new JsonResult(new { success = true, geometry = routeData.Geometry, distanceKm = routeData.DistanceKm });
+        }
+
+        public async Task<IActionResult> OnPostSaveTripAsync([FromBody] TripRequest request)
+        {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    request.Title = string.IsNullOrEmpty(request.Title) ? $"{request.StartLocation} to {request.EndLocation}" : request.Title;
+
+                    // Explicitly construct the proper format for validation
+                    var sanitizedRequest = new TripRequest
+                    {
+                        Title = request.Title,
+                        StartLocation = request.StartLocation,
+                        EndLocation = request.EndLocation,
+                        StartDate = request.StartDate,
+                        VehicleType = request.VehicleType,
+                        SelectedStops = request.SelectedStops
+                    };
+
+                    var savedTrip = await _tripService.CreateTripAsync(sanitizedRequest, userId);
+                    return new JsonResult(new { success = true, tripId = savedTrip.Id });
+                }
+            }
+            return new JsonResult(new { success = false, message = "Not authenticated" });
         }
 
         public IActionResult OnGetDetailsMenu()

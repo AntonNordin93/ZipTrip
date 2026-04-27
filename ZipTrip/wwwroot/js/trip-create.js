@@ -15,6 +15,9 @@
     L.tileLayer(tileUrl).addTo(map);
     let routeLayer = L.layerGroup().addTo(map);
     let stopsLayer = L.layerGroup().addTo(map);
+    let selectedStopsLayer = L.layerGroup().addTo(map);
+
+    let selectedStopsArray = [];
 
     // GPS Variabler
     let userLocationMarker = null;
@@ -176,13 +179,26 @@
             currentStart = document.getElementById("start-location").value;
             currentEnd = document.getElementById("end-location").value;
 
+            // Hämta formulärdata och token INNAN formuläret kapas från DOM:en!
+            const fd = new FormData(e.target);
+            const antiForgeryToken = document.querySelector('input[name="__RequestVerificationToken"]')?.value || "";
+            const tripRequestPayload = {
+                Title: fd.get("Input.Title") || "My Trip",
+                StartLocation: currentStart,
+                EndLocation: currentEnd,
+                StartDate: new Date().toISOString(),
+                VehicleType: parseInt(fd.get("Input.VehicleType")) || 0,
+                SelectedStops: selectedStopsArray
+            };
+            window.tripRequestPayloadRef = tripRequestPayload;
+
             toggleLoader(true, "Planning Route...", "Default");
 
             try {
                 const response = await fetch('?handler=OnPostAsync', {
                     method: 'POST',
-                    body: new FormData(e.target),
-                    headers: { 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value }
+                    body: fd,
+                    headers: { 'RequestVerificationToken': antiForgeryToken }
                 });
                     const result = await response.json();
 
@@ -222,7 +238,6 @@
                             }
                         });
 
-                        // Dölj dropdownen igen när man valt något i mobilen och rensa menyn från skärmen
                         document.querySelectorAll('.fetch-stops-btn').forEach(btn => {
                             btn.addEventListener('click', () => {
                                 if(window.innerWidth < 1024) {
@@ -232,6 +247,51 @@
                             });
                         });
                     }
+
+                    // SPARA RESA FUNKTION
+                    const saveTripBtn = document.getElementById("save-trip-btn");
+                    if (saveTripBtn) {
+                        saveTripBtn.addEventListener('click', async () => {
+                            const originalHtml = saveTripBtn.innerHTML;
+                            saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">SAVING...</span>';
+                            saveTripBtn.disabled = true;
+
+                            try {
+                                const res = await fetch('?handler=SaveTrip', {
+                                    method: 'POST',
+                                    headers: { 
+                                        'Content-Type': 'application/json',
+                                        // Använd token vi sparat från ovan!
+                                        'RequestVerificationToken': antiForgeryToken
+                                    },
+                                    body: JSON.stringify(tripRequestPayload)
+                                });
+
+                                const svResult = await res.json();
+                                if(svResult.success) {
+                                    saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">SAVED ✓</span>';
+                                    saveTripBtn.classList.replace("bg-primary/90", "bg-primary");
+                                } else {
+                                    if(svResult.message == "Not authenticated") {
+                                        alert("You must be logged in to save trips!");
+                                    }
+                                    saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">FAILED!</span>';
+                                    setTimeout(() => {
+                                        saveTripBtn.innerHTML = originalHtml;
+                                        saveTripBtn.disabled = false;
+                                    }, 2000);
+                                }
+                            } catch(err) {
+                                console.error(err);
+                                saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">ERROR</span>';
+                                setTimeout(() => {
+                                        saveTripBtn.innerHTML = originalHtml;
+                                        saveTripBtn.disabled = false;
+                                    }, 2000);
+                            }
+                        });
+                    }
+
                 }
             } catch (err) { console.error(err); }
             finally { toggleLoader(false); }
@@ -255,7 +315,7 @@
 
                         result.stops.forEach(s => {
                             // Skapa en visuell snygg cirkel anpassad efter vald färg
-                            L.circleMarker([s.latitude, s.longitude], {
+                            let marker = L.circleMarker([s.latitude, s.longitude], {
                                 radius: 8,
                                 color: targetColor,
                                 fillColor: '#0f1219',
@@ -264,14 +324,57 @@
                                 opacity: 1
                             })
                             .addTo(stopsLayer)
-                            .bindPopup(`<strong style="color:${targetColor}">${s.name}</strong>`);
+                            .bindPopup(`
+                                <div style="text-align:center;">
+                                    <strong style="color:${targetColor}">${s.name}</strong><br>
+                                    <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:${targetColor}; color:#000; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${s.name}" data-lat="${s.latitude}" data-lng="${s.longitude}" data-type="${type}">Add to Trip</button>
+                                </div>
+                            `);
                         });
                     }
-                } catch (err) { console.error(err); }
-                finally { toggleLoader(false); }
+                } catch(err) { console.error(err); } finally { toggleLoader(false); }
             });
         });
     }
+
+    // Lyssna på klick för "Add to Trip" i popups
+    document.addEventListener('click', function(e) {
+        if(e.target && e.target.classList.contains('add-stop-btn')) {
+            const btn = e.target;
+            const name = btn.getAttribute('data-name');
+            const lat = parseFloat(btn.getAttribute('data-lat'));
+            const lng = parseFloat(btn.getAttribute('data-lng'));
+            const type = btn.getAttribute('data-type');
+
+            // Spara i arrayen
+            selectedStopsArray.push({
+                Name: name,
+                Latitude: lat,
+                Longitude: lng,
+                Type: type
+            });
+
+            const targetColor = themeColors[type] || themeColors['Default'];
+
+            // Rita en marker i selected lagret (lite större/tydligare)
+            L.circleMarker([lat, lng], {
+                radius: 10,
+                color: '#ffffff',
+                fillColor: targetColor,
+                fillOpacity: 1,
+                weight: 3,
+                opacity: 1
+            }).addTo(selectedStopsLayer).bindPopup(`<b>${name}</b> (Selected)`);
+
+            // Stäng popupen
+            map.closePopup();
+            
+            // Uppdatera request payload med nya listan
+            if(window.tripRequestPayloadRef) {
+                window.tripRequestPayloadRef.SelectedStops = selectedStopsArray;
+            }
+        }
+    });
 
     function drawRoute(geometry) {
         routeLayer.clearLayers();
