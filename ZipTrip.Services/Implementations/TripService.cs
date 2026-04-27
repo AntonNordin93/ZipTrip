@@ -38,6 +38,25 @@ namespace ZipTrip.Services.Implementations
 
             }
 
+            if (request.SelectedStops != null && request.SelectedStops.Any())
+            {
+                foreach (var stopReq in request.SelectedStops)
+                {
+                    if (Enum.TryParse<StopType>(stopReq.Type, true, out var stopType))
+                    {
+                        var routeStop = new RouteStop
+                        {
+                            Name = stopReq.Name,
+                            Latitude = stopReq.Latitude,
+                            Longitude = stopReq.Longitude,
+                            Type = stopType,
+                            Trip = trip
+                        };
+                        trip.Stops.Add(routeStop);
+                    }
+                }
+            }
+
             await _tripRepository.AddAsync(trip);
             return _mapper.Map<TripResponse>(trip);
         }

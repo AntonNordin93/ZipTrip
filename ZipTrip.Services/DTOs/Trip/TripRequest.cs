@@ -15,5 +15,15 @@ namespace ZipTrip.Services.DTOs.Trip
 
         public string? Notes { get; set; }
         public Guid? UserVehicleId { get; set; }
+
+        public List<RouteStopRequest> SelectedStops { get; set; } = new();
+    }
+
+    public class RouteStopRequest
+    {
+        public string Name { get; set; } = string.Empty;
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public string Type { get; set; } = string.Empty;
     }
 }

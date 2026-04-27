@@ -15,6 +15,9 @@
     L.tileLayer(tileUrl).addTo(map);
     let routeLayer = L.layerGroup().addTo(map);
     let stopsLayer = L.layerGroup().addTo(map);
+    let selectedStopsLayer = L.layerGroup().addTo(map);
+
+    let selectedStopsArray = [];
 
     // GPS Variabler
     let userLocationMarker = null;
@@ -184,8 +187,10 @@
                 StartLocation: currentStart,
                 EndLocation: currentEnd,
                 StartDate: new Date().toISOString(),
-                VehicleType: parseInt(fd.get("Input.VehicleType")) || 0
+                VehicleType: parseInt(fd.get("Input.VehicleType")) || 0,
+                SelectedStops: selectedStopsArray
             };
+            window.tripRequestPayloadRef = tripRequestPayload;
 
             toggleLoader(true, "Planning Route...", "Default");
 
@@ -310,7 +315,7 @@
 
                         result.stops.forEach(s => {
                             // Skapa en visuell snygg cirkel anpassad efter vald färg
-                            L.circleMarker([s.latitude, s.longitude], {
+                            let marker = L.circleMarker([s.latitude, s.longitude], {
                                 radius: 8,
                                 color: targetColor,
                                 fillColor: '#0f1219',
@@ -319,14 +324,57 @@
                                 opacity: 1
                             })
                             .addTo(stopsLayer)
-                            .bindPopup(`<strong style="color:${targetColor}">${s.name}</strong>`);
+                            .bindPopup(`
+                                <div style="text-align:center;">
+                                    <strong style="color:${targetColor}">${s.name}</strong><br>
+                                    <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:${targetColor}; color:#000; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${s.name}" data-lat="${s.latitude}" data-lng="${s.longitude}" data-type="${type}">Add to Trip</button>
+                                </div>
+                            `);
                         });
                     }
-                } catch (err) { console.error(err); }
-                finally { toggleLoader(false); }
+                } catch(err) { console.error(err); } finally { toggleLoader(false); }
             });
         });
     }
+
+    // Lyssna på klick för "Add to Trip" i popups
+    document.addEventListener('click', function(e) {
+        if(e.target && e.target.classList.contains('add-stop-btn')) {
+            const btn = e.target;
+            const name = btn.getAttribute('data-name');
+            const lat = parseFloat(btn.getAttribute('data-lat'));
+            const lng = parseFloat(btn.getAttribute('data-lng'));
+            const type = btn.getAttribute('data-type');
+
+            // Spara i arrayen
+            selectedStopsArray.push({
+                Name: name,
+                Latitude: lat,
+                Longitude: lng,
+                Type: type
+            });
+
+            const targetColor = themeColors[type] || themeColors['Default'];
+
+            // Rita en marker i selected lagret (lite större/tydligare)
+            L.circleMarker([lat, lng], {
+                radius: 10,
+                color: '#ffffff',
+                fillColor: targetColor,
+                fillOpacity: 1,
+                weight: 3,
+                opacity: 1
+            }).addTo(selectedStopsLayer).bindPopup(`<b>${name}</b> (Selected)`);
+
+            // Stäng popupen
+            map.closePopup();
+            
+            // Uppdatera request payload med nya listan
+            if(window.tripRequestPayloadRef) {
+                window.tripRequestPayloadRef.SelectedStops = selectedStopsArray;
+            }
+        }
+    });
 
     function drawRoute(geometry) {
         routeLayer.clearLayers();

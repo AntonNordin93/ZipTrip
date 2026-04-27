@@ -49,7 +49,8 @@ namespace ZipTrip.Pages.Trip
                         StartLocation = request.StartLocation,
                         EndLocation = request.EndLocation,
                         StartDate = request.StartDate,
-                        VehicleType = request.VehicleType
+                        VehicleType = request.VehicleType,
+                        SelectedStops = request.SelectedStops
                     };
 
                     var savedTrip = await _tripService.CreateTripAsync(sanitizedRequest, userId);

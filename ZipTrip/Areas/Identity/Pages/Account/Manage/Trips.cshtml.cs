@@ -9,7 +9,13 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
     public class TripsModel : PageModel
     {
         private readonly ITripService _tripService;
-        public TripsModel(ITripService tripService) => _tripService = tripService;
+        private readonly IRouteCalculatorService _routeCalculatorService;
+
+        public TripsModel(ITripService tripService, IRouteCalculatorService routeCalculatorService)
+        {
+            _tripService = tripService;
+            _routeCalculatorService = routeCalculatorService;
+        }
 
         [TempData]
         public string? StatusMessage { get; set; }
@@ -46,6 +52,37 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
             }
 
             return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnGetTripDetailsAsync(Guid id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return new UnauthorizedResult();
+            }
+
+            var trip = await _tripService.GetTripByIdAsync(id, userId);
+            if (trip == null)
+            {
+                return new NotFoundResult();
+            }
+
+            // Return a partial view containing the map and details
+            return Partial("_TripDetailsMapPartial", trip);
+        }
+        
+        public async Task<JsonResult> OnGetRouteDataAsync(string start, string end)
+        {
+            try
+            {
+                var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end);
+                return new JsonResult(new { success = true, geometry = routeData.Geometry, distanceKm = routeData.DistanceKm });
+            }
+            catch
+            {
+                return new JsonResult(new { success = false });
+            }
         }
     }
 }
