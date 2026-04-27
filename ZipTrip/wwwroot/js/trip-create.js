@@ -226,18 +226,89 @@
                     const gpsBtn = document.getElementById("start-gps-btn");
                     if (gpsBtn) gpsBtn.addEventListener("click", toggleNavigation);
 
-                    // DROPDOWN LOGIC FÖR ROUTES (Ny)
+                    // --- Helper att stänga alla popups ---
+                    function closeAllDropdowns() {
+                        const containers = [
+                            { c: document.getElementById('vehicle-container'), i: document.getElementById('vehicle-chevron') },
+                            { c: document.getElementById('routes-container'), i: document.getElementById('routes-chevron') },
+                            { c: document.getElementById('stops-container'), i: document.getElementById('stops-chevron') }
+                        ];
+
+                        containers.forEach(x => {
+                            if (x.c && !x.c.classList.contains('hidden')) {
+                                x.c.classList.add('hidden');
+                                if (x.i) x.i.style.transform = "rotate(0deg)";
+                            }
+                        });
+                    }
+
+                    // DROPDOWN LOGIC FÖR VEHICLES (Ny)
+                    const toggleVehicleBtn = document.getElementById('toggle-vehicle-menu');
+                    const vehicleContainer = document.getElementById('vehicle-container');
+                    const vehicleChevron = document.getElementById('vehicle-chevron');
+                    let selectedVehicleId = null;
+
+                    if(toggleVehicleBtn && vehicleContainer && vehicleChevron) {
+                        toggleVehicleBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const isHidden = vehicleContainer.classList.contains('hidden');
+                            closeAllDropdowns(); // Stäng andra!
+
+                            if(isHidden) {
+                                vehicleContainer.classList.remove('hidden');
+                                vehicleChevron.style.transform = "rotate(180deg)";
+                            } else {
+                                vehicleContainer.classList.add('hidden');
+                                vehicleChevron.style.transform = "rotate(0deg)";
+                            }
+                        });
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', (e) => {
+                           if(!toggleVehicleBtn.contains(e.target) && !vehicleContainer.contains(e.target) && !vehicleContainer.classList.contains('hidden')) {
+                               vehicleContainer.classList.add('hidden');
+                               vehicleChevron.style.transform = "rotate(0deg)";
+                           }
+                        });
+
+                        document.querySelectorAll('.vehicle-type-btn').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                // Close dropdown
+                                vehicleContainer.classList.add('hidden');
+                                vehicleChevron.style.transform = "rotate(0deg)";
+
+                                // Update active state visually
+                                document.querySelectorAll('.vehicle-type-btn').forEach(b => b.classList.remove('bg-accent/10', 'border-accent'));
+                                btn.classList.add('bg-accent/10', 'border-accent');
+
+                                const displayNavText = btn.querySelector('span.font-bold').innerText;
+                                selectedVehicleId = btn.getAttribute('data-id') || btn.getAttribute('data-val');
+
+                                // Update display text to selected vehicle
+                                document.getElementById('selected-vehicle-display').innerHTML = `
+                                    <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z"></path><circle cx="8.5" cy="16.5" r="1.5"></circle><circle cx="15.5" cy="16.5" r="1.5"></circle><path d="M4 11h16"></path></svg>
+                                    <span>${displayNavText}</span>
+                                `;
+                            });
+                        });
+                    }
+
+                    // DROPDOWN LOGIC FÖR ROUTES
                     const toggleRoutesBtn = document.getElementById('toggle-routes-menu');
                     const routesContainer = document.getElementById('routes-container');
                     const routesChevron = document.getElementById('routes-chevron');
                     if(toggleRoutesBtn && routesContainer && routesChevron) {
                         toggleRoutesBtn.addEventListener('click', (e) => {
                             e.stopPropagation();
-                            routesContainer.classList.toggle('hidden');
-                            if(routesContainer.classList.contains('hidden')) {
-                                routesChevron.style.transform = "rotate(0deg)";
-                            } else {
+                            const isHidden = routesContainer.classList.contains('hidden');
+                            closeAllDropdowns(); // Stäng andra!
+
+                            if(isHidden) {
+                                routesContainer.classList.remove('hidden');
                                 routesChevron.style.transform = "rotate(180deg)";
+                            } else {
+                                routesContainer.classList.add('hidden');
+                                routesChevron.style.transform = "rotate(0deg)";
                             }
                         });
 
@@ -302,11 +373,15 @@
                     if(toggleStopsBtn && stopsContainer && stopsChevron) {
                         toggleStopsBtn.addEventListener('click', (e) => {
                             e.stopPropagation();
-                            stopsContainer.classList.toggle('hidden');
-                            if(stopsContainer.classList.contains('hidden')) {
-                                stopsChevron.style.transform = "rotate(0deg)";
-                            } else {
+                            const isHidden = stopsContainer.classList.contains('hidden');
+                            closeAllDropdowns(); // Stäng andra!
+
+                            if(isHidden) {
+                                stopsContainer.classList.remove('hidden');
                                 stopsChevron.style.transform = "rotate(180deg)";
+                            } else {
+                                stopsContainer.classList.add('hidden');
+                                stopsChevron.style.transform = "rotate(0deg)";
                             }
                         });
 

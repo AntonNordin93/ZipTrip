@@ -22,6 +22,53 @@
 
     <div class="mt-6 mb-2 flex-1 flex flex-col z-[80] gap-4">
 
+        <!-- Vehicle Type Dropdown (Mobile & Desktop) -->
+        <div class="relative w-full flex flex-col z-[90]">
+            <div>
+                <button id="toggle-vehicle-menu" type="button" class="w-full bg-card hover:bg-muted/50 border border-border text-foreground font-bold p-3 rounded-xl flex items-center justify-between shadow-sm transition-colors group">
+                    <div id="selected-vehicle-display" class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z"></path><circle cx="8.5" cy="16.5" r="1.5"></circle><circle cx="15.5" cy="16.5" r="1.5"></circle><path d="M4 11h16"></path></svg>
+                        <span>Select Vehicle...</span>
+                    </div>
+                    <svg id="vehicle-chevron" class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+            </div>
+
+            <!-- Vehicle list container... in a real map implementation this will switch vehicle options! -->
+            <div id="vehicle-container" class="hidden absolute left-0 right-0 top-full mt-2 bg-card/95 backdrop-blur-md border border-border rounded-xl shadow-2xl p-2 z-[100] max-h-[40vh] overflow-y-auto w-full origin-top">
+                <div class="space-y-1 pb-1">
+                    @if (User.Identity.IsAuthenticated && Model.UserVehicles != null && Model.UserVehicles.Any())
+                    {
+                        @foreach (var vehicle in Model.UserVehicles)
+                        {
+                            <button type="button" class="vehicle-type-btn w-full bg-muted/30 border border-border hover:border-accent hover:bg-accent/10 text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-id="@vehicle.Id">
+                                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-accent group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(48,229,242,0.3)] shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z"></path><circle cx="8.5" cy="16.5" r="1.5"></circle><circle cx="15.5" cy="16.5" r="1.5"></circle><path d="M4 11h16"></path></svg>
+                                </div>
+                                <div class="text-left flex-1 min-w-0">
+                                    <span class="font-medium font-display text-sm truncate">@vehicle.Name</span>
+                                </div>
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        @foreach (var type in Enum.GetValues(typeof(ZipTrip.Domain.Enums.VehicleType)))
+                        {
+                            <button type="button" class="vehicle-type-btn w-full bg-muted/30 border border-border hover:border-accent hover:bg-accent/10 text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-val="@type">
+                                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-accent group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(48,229,242,0.3)] shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z"></path><circle cx="8.5" cy="16.5" r="1.5"></circle><circle cx="15.5" cy="16.5" r="1.5"></circle><path d="M4 11h16"></path></svg>
+                                </div>
+                                <div class="text-left flex-1 min-w-0">
+                                    <span class="font-medium font-display text-sm truncate">@type.ToString()</span>
+                                </div>
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
         <!-- Route Variations Dropdown (Mobile & Desktop) -->
         <div class="relative w-full flex flex-col z-[80]">
             <button id="toggle-routes-menu" class="w-full bg-card hover:bg-muted/50 border border-border text-foreground font-bold p-3 rounded-xl flex items-center justify-between shadow-sm transition-colors group">
@@ -31,33 +78,30 @@
                 </div>
                 <svg id="routes-chevron" class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
-            <div id="routes-container" class="hidden absolute left-0 right-0 top-full mt-2 bg-card/95 backdrop-blur-md border border-border rounded-xl shadow-2xl p-4 z-[100] max-h-[400px] overflow-y-auto w-full origin-top">
-                <div class="space-y-2 pb-2">
-                    <button type="button" class="route-type-btn w-full bg-primary/10 border border-primary text-foreground hover:bg-primary/20 transition-all rounded-xl p-3 flex items-center gap-3 active" data-type="fastest">
-                        <div class="w-10 h-10 rounded-xl bg-card flex items-center justify-center text-primary shadow-[0_0_15px_rgba(24,219,103,0.3)] shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <div id="routes-container" class="hidden absolute left-0 right-0 top-full mt-2 bg-card/95 backdrop-blur-md border border-border rounded-xl shadow-2xl p-2 z-[100] max-h-[40vh] overflow-y-auto w-full origin-top">
+                <div class="space-y-1 pb-1">
+                    <button type="button" class="route-type-btn w-full bg-primary/10 border border-primary text-foreground hover:bg-primary/20 transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer active" data-type="fastest">
+                        <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-primary shadow-[0_0_10px_rgba(24,219,103,0.3)] shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         </div>
-                        <div class="text-left">
-                            <div class="font-bold text-sm">Fastest</div>
-                            <div class="text-[10px] text-muted-foreground">Direct highway routes</div>
-                        </div>
-                    </button>
-                    <button type="button" class="route-type-btn w-full bg-muted/30 border border-border hover:border-[#18db67] hover:bg-[#18db67]/10 text-foreground transition-all rounded-xl p-3 flex items-center gap-3" data-type="scenic">
-                        <div class="w-10 h-10 rounded-xl bg-card flex items-center justify-center text-[#18db67] group-hover:scale-110 shadow-[0_0_15px_rgba(24,219,103,0.3)] shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        </div>
-                        <div class="text-left">
-                            <div class="font-bold text-sm">Scenic</div>
-                            <div class="text-[10px] text-muted-foreground">Curvy roads with scenery</div>
+                        <div class="text-left flex-1 min-w-0">
+                            <div class="font-medium font-display text-sm truncate">Fastest</div>
                         </div>
                     </button>
-                    <button type="button" class="route-type-btn w-full bg-muted/30 border border-border hover:border-[#30e5f2] hover:bg-[#30e5f2]/10 text-foreground transition-all rounded-xl p-3 flex items-center gap-3" data-type="eco">
-                        <div class="w-10 h-10 rounded-xl bg-card flex items-center justify-center text-[#30e5f2] shadow-[0_0_15px_rgba(48,229,242,0.3)] shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <button type="button" class="route-type-btn w-full bg-muted/30 border border-border hover:border-[#18db67] hover:bg-[#18db67]/10 text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-type="scenic">
+                        <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#18db67] group-hover:scale-110 shadow-[0_0_10px_rgba(24,219,103,0.3)] shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         </div>
-                        <div class="text-left">
-                            <div class="font-bold text-sm">Eco</div>
-                            <div class="text-[10px] text-muted-foreground">Maximized fuel efficiency</div>
+                        <div class="text-left flex-1 min-w-0">
+                            <div class="font-medium font-display text-sm truncate">Scenic</div>
+                        </div>
+                    </button>
+                    <button type="button" class="route-type-btn w-full bg-muted/30 border border-border hover:border-[#30e5f2] hover:bg-[#30e5f2]/10 text-foreground transition-all rounded-lg p-2.5 flex items-center gap-3 cursor-pointer" data-type="eco">
+                        <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#30e5f2] shadow-[0_0_10px_rgba(48,229,242,0.3)] shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div class="text-left flex-1 min-w-0">
+                            <div class="font-medium font-display text-sm truncate">Eco</div>
                         </div>
                     </button>
                 </div>
@@ -77,82 +121,75 @@
             </div>
 
             <!-- The actual options, absolute positioned so it overlays everything below -->
-            <div id="stops-container" class="hidden absolute left-0 right-0 top-full mt-2 bg-card/95 backdrop-blur-md border border-border rounded-xl shadow-2xl p-4 z-[100] max-h-[400px] overflow-y-auto w-full origin-top">
-                <div class="space-y-2 pb-2">
+            <div id="stops-container" class="hidden absolute left-0 right-0 top-full mt-2 bg-card/95 backdrop-blur-md border border-border rounded-xl shadow-2xl p-2 z-[100] max-h-[300px] overflow-y-auto w-full origin-top">
+                <div class="space-y-1 pb-1">
             <!-- Fuel Button -->
-            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#18db67]/10 border border-border hover:border-[#18db67] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Fuel">
-                <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#18db67] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(24,219,103,0.3)] shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#18db67]/10 border border-border hover:border-[#18db67] rounded-lg p-2.5 transition-all duration-300 flex items-center gap-3 cursor-pointer" data-type="Fuel">
+                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#18db67] group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(24,219,103,0.3)] shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
                 </div>
-                <div class="text-left flex-1">
-                    <div class="font-bold text-foreground group-hover:text-[#18db67] transition-colors">Gas Stations</div>
-                    <div class="text-xs text-muted-foreground">Find fuel stops</div>
+                <div class="text-left flex-1 min-w-0">
+                    <div class="font-medium font-display text-sm text-foreground group-hover:text-[#18db67] transition-colors truncate">Gas Stations</div>
                 </div>
             </button>
 
             <!-- Charging Button -->
-            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#30e5f2]/10 border border-border hover:border-[#30e5f2] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Charging">
-                <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#30e5f2] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(48,229,242,0.3)] shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon stroke-linecap="round" stroke-linejoin="round" points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#30e5f2]/10 border border-border hover:border-[#30e5f2] rounded-lg p-2.5 transition-all duration-300 flex items-center gap-3 cursor-pointer" data-type="Charging">
+                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#30e5f2] group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(48,229,242,0.3)] shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon stroke-linecap="round" stroke-linejoin="round" points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                 </div>
-                <div class="text-left flex-1">
-                    <div class="font-bold text-foreground group-hover:text-[#30e5f2] transition-colors">EV Charging</div>
-                    <div class="text-xs text-muted-foreground">Fast chargers along way</div>
+                <div class="text-left flex-1 min-w-0">
+                    <div class="font-medium font-display text-sm text-foreground group-hover:text-[#30e5f2] transition-colors truncate">EV Charging</div>
                 </div>
             </button>
 
             <!-- Restaurant Button -->
-            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#f89e21]/10 border border-border hover:border-[#f89e21] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Restaurant">
-                <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#f89e21] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(248,158,33,0.3)] shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#f89e21]/10 border border-border hover:border-[#f89e21] rounded-lg p-2.5 transition-all duration-300 flex items-center gap-3 cursor-pointer" data-type="Restaurant">
+                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#f89e21] group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(248,158,33,0.3)] shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
                 </div>
-                <div class="text-left flex-1">
-                    <div class="font-bold text-foreground group-hover:text-[#f89e21] transition-colors">Restaurants</div>
-                    <div class="text-xs text-muted-foreground">Dining options</div>
+                <div class="text-left flex-1 min-w-0">
+                    <div class="font-medium font-display text-sm text-foreground group-hover:text-[#f89e21] transition-colors truncate">Restaurants</div>
                 </div>
             </button>
 
             <!-- Attractions Button -->
-            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#ce60f8]/10 border border-border hover:border-[#ce60f8] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Attraction">
-                <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#ce60f8] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(206,96,248,0.3)] shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon stroke-linecap="round" stroke-linejoin="round" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#ce60f8]/10 border border-border hover:border-[#ce60f8] rounded-lg p-2.5 transition-all duration-300 flex items-center gap-3 cursor-pointer" data-type="Attraction">
+                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#ce60f8] group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(206,96,248,0.3)] shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon stroke-linecap="round" stroke-linejoin="round" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                 </div>
-                <div class="text-left flex-1">
-                    <div class="font-bold text-foreground group-hover:text-[#ce60f8] transition-colors">Attractions</div>
-                    <div class="text-xs text-muted-foreground">Discover scenic spots</div>
+                <div class="text-left flex-1 min-w-0">
+                    <div class="font-medium font-display text-sm text-foreground group-hover:text-[#ce60f8] transition-colors truncate">Attractions</div>
                 </div>
             </button>
 
             <!-- Camping Button -->
-            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#4d8df5]/10 border border-border hover:border-[#4d8df5] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Camping">
-                <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#4d8df5] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(77,141,245,0.3)] shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 22h20L12 2z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 12l-4 10"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 12l4 10"></path></svg>
+            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#4d8df5]/10 border border-border hover:border-[#4d8df5] rounded-lg p-2.5 transition-all duration-300 flex items-center gap-3 cursor-pointer" data-type="Camping">
+                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#4d8df5] group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(77,141,245,0.3)] shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 22h20L12 2z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 12l-4 10"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 12l4 10"></path></svg>
                 </div>
-                <div class="text-left flex-1">
-                    <div class="font-bold text-foreground group-hover:text-[#4d8df5] transition-colors">Camping</div>
-                    <div class="text-xs text-muted-foreground">Campgrounds for the night</div>
+                <div class="text-left flex-1 min-w-0">
+                    <div class="font-medium font-display text-sm text-foreground group-hover:text-[#4d8df5] transition-colors truncate">Camping</div>
                 </div>
             </button>
 
             <!-- Lodging Button -->
-            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#f24694]/10 border border-border hover:border-[#f24694] rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="Lodging">
-                <div class="w-12 h-12 rounded-xl bg-card flex items-center justify-center text-[#f24694] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(242,70,148,0.3)] shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline stroke-linecap="round" stroke-linejoin="round" points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#f24694]/10 border border-border hover:border-[#f24694] rounded-lg p-2.5 transition-all duration-300 flex items-center gap-3 cursor-pointer" data-type="Lodging">
+                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#f24694] group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(242,70,148,0.3)] shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline stroke-linecap="round" stroke-linejoin="round" points="9 22 9 12 15 12 15 22"></polyline></svg>
                 </div>
-                <div class="text-left flex-1">
-                    <div class="font-bold text-foreground group-hover:text-[#f24694] transition-colors">Lodging</div>
-                    <div class="text-xs text-muted-foreground">Hotels and motels</div>
+                <div class="text-left flex-1 min-w-0">
+                    <div class="font-medium font-display text-sm text-foreground group-hover:text-[#f24694] transition-colors truncate">Lodging</div>
                 </div>
             </button>
 
             <!-- RestArea Button -->
-            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#ff4757]/10 border border-border hover:border-[#ff4757] rounded-xl lg:rounded-2xl p-3 lg:p-4 transition-all duration-300 flex items-center gap-4 cursor-pointer" data-type="RestArea">
-                <div class="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-card flex items-center justify-center text-[#ff4757] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(255,71,87,0.3)] shrink-0">
-                    <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12V6"></path><path stroke-linecap="round" stroke-linejoin="round" d="M9 12V6"></path><path stroke-linecap="round" stroke-linejoin="round" d="M4 12h16"></path><path stroke-linecap="round" stroke-linejoin="round" d="M5 12c0 3.866 3.134 7 7 7s7-3.134 7-7"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 19v3"></path><path stroke-linecap="round" stroke-linejoin="round" d="M8 22h8"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 6c-1.5 0-1.5-2-1.5-2s-1.5 2-1.5 2 1.5 2 1.5 2 1.5-2 1.5-2z"></path></svg>
+            <button type="button" class="fetch-stops-btn group w-full bg-muted/30 hover:bg-[#ff4757]/10 border border-border hover:border-[#ff4757] rounded-lg p-2.5 transition-all duration-300 flex items-center gap-3 cursor-pointer" data-type="RestArea">
+                <div class="w-8 h-8 rounded-md bg-card flex items-center justify-center text-[#ff4757] group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(255,71,87,0.3)] shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12V6"></path><path stroke-linecap="round" stroke-linejoin="round" d="M9 12V6"></path><path stroke-linecap="round" stroke-linejoin="round" d="M4 12h16"></path><path stroke-linecap="round" stroke-linejoin="round" d="M5 12c0 3.866 3.134 7 7 7s7-3.134 7-7"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 19v3"></path><path stroke-linecap="round" stroke-linejoin="round" d="M8 22h8"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 6c-1.5 0-1.5-2-1.5-2s-1.5 2-1.5 2 1.5 2 1.5 2 1.5-2 1.5-2z"></path></svg>
                 </div>
-                <div class="text-left flex-1">
-                    <div class="font-bold text-foreground group-hover:text-[#ff4757] transition-colors text-sm lg:text-base">Rest Areas</div>
-                    <div class="text-[10px] lg:text-xs text-muted-foreground w-max truncate">Take a break</div>
+                <div class="text-left flex-1 min-w-0">
+                    <div class="font-medium font-display text-sm text-foreground group-hover:text-[#ff4757] transition-colors truncate">Rest Areas</div>
                 </div>
             </button>
         </div>
