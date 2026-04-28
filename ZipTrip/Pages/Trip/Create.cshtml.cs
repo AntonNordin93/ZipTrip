@@ -52,7 +52,7 @@ namespace ZipTrip.Pages.Trip
                 return new JsonResult(new { success = false, message = "Could not calculate route." });
             }
 
-            return new JsonResult(new { success = true, geometry = routeData.Geometry, distanceKm = routeData.DistanceKm });
+            return new JsonResult(new { success = true, geometry = routeData.Geometry, distanceKm = routeData.DistanceKm, durationHours = routeData.DurationHours });
         }
 
         public async Task<IActionResult> OnGetCalculateRouteAsync(string start, string end, string routeType = "fastest")
@@ -64,7 +64,7 @@ namespace ZipTrip.Pages.Trip
 
             if (routeData == null) return new JsonResult(new { success = false });
 
-            return new JsonResult(new { success = true, geometry = routeData.Geometry, distanceKm = routeData.DistanceKm });
+            return new JsonResult(new { success = true, geometry = routeData.Geometry, distanceKm = routeData.DistanceKm, durationHours = routeData.DurationHours });
         }
 
         public async Task<IActionResult> OnPostSaveTripAsync([FromBody] TripRequest request)

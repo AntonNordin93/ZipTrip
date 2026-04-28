@@ -226,6 +226,14 @@
                     document.getElementById("display-title").innerText = `${currentStart} ➔ ${currentEnd}`;
                     document.getElementById("display-distance").innerText = `${Math.round(result.distanceKm)} km`;
 
+                    const durationEl = document.getElementById("display-time");
+                    if (durationEl && result.durationHours) {
+                        const totalMinutes = Math.round(result.durationHours * 60);
+                        const h = Math.floor(totalMinutes / 60);
+                        const m = totalMinutes % 60;
+                        durationEl.querySelector("span").innerText = `${h} h ${m} min`;
+                    }
+
                     attachStopButtons();
                     const gpsBtn = document.getElementById("start-gps-btn");
                     if (gpsBtn) gpsBtn.addEventListener("click", toggleNavigation);
@@ -411,6 +419,14 @@
                                   if(routeResult.success) {
                                       drawRoute(routeResult.geometry);
                                       document.getElementById("display-distance").innerText = `${Math.round(routeResult.distanceKm)} km`;
+
+                                      const durationEl = document.getElementById("display-time");
+                                      if (durationEl && routeResult.durationHours) {
+                                          const totalMinutes = Math.round(routeResult.durationHours * 60);
+                                          const h = Math.floor(totalMinutes / 60);
+                                          const m = totalMinutes % 60;
+                                          durationEl.querySelector("span").innerText = `${h} h ${m} min`;
+                                      }
                                   } else {
                                       console.warn("Could not calculate new route correctly.");
                                   }
