@@ -44,7 +44,25 @@ namespace ZipTrip.Pages.Trip
         {
             if (!ModelState.IsValid) return new JsonResult(new { success = false });
 
+            // Provide default "fastest" if not supplied from the client
             var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(Input.StartLocation, Input.EndLocation);
+
+            if (routeData == null)
+            {
+                return new JsonResult(new { success = false, message = "Could not calculate route." });
+            }
+
+            return new JsonResult(new { success = true, geometry = routeData.Geometry, distanceKm = routeData.DistanceKm });
+        }
+
+        public async Task<IActionResult> OnGetCalculateRouteAsync(string start, string end, string routeType = "fastest")
+        {
+            if (string.IsNullOrEmpty(start) || string.IsNullOrEmpty(end))
+                return new JsonResult(new { success = false });
+
+            var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end, routeType);
+
+            if (routeData == null) return new JsonResult(new { success = false });
 
             return new JsonResult(new { success = true, geometry = routeData.Geometry, distanceKm = routeData.DistanceKm });
         }

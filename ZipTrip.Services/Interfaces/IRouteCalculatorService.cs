@@ -7,6 +7,6 @@ namespace ZipTrip.Services.Interfaces
 {
     public interface IRouteCalculatorService
     {
-        Task<RouteCalculationResult?> CalculateBaseRouteAsync(string startLocation, string endLocation);
+        Task<RouteCalculationResult?> CalculateBaseRouteAsync(string startLocation, string endLocation, string routeType = "fastest");
     }
 }

@@ -401,16 +401,15 @@
                                 // Request new route calculation!
                                 toggleLoader(true, `Calculating ${displayNavText} Route...`, "Default");
                                 try {
-                                  // Example API endpoint integration for routes. 
-                                  // Real URL should be placed here reflecting TomTom implementation
-                                  console.log("Fetching new route shape for:", selectedType);
-                                  // For now, reload route line by simulating a basic geometry response
-                                  // Replace this below block when RouteType parameter is backed up on backend side
-                                  // let newRouteUrl = `?handler=CalculateRoute&start=${encodeURIComponent(currentStart)}&end=${encodeURIComponent(currentEnd)}&routeType=${selectedType}`;
-                                  // const routeRes = await fetch(newRouteUrl);
-                                  // const routeResult = await routeRes.json();
-                                  // drawRoute(routeResult.geometry);
-                                  // document.getElementById("display-distance").innerText = `${Math.round(routeResult.distanceKm)} km`;
+                                  let newRouteUrl = `?handler=CalculateRoute&start=${encodeURIComponent(currentStart)}&end=${encodeURIComponent(currentEnd)}&routeType=${selectedType}`;
+                                  const routeRes = await fetch(newRouteUrl);
+                                  const routeResult = await routeRes.json();
+                                  if(routeResult.success) {
+                                      drawRoute(routeResult.geometry);
+                                      document.getElementById("display-distance").innerText = `${Math.round(routeResult.distanceKm)} km`;
+                                  } else {
+                                      console.warn("Could not calculate new route correctly.");
+                                  }
                                 } catch (e) {
                                   console.error("Failed to alter route type:", e);
                                 } finally {
