@@ -113,7 +113,12 @@
                 fillOpacity: 1,
                 weight: 3,
                 opacity: 1
-            }).addTo(selectedStopsLayer).bindPopup(`<b>${s.Name}</b> (Selected)`);
+            }).addTo(selectedStopsLayer).bindPopup(`
+                <div style="text-align:center;">
+                    <strong style="color:${targetColor}">${s.Name}</strong><br>
+                    <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:#ff4757; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${s.Name}" data-lat="${s.Latitude}" data-lng="${s.Longitude}" data-type="${s.Type}">Remove from Trip</button>
+                </div>
+            `);
         });
     }
 
@@ -531,6 +536,7 @@
     let originalSavedStops = JSON.parse(JSON.stringify(selectedStopsArray)); // Deep copy to undo
     let originalRouteType = window.selectedRouteType || 'fastest'; // To undo route
     const undoBtn = document.getElementById('undo-changes-btn');
+    const backToGarageBtn = document.getElementById('back-to-garage-btn');
 
     function showUnsavedChangesMarker() {
         if(updateBtn) {
@@ -541,7 +547,15 @@
             `;
         }
         if(undoBtn) {
-            undoBtn.classList.remove('hidden');
+            // Gör grå-text knappen klickbar och byt hover till highlight
+            undoBtn.disabled = false;
+            undoBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'text-muted-foreground');
+            undoBtn.classList.add('text-[#f89e21]', 'hover:text-white', 'cursor-pointer');
+        }
+        if(backToGarageBtn) {
+            // Byt färg på Back to Garage till orange varning att unsaved ändringar finns om man drar utan att spara
+            backToGarageBtn.classList.remove('text-accent');
+            backToGarageBtn.classList.add('text-[#f89e21]'); 
         }
     }
 
@@ -635,7 +649,14 @@
             if(typeof renderSavedStops === 'function') renderSavedStops();
 
             // Reset UI
-            undoBtn.classList.add('hidden');
+            undoBtn.disabled = true;
+            undoBtn.classList.remove('text-[#f89e21]', 'hover:text-white', 'cursor-pointer');
+            undoBtn.classList.add('opacity-50', 'cursor-not-allowed', 'text-muted-foreground');
+
+            if(backToGarageBtn) {
+                backToGarageBtn.classList.remove('text-[#f89e21]');
+                backToGarageBtn.classList.add('text-accent');
+            }
             if(updateBtn) {
                 updateBtn.disabled = true;
                 updateBtn.innerHTML = `
@@ -707,7 +728,15 @@
                         <span class="hidden lg:inline truncate">SAVED ✓</span>
                     `;
                     updateBtn.disabled = true;
-                    if (undoBtn) undoBtn.classList.add('hidden');
+                    if (undoBtn) {
+                        undoBtn.disabled = true;
+                        undoBtn.classList.remove('text-[#f89e21]', 'hover:text-white', 'cursor-pointer');
+                        undoBtn.classList.add('opacity-50', 'cursor-not-allowed', 'text-muted-foreground');
+                    }
+                    if (backToGarageBtn) {
+                        backToGarageBtn.classList.remove('text-[#f89e21]');
+                        backToGarageBtn.classList.add('text-accent');
+                    }
                 } else {
                     updateBtn.innerHTML = '<span class="text-[#0f1219] font-bold">ERROR</span>';
                     setTimeout(() => updateBtn.innerHTML = `

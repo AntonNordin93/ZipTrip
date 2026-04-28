@@ -28,7 +28,11 @@
                     </p>
                 </div>
                 <div class="flex flex-col items-end lg:items-start lg:w-full space-y-2">
-                    <a href="/Identity/Account/Manage/Trips" class="text-[10px] font-bold text-accent hover:text-white transition-colors cursor-pointer uppercase underline">&larr; BACK TO GARAGE</a>
+                    <div class="flex items-center justify-between w-full mt-2 lg:mb-1">
+                        <a href="/Identity/Account/Manage/Trips" id="back-to-garage-btn" class="text-[10px] font-bold text-accent hover:text-white transition-colors cursor-pointer uppercase underline mb-2 lg:mb-0 block lg:inline-block">BACK TO SAVED TRIPS</a>
+
+                        <button type="button" id="undo-changes-btn" class="text-[10px] font-bold text-muted-foreground text-right cursor-not-allowed uppercase pr-1 opacity-50 transition-colors" disabled>UNDO CHANGES</button>
+                    </div>
 
                     <!-- Form placeholder for antiforgery token -->
                     <form method="post" id="update-form"><input type="hidden" name="dummy" value="1"/></form>
@@ -36,10 +40,6 @@
                     <button type="button" id="update-trip-btn" class="w-12 h-12 lg:w-full lg:h-10 bg-primary hover:bg-primary/90 text-[#0f1219] font-bold rounded-xl lg:text-sm transition-all hover:scale-105 flex justify-center items-center gap-2 cursor-pointer mb-2 shadow-[0_0_15px_rgba(24,219,103,0.4)]" disabled>
                         <svg class="w-5 h-5 shrink-0 text-[#0f1219]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                         <span class="hidden lg:inline truncate">SAVED ✓</span>
-                    </button>
-                    <button type="button" id="undo-changes-btn" class="hidden w-12 h-12 lg:w-full lg:h-10 bg-destructive hover:bg-destructive/90 text-white font-bold rounded-xl lg:text-sm transition-all hover:scale-105 flex justify-center items-center gap-2 cursor-pointer mb-2 shadow-[0_0_15px_rgba(240,51,51,0.4)]">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a5 5 0 015 5v2m0-7l-4-4m4 4l-4 4"></path></svg>
-                        <span class="hidden lg:inline truncate">UNDO CHANGES</span>
                     </button>
                     <button type="button" id="start-gps-btn" class="w-12 h-12 lg:w-full lg:h-14 bg-primary hover:bg-primary/90 text-[#0f1219] font-bold rounded-xl lg:text-lg shadow-[0_0_15px_rgba(24,219,103,0.4)] transition-all hover:scale-105 flex justify-center items-center gap-2 cursor-pointer overflow-hidden">
                         <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg>
