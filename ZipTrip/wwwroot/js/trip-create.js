@@ -18,6 +18,8 @@
     let selectedStopsLayer = L.layerGroup().addTo(map);
 
     let selectedStopsArray = [];
+    window.selectedStopsArray = selectedStopsArray;
+    let selectedRouteType = "fastest";
 
     // GPS Variabler
     let userLocationMarker = null;
@@ -33,6 +35,10 @@
         'Camping': '#4d8df5',
         'Lodging': '#f24694',
         'RestArea': '#ff4757',
+        'fastest': '#18db67',
+        'eco': '#30e5f2',
+        'scenic': '#f89e21',
+        'short': '#ce60f8',
         'Default': '#18db67'
     };
 
@@ -188,7 +194,7 @@
                 EndLocation: currentEnd,
                 StartDate: new Date().toISOString(),
                 VehicleType: parseInt(fd.get("Input.VehicleType")) || 0,
-                SelectedStops: selectedStopsArray
+                SelectedStops: window.selectedStopsArray || []
             };
             window.tripRequestPayloadRef = tripRequestPayload;
 
@@ -220,29 +226,302 @@
                     document.getElementById("display-title").innerText = `${currentStart} ➔ ${currentEnd}`;
                     document.getElementById("display-distance").innerText = `${Math.round(result.distanceKm)} km`;
 
+                    const durationEl = document.getElementById("display-time");
+                    if (durationEl && result.durationHours) {
+                        const totalMinutes = Math.round(result.durationHours * 60);
+                        const h = Math.floor(totalMinutes / 60);
+                        const m = totalMinutes % 60;
+                        durationEl.querySelector("span").innerText = `${h} h ${m} min`;
+                    }
+
                     attachStopButtons();
                     const gpsBtn = document.getElementById("start-gps-btn");
                     if (gpsBtn) gpsBtn.addEventListener("click", toggleNavigation);
 
-                    // Lägg till mobil-dropdown logik för Stops-menyn om den finns
-                    const toggleBtn = document.getElementById('toggle-stops-menu');
-                    const stopsContainer = document.getElementById('stops-container');
-                    const chevron = document.getElementById('stops-chevron');
-                    if(toggleBtn && stopsContainer && chevron) {
-                        toggleBtn.addEventListener('click', () => {
-                            stopsContainer.classList.toggle('hidden');
-                            if(stopsContainer.classList.contains('hidden')) {
-                                chevron.style.transform = "rotate(0deg)";
-                            } else {
-                                chevron.style.transform = "rotate(180deg)";
+                    // --- Helper att stänga alla popups ---
+                    function closeAllDropdowns() {
+                        const containers = [
+                            { c: document.getElementById('vehicle-container'), i: document.getElementById('vehicle-chevron') },
+                            { c: document.getElementById('routes-container'), i: document.getElementById('routes-chevron') },
+                            { c: document.getElementById('stops-container'), i: document.getElementById('stops-chevron') }
+                        ];
+
+                        containers.forEach(x => {
+                            if (x.c && !x.c.classList.contains('hidden')) {
+                                x.c.classList.add('hidden');
+                                if (x.i) x.i.style.transform = "rotate(0deg)";
                             }
+                        });
+                    }
+
+                    // DROPDOWN LOGIC FÖR VEHICLES (Ny)
+                    const toggleVehicleBtn = document.getElementById('toggle-vehicle-menu');
+                    const vehicleContainer = document.getElementById('vehicle-container');
+                    const vehicleChevron = document.getElementById('vehicle-chevron');
+                    let selectedVehicleId = null;
+
+                    if(toggleVehicleBtn && vehicleContainer && vehicleChevron) {
+                        toggleVehicleBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const isHidden = vehicleContainer.classList.contains('hidden');
+                            closeAllDropdowns(); // Stäng andra!
+
+                            if(isHidden) {
+                                vehicleContainer.classList.remove('hidden');
+                                vehicleChevron.style.transform = "rotate(180deg)";
+                            } else {
+                                vehicleContainer.classList.add('hidden');
+                                vehicleChevron.style.transform = "rotate(0deg)";
+                            }
+                        });
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', (e) => {
+                           if(!toggleVehicleBtn.contains(e.target) && !vehicleContainer.contains(e.target) && !vehicleContainer.classList.contains('hidden')) {
+                               vehicleContainer.classList.add('hidden');
+                               vehicleChevron.style.transform = "rotate(0deg)";
+                           }
+                        });
+
+                        document.querySelectorAll('.vehicle-type-btn').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                // Close dropdown
+                                vehicleContainer.classList.add('hidden');
+                                vehicleChevron.style.transform = "rotate(0deg)";
+
+                                // Update active state visually
+                                document.querySelectorAll('.vehicle-type-btn').forEach(b => b.classList.remove('bg-[#18db67]/10', 'border-[#18db67]', 'bg-[#30e5f2]/10', 'border-[#30e5f2]', 'bg-[#f89e21]/10', 'border-[#f89e21]'));
+                                document.querySelectorAll('.vehicle-type-btn').forEach(b => b.classList.add('bg-muted/30', 'border-border'));
+                                btn.classList.remove('bg-muted/30', 'border-border');
+
+                                const displayNavText = btn.querySelector('span').innerText;
+                                selectedVehicleId = btn.getAttribute('data-id') || btn.getAttribute('data-val');
+
+                                // Set paths based on text content
+                                let thePath = "M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z";
+                                let colorClass = "text-[#18db67]"; // default Green
+
+                                if(displayNavText.includes('Electric')) {
+                                    thePath = "M13 2L3 14h9l-1 8 10-12h-9l1-8z";
+                                    colorClass = "text-[#30e5f2]";
+                                    btn.classList.add('bg-[#30e5f2]/10', 'border-[#30e5f2]');
+                                } else if(displayNavText.includes('Motor') || displayNavText.includes('Caravan')) {
+                                    thePath = "M3 13h18V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5zm0 0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5M8 21v-2M16 21v-2";
+                                    colorClass = "text-[#f89e21]";
+                                    btn.classList.add('bg-[#f89e21]/10', 'border-[#f89e21]');
+                                } else {
+                                     btn.classList.add('bg-[#18db67]/10', 'border-[#18db67]');
+                                     // Default logic for matching color to element's svg color class if text doesn't match Enums directly (like real names)
+                                     let svgElem = btn.querySelector('svg');
+                                     if(svgElem && svgElem.parentElement) {
+                                         let parentClasses = svgElem.parentElement.className;
+                                         if(parentClasses.includes('text-[#18db67]')) {
+                                             colorClass = 'text-[#18db67]';
+                                             thePath = "M8 7h8M8 11h8M8 15h8M4 4h16v16H4V4z";
+                                             btn.classList.add('bg-[#18db67]/10', 'border-[#18db67]');
+                                         }
+                                         else if (parentClasses.includes('text-[#30e5f2]')) {
+                                             colorClass = 'text-[#30e5f2]';
+                                             thePath = "M13 2L3 14h9l-1 8 10-12h-9l1-8z";
+                                             btn.classList.add('bg-[#30e5f2]/10', 'border-[#30e5f2]');
+                                         }
+                                         else if (parentClasses.includes('text-[#f89e21]')) {
+                                             colorClass = 'text-[#f89e21]';
+                                             thePath = "M3 13h18V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5zm0 0v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5M8 21v-2M16 21v-2";
+                                             btn.classList.add('bg-[#f89e21]/10', 'border-[#f89e21]');
+                                         }
+                                     }
+                                }
+
+                                // Update display text to selected vehicle
+                                document.getElementById('selected-vehicle-display').innerHTML = `
+                                    <svg class="w-5 h-5 ${colorClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${thePath}"></path></svg>
+                                    <span>${displayNavText}</span>
+                                `;
+                            });
+                        });
+                    }
+
+                    // DROPDOWN LOGIC FÖR ROUTES
+                    const toggleRoutesBtn = document.getElementById('toggle-routes-menu');
+                    const routesContainer = document.getElementById('routes-container');
+                    const routesChevron = document.getElementById('routes-chevron');
+                    if(toggleRoutesBtn && routesContainer && routesChevron) {
+                        toggleRoutesBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const isHidden = routesContainer.classList.contains('hidden');
+                            closeAllDropdowns(); // Stäng andra!
+
+                            if(isHidden) {
+                                routesContainer.classList.remove('hidden');
+                                routesChevron.style.transform = "rotate(180deg)";
+                            } else {
+                                routesContainer.classList.add('hidden');
+                                routesChevron.style.transform = "rotate(0deg)";
+                            }
+                        });
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', (e) => {
+                           if(!toggleRoutesBtn.contains(e.target) && !routesContainer.contains(e.target) && !routesContainer.classList.contains('hidden')) {
+                               routesContainer.classList.add('hidden');
+                               routesChevron.style.transform = "rotate(0deg)";
+                           }
+                        });
+
+                        // Event listeners for route option buttons (mockup function)
+                        document.querySelectorAll('.route-type-btn').forEach(btn => {
+                            btn.addEventListener('click', async () => {
+                                // Close dropdown
+                                routesContainer.classList.add('hidden');
+                                routesChevron.style.transform = "rotate(0deg)";
+
+                                // Update active state visually
+                                document.querySelectorAll('.route-type-btn').forEach(b => b.classList.remove('bg-[#18db67]/10', 'border-[#18db67]', 'bg-[#f89e21]/10', 'border-[#f89e21]', 'bg-[#ce60f8]/10', 'border-[#ce60f8]', 'active'));
+                                document.querySelectorAll('.route-type-btn').forEach(b => b.classList.add('bg-muted/30', 'border-border'));
+                                btn.classList.remove('bg-muted/30', 'border-border');
+
+                                const selectedType = btn.getAttribute('data-type');
+                                const displayNavText = btn.querySelector('.font-bold') ? btn.querySelector('.font-bold').innerText : btn.querySelector('.font-medium').innerText;
+
+                                let activeColorClass = 'text-[#18db67]';
+                                if (selectedType === 'fastest') {
+                                    btn.classList.add('bg-[#18db67]/10', 'border-[#18db67]', 'active');
+                                } else if (selectedType === 'scenic') {
+                                    btn.classList.add('bg-[#f89e21]/10', 'border-[#f89e21]', 'active');
+                                    activeColorClass = 'text-[#f89e21]';
+                                } else if (selectedType === 'short') {
+                                    btn.classList.add('bg-[#ce60f8]/10', 'border-[#ce60f8]', 'active');
+                                    activeColorClass = 'text-[#ce60f8]';
+                                }
+
+                                selectedRouteType = selectedType;
+
+                                let theIcon = '<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>';
+                                if(selectedType === 'short') {
+                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>`;
+                                } else if (selectedType === 'scenic') {
+                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`;
+                                }
+
+                                // Update display text to selected route
+                                document.getElementById('selected-route-display').innerHTML = `
+                                    ${theIcon}
+                                    <span>${displayNavText} Route</span>
+                                `;
+
+                                // Request new route calculation!
+                                toggleLoader(true, `Calculating ${displayNavText} Route...`, selectedType);
+                                try {
+                                  let newRouteUrl = `?handler=CalculateRoute&start=${encodeURIComponent(currentStart)}&end=${encodeURIComponent(currentEnd)}&routeType=${selectedType}`;
+                                  const routeRes = await fetch(newRouteUrl);
+                                  const routeResult = await routeRes.json();
+                                  if(routeResult.success) {
+                                      drawRoute(routeResult.geometry);
+                                      document.getElementById("display-distance").innerText = `${Math.round(routeResult.distanceKm)} km`;
+
+                                      const durationEl = document.getElementById("display-time");
+                                      if (durationEl && routeResult.durationHours) {
+                                          const totalMinutes = Math.round(routeResult.durationHours * 60);
+                                          const h = Math.floor(totalMinutes / 60);
+                                          const m = totalMinutes % 60;
+                                          durationEl.querySelector("span").innerText = `${h} h ${m} min`;
+                                      }
+                                  } else {
+                                      console.warn("Could not calculate new route correctly.");
+                                  }
+                                } catch (e) {
+                                  console.error("Failed to alter route type:", e);
+                                } finally {
+                                  toggleLoader(false);
+                                }
+
+                            });
+                        });
+                    }
+
+                    // DROPDOWN LOGIC FÖR STOPS
+                    const toggleStopsBtn = document.getElementById('toggle-stops-menu');
+                    const stopsContainer = document.getElementById('stops-container');
+                    const stopsChevron = document.getElementById('stops-chevron');
+                    if(toggleStopsBtn && stopsContainer && stopsChevron) {
+                        toggleStopsBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const isHidden = stopsContainer.classList.contains('hidden');
+                            closeAllDropdowns(); // Stäng andra!
+
+                            if(isHidden) {
+                                stopsContainer.classList.remove('hidden');
+                                stopsChevron.style.transform = "rotate(180deg)";
+                            } else {
+                                stopsContainer.classList.add('hidden');
+                                stopsChevron.style.transform = "rotate(0deg)";
+                            }
+                        });
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', (e) => {
+                           if(!toggleStopsBtn.contains(e.target) && !stopsContainer.contains(e.target) && !stopsContainer.classList.contains('hidden')) {
+                               stopsContainer.classList.add('hidden');
+                               stopsChevron.style.transform = "rotate(0deg)";
+                           }
                         });
 
                         document.querySelectorAll('.fetch-stops-btn').forEach(btn => {
                             btn.addEventListener('click', () => {
-                                if(window.innerWidth < 1024) {
-                                    stopsContainer.classList.add('hidden');
-                                    chevron.style.transform = "rotate(0deg)";
+                                stopsContainer.classList.add('hidden');
+                                stopsChevron.style.transform = "rotate(0deg)";
+
+                                // Update active state visually for Selected Stops (same as vehicle/route)
+                                document.querySelectorAll('.fetch-stops-btn').forEach(b => {
+                                    b.classList.remove('bg-[#18db67]/10', 'border-[#18db67]', 'bg-[#30e5f2]/10', 'border-[#30e5f2]', 'bg-[#f89e21]/10', 'border-[#f89e21]', 'bg-[#ce60f8]/10', 'border-[#ce60f8]', 'bg-[#4d8df5]/10', 'border-[#4d8df5]', 'bg-[#f24694]/10', 'border-[#f24694]', 'bg-[#ff4757]/10', 'border-[#ff4757]');
+                                    b.classList.add('bg-muted/30', 'border-border');
+                                });
+                                btn.classList.remove('bg-muted/30', 'border-border');
+
+                                const selectedType = btn.getAttribute('data-type');
+                                const displayNavText = btn.querySelector('.font-medium').innerText;
+                                let activeColorClass = 'text-accent'; // fallback fallback
+                                let theIcon = '';
+
+                                // Match right color and class based on chosen Type
+                                if(selectedType === 'Fuel') {
+                                    btn.classList.add('bg-[#18db67]/10', 'border-[#18db67]');
+                                    activeColorClass = 'text-[#18db67]';
+                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>`;
+                                } else if(selectedType === 'Charging') {
+                                    btn.classList.add('bg-[#30e5f2]/10', 'border-[#30e5f2]');
+                                    activeColorClass = 'text-[#30e5f2]';
+                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon stroke-linecap="round" stroke-linejoin="round" points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`;
+                                } else if(selectedType === 'Restaurant') {
+                                    btn.classList.add('bg-[#f89e21]/10', 'border-[#f89e21]');
+                                    activeColorClass = 'text-[#f89e21]';
+                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>`;
+                                } else if(selectedType === 'Attraction') {
+                                    btn.classList.add('bg-[#ce60f8]/10', 'border-[#ce60f8]');
+                                    activeColorClass = 'text-[#ce60f8]';
+                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon stroke-linecap="round" stroke-linejoin="round" points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
+                                } else if(selectedType === 'Camping') {
+                                    btn.classList.add('bg-[#4d8df5]/10', 'border-[#4d8df5]');
+                                    activeColorClass = 'text-[#4d8df5]';
+                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 22h20L12 2z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 12l-4 10"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 12l4 10"></path></svg>`;
+                                } else if(selectedType === 'Lodging') {
+                                    btn.classList.add('bg-[#f24694]/10', 'border-[#f24694]');
+                                    activeColorClass = 'text-[#f24694]';
+                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline stroke-linecap="round" stroke-linejoin="round" points="9 22 9 12 15 12 15 22"></polyline></svg>`;
+                                } else if(selectedType === 'RestArea') {
+                                    btn.classList.add('bg-[#ff4757]/10', 'border-[#ff4757]');
+                                    activeColorClass = 'text-[#ff4757]';
+                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12V6"></path><path stroke-linecap="round" stroke-linejoin="round" d="M9 12V6"></path><path stroke-linecap="round" stroke-linejoin="round" d="M4 12h16"></path><path stroke-linecap="round" stroke-linejoin="round" d="M5 12c0 3.866 3.134 7 7 7s7-3.134 7-7"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 19v3"></path><path stroke-linecap="round" stroke-linejoin="round" d="M8 22h8"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 6c-1.5 0-1.5-2-1.5-2s-1.5 2-1.5 2 1.5 2 1.5 2 1.5-2 1.5-2z"></path></svg>`;
+                                }
+
+                                // Update display text and icon
+                                const titleDisplay = document.querySelector('#toggle-stops-menu .flex.items-center.gap-3');
+                                if(titleDisplay) {
+                                    titleDisplay.innerHTML = `
+                                        ${theIcon}
+                                        <span class="${activeColorClass}">${displayNavText}</span>
+                                    `;
                                 }
                             });
                         });

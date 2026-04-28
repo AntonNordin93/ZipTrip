@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ZipTrip.Domain.Enums;
 using ZipTrip.Services.DTOs.Trip;
+using ZipTrip.Services.DTOs.Vehicle;
 using ZipTrip.Services.Interfaces;
 
 namespace ZipTrip.Pages.Trip
@@ -11,26 +12,59 @@ namespace ZipTrip.Pages.Trip
         private readonly IRouteCalculatorService _routeCalculatorService;
         private readonly IRouteStopService _routeStopService;
         private readonly ITripService _tripService;
+        private readonly IVehicleService _vehicleService; // injected vehicle service
 
-        public CreateModel(IRouteCalculatorService routeCalculatorService, IRouteStopService routeStopService, ITripService tripService)
+        public CreateModel(IRouteCalculatorService routeCalculatorService, IRouteStopService routeStopService, ITripService tripService, IVehicleService vehicleService)
         {
             _routeCalculatorService = routeCalculatorService;
             _routeStopService = routeStopService;
             _tripService = tripService;
+            _vehicleService = vehicleService;
         }
 
         [BindProperty]
         public TripRequest Input { get; set; } = new TripRequest();
 
-        public void OnGet() { }
+        // Property to hold user's vehicles
+        public List<VehicleResponse> UserVehicles { get; set; } = new List<VehicleResponse>();
+
+        public async Task OnGetAsync() 
+        {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    UserVehicles = (await _vehicleService.GetUserVehiclesAsync(userId)).ToList();
+                }
+            }
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid) return new JsonResult(new { success = false });
 
+            // Provide default "fastest" if not supplied from the client
             var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(Input.StartLocation, Input.EndLocation);
 
-            return new JsonResult(new { success = true, geometry = routeData.Geometry, distanceKm = routeData.DistanceKm });
+            if (routeData == null)
+            {
+                return new JsonResult(new { success = false, message = "Could not calculate route." });
+            }
+
+            return new JsonResult(new { success = true, geometry = routeData.Geometry, distanceKm = routeData.DistanceKm, durationHours = routeData.DurationHours });
+        }
+
+        public async Task<IActionResult> OnGetCalculateRouteAsync(string start, string end, string routeType = "fastest")
+        {
+            if (string.IsNullOrEmpty(start) || string.IsNullOrEmpty(end))
+                return new JsonResult(new { success = false });
+
+            var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end, routeType);
+
+            if (routeData == null) return new JsonResult(new { success = false });
+
+            return new JsonResult(new { success = true, geometry = routeData.Geometry, distanceKm = routeData.DistanceKm, durationHours = routeData.DurationHours });
         }
 
         public async Task<IActionResult> OnPostSaveTripAsync([FromBody] TripRequest request)
@@ -62,6 +96,15 @@ namespace ZipTrip.Pages.Trip
 
         public IActionResult OnGetDetailsMenu()
         {
+            // Populate UserVehicles before returning partial
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    UserVehicles = _vehicleService.GetUserVehiclesAsync(userId).Result.ToList();
+                }
+            }
             return Partial("_TripDetailsPartial", this);
         }
 

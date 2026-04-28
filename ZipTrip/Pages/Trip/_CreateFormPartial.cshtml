@@ -35,11 +35,6 @@
 
         <hr class="border-border" />
 
-        <div>
-            <label asp-for="Input.VehicleType" class="block text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">Vehicle Type</label>
-            <select asp-for="Input.VehicleType" asp-items="Html.GetEnumSelectList<ZipTrip.Domain.Enums.VehicleType>()" class="w-full bg-background border border-input rounded-xl px-4 py-2.5 text-sm"></select>
-        </div>
-
         <div class="pt-4 mt-auto">
             <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-xl text-base font-bold bg-primary text-[#0f1219] hover:scale-105 h-14 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] transition-all duration-200 cursor-pointer">
                 Generate Trip
