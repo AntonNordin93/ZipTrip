@@ -206,6 +206,12 @@
                     const targetColor = themeColors[type] || themeColors['Default'];
 
                     result.stops.forEach(s => {
+                        // Skapa en visuell snygg cirkel anpassad efter vald färg
+                        let isSelected = selectedStopsArray.some(x => x.Latitude === s.latitude && x.Longitude === s.longitude);
+                        let btnText = isSelected ? "Remove from Trip" : "Add to Trip";
+                        let btnColor = isSelected ? "#ff4757" : targetColor;
+                        let btnTextColor = isSelected ? "#fff" : "#000";
+
                         L.circleMarker([s.latitude, s.longitude], {
                             radius: 8,
                             color: targetColor,
@@ -218,7 +224,7 @@
                         .bindPopup(`
                             <div style="text-align:center;">
                                 <strong style="color:${targetColor}">${s.name || "Stop"}</strong><br>
-                                <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:${targetColor}; color:#000; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${s.name}" data-lat="${s.latitude}" data-lng="${s.longitude}" data-type="${type}">Add to Trip</button>
+                                <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:${btnColor}; color:${btnTextColor}; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${s.name}" data-lat="${s.latitude}" data-lng="${s.longitude}" data-type="${type}">${btnText}</button>
                             </div>
                         `);
                     });
@@ -234,7 +240,7 @@
         });
     });
 
-    // Lyssna på klick för "Add to Trip" i popups
+    // Lyssna på klick för "Add to Trip" och "Remove from Trip" i popups
     document.addEventListener('click', function(e) {
         if(e.target && e.target.classList.contains('add-stop-btn')) {
             const btn = e.target;
@@ -243,19 +249,53 @@
             const lng = parseFloat(btn.getAttribute('data-lng'));
             const type = btn.getAttribute('data-type');
 
-            // Spara i arrayen if it doesn't already exist
-            if(!selectedStopsArray.find(s => s.Latitude === lat && s.Longitude === lng)) {
+            // Find if it already exists
+            const existingIndex = selectedStopsArray.findIndex(s => s.Latitude === lat && s.Longitude === lng);
+
+            if(existingIndex > -1) {
+                // Ta bort stoppet
+                selectedStopsArray.splice(existingIndex, 1);
+
+                // Update popup to show Add
+                const targetColor = themeColors[type] || themeColors['Default'];
+                const parentDiv = btn.parentElement;
+                if(parentDiv) {
+                    parentDiv.innerHTML = `
+                        <strong style="color:${targetColor}">${name}</strong><br>
+                        <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:${targetColor}; color:#000; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${name}" data-lat="${lat}" data-lng="${lng}" data-type="${type}">Add to Trip</button>
+                    `;
+                }
+
+            } else {
+                // Spara i arrayen
                 selectedStopsArray.push({
                     Name: name,
                     Latitude: lat,
                     Longitude: lng,
                     Type: type
                 });
+
+                // Update popup to show Remove
+                const targetColor = themeColors[type] || themeColors['Default'];
+                const parentDiv = btn.parentElement;
+                if(parentDiv) {
+                    parentDiv.innerHTML = `
+                        <strong style="color:${targetColor}">${name}</strong><br>
+                        <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:#ff4757; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${name}" data-lat="${lat}" data-lng="${lng}" data-type="${type}">Remove from Trip</button>
+                    `;
+                }
             }
 
-            // Immediately visually update!
-            renderSavedStops();
-            map.closePopup();
+            // Stäng popup om vi vill, men det är trevligare om den ändras på plats
+            // map.closePopup(); 
+
+            // Uppdatera listan under "Saved Stops" i menyn via en (påhittad eller befintlig) funktion
+            // renderSavedStops(); 
+            // Denna funktion brukar köras vi inladdning i details men du verkar dra den live också
+
+            if(typeof renderSavedStops === 'function') {
+               renderSavedStops();
+            }
         }
     });
 
