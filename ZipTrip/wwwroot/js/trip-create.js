@@ -35,6 +35,10 @@
         'Camping': '#4d8df5',
         'Lodging': '#f24694',
         'RestArea': '#ff4757',
+        'fastest': '#18db67',
+        'eco': '#30e5f2',
+        'scenic': '#f89e21',
+        'short': '#ce60f8',
         'Default': '#18db67'
     };
 
@@ -365,7 +369,7 @@
                                 routesChevron.style.transform = "rotate(0deg)";
 
                                 // Update active state visually
-                                document.querySelectorAll('.route-type-btn').forEach(b => b.classList.remove('bg-[#18db67]/10', 'border-[#18db67]', 'bg-[#f89e21]/10', 'border-[#f89e21]', 'bg-[#30e5f2]/10', 'border-[#30e5f2]', 'active'));
+                                document.querySelectorAll('.route-type-btn').forEach(b => b.classList.remove('bg-[#18db67]/10', 'border-[#18db67]', 'bg-[#f89e21]/10', 'border-[#f89e21]', 'bg-[#ce60f8]/10', 'border-[#ce60f8]', 'active'));
                                 document.querySelectorAll('.route-type-btn').forEach(b => b.classList.add('bg-muted/30', 'border-border'));
                                 btn.classList.remove('bg-muted/30', 'border-border');
 
@@ -378,16 +382,16 @@
                                 } else if (selectedType === 'scenic') {
                                     btn.classList.add('bg-[#f89e21]/10', 'border-[#f89e21]', 'active');
                                     activeColorClass = 'text-[#f89e21]';
-                                } else if (selectedType === 'eco') {
-                                    btn.classList.add('bg-[#30e5f2]/10', 'border-[#30e5f2]', 'active');
-                                    activeColorClass = 'text-[#30e5f2]';
+                                } else if (selectedType === 'short') {
+                                    btn.classList.add('bg-[#ce60f8]/10', 'border-[#ce60f8]', 'active');
+                                    activeColorClass = 'text-[#ce60f8]';
                                 }
 
                                 selectedRouteType = selectedType;
 
                                 let theIcon = '<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>';
-                                if(selectedType === 'eco') {
-                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                                if(selectedType === 'short') {
+                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>`;
                                 } else if (selectedType === 'scenic') {
                                     theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`;
                                 }
@@ -399,7 +403,7 @@
                                 `;
 
                                 // Request new route calculation!
-                                toggleLoader(true, `Calculating ${displayNavText} Route...`, "Default");
+                                toggleLoader(true, `Calculating ${displayNavText} Route...`, selectedType);
                                 try {
                                   let newRouteUrl = `?handler=CalculateRoute&start=${encodeURIComponent(currentStart)}&end=${encodeURIComponent(currentEnd)}&routeType=${selectedType}`;
                                   const routeRes = await fetch(newRouteUrl);

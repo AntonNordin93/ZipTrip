@@ -41,9 +41,9 @@ namespace ZipTrip.Services.Implementations
             {
                 tomTomRouteType = "thrilling";
             }
-            else if (routeType.Equals("eco", StringComparison.OrdinalIgnoreCase))
+            else if (routeType.Equals("short", StringComparison.OrdinalIgnoreCase))
             {
-                tomTomRouteType = "eco";
+                tomTomRouteType = "shortest";
             }
 
             // Using TomTom API! 
