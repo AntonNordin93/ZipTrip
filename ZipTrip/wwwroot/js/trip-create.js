@@ -418,6 +418,14 @@
                                   const routeResult = await routeRes.json();
                                   if(routeResult.success) {
                                       drawRoute(routeResult.geometry);
+                                      stopsLayer.clearLayers();
+                                      selectedStopsLayer.clearLayers();
+                                      selectedStopsArray = [];
+                                      window.selectedStopsArray = selectedStopsArray;
+                                      if(window.tripRequestPayloadRef) {
+                                          window.tripRequestPayloadRef.SelectedStops = selectedStopsArray;
+                                      }
+
                                       document.getElementById("display-distance").innerText = `${Math.round(routeResult.distanceKm)} km`;
 
                                       const durationEl = document.getElementById("display-time");
@@ -586,7 +594,7 @@
                 toggleLoader(true, `Locating ${displayType}s...`, type);
 
                 try {
-                    const res = await fetch(`?handler=FetchStops&start=${encodeURIComponent(currentStart)}&end=${encodeURIComponent(currentEnd)}&type=${type}`);
+                    const res = await fetch(`?handler=FetchStops&start=${encodeURIComponent(currentStart)}&end=${encodeURIComponent(currentEnd)}&type=${type}&routeType=${selectedRouteType}`);
                     const result = await res.json();
                     stopsLayer.clearLayers();
                     if (result.success && result.stops) {

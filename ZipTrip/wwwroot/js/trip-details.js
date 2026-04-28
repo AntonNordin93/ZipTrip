@@ -194,7 +194,9 @@
             toggleLoader(true, `Locating ${displayType}s...`, type);
 
             try {
-                const response = await fetch(`?handler=FetchStops&start=${encodeURIComponent(startLoc)}&end=${encodeURIComponent(endLoc)}&type=${type}`);
+                // Ensure selectedRouteType is defined or default to 'fastest'
+                const currentRouteType = window.selectedRouteType || 'fastest';
+                const response = await fetch(`?handler=FetchStops&start=${encodeURIComponent(startLoc)}&end=${encodeURIComponent(endLoc)}&type=${type}&routeType=${currentRouteType}`);
                 const result = await response.json();
 
                 // Rensa bort gamla mackar/restauranger från kartan

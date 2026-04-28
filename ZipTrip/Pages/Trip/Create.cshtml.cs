@@ -108,12 +108,12 @@ namespace ZipTrip.Pages.Trip
             return Partial("_TripDetailsPartial", this);
         }
 
-        public async Task<JsonResult> OnGetFetchStopsAsync(string start, string end, string type)
+        public async Task<JsonResult> OnGetFetchStopsAsync(string start, string end, string type, string routeType = "fastest")
         {
             try
             {
                 if (!Enum.TryParse<StopType>(type, true, out var stopType)) return new JsonResult(new { success = false });
-                var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end);
+                var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end, routeType);
                 var stops = await _routeStopService.GetSuggestedStopsAsync(routeData.Geometry, new List<StopType> { stopType });
                 return new JsonResult(new { success = true, stops = stops.Select(s => new { name = s.Name, latitude = s.Latitude, longitude = s.Longitude }) });
             }

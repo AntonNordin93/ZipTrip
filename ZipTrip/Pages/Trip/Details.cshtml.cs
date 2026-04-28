@@ -80,7 +80,7 @@ namespace ZipTrip.Pages.Trip
             return new JsonResult(new { success = false, message = "Could not update trip" });
         }
 
-        public async Task<JsonResult> OnGetFetchStopsAsync(string start, string end, string type)
+        public async Task<JsonResult> OnGetFetchStopsAsync(string start, string end, string type, string routeType = "fastest")
         {
             try
             {
@@ -88,7 +88,7 @@ namespace ZipTrip.Pages.Trip
                     return new JsonResult(new { success = false, message = "Ogiltig typ" });
 
                 // 1. Hämta ruttens geometri
-                var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end);
+                var routeData = await _routeCalculatorService.CalculateBaseRouteAsync(start, end, routeType);
 
                 // 2. Hämta stopp längs rutten via TomTom
                 var stops = await _routeStopService.GetSuggestedStopsAsync(routeData.Geometry, new List<StopType> { stopType });
