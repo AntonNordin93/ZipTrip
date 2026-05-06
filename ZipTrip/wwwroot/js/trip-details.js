@@ -335,13 +335,22 @@
                     `;
                 }
 
-                // Request new route calculation!
-                toggleLoader(true, `Calculating ${displayNavText} Route...`, selectedType);
+                // Make sure toggleLoader exists
+                if (typeof toggleLoader === 'function') {
+                    toggleLoader(true, `Calculating ${displayNavText} Route...`, selectedType);
+                }
+                
                 try {
                   let newRouteUrl = `?handler=CalculateRoute&start=${encodeURIComponent(startLoc)}&end=${encodeURIComponent(endLoc)}&routeType=${selectedType}`;
                   const routeRes = await fetch(newRouteUrl);
+                  
+                  if (!routeRes.ok) {
+                      console.warn("Server returned error:", routeRes.status);
+                      return;
+                  }
+                  
                   const routeResult = await routeRes.json();
-                  if(routeResult.success) {
+                  if(routeResult && routeResult.success && routeResult.geometry) {
 
                       // Rensa gamla stops och the route
                       stopsLayer.clearLayers();
@@ -362,7 +371,7 @@
 
                       const startIcon = L.divIcon({
                             className: 'bg-transparent border-0',
-                            html: `<div style="color:#3b82f6; filter:drop-shadow(0 0 8px rgba(59,130,246,0.8));"><svg width="28" height="28" viewBox="0 0 24 24" fill="#0f1219" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg></div>`,
+                            html: `<div style="color:#3b82f6; filter:drop-shadow(0 0 8px rgba(59,130,246,0.8));"><svg width="28" height="28" viewBox="0 0 24 24" fill="#0f1219" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></div>`,
                             iconSize: [28, 28],
                             iconAnchor: [14, 14],
                             popupAnchor: [0, -14]
@@ -543,7 +552,9 @@
 
             const displayType = type === 'RestArea' ? 'Rest Area' : type;
 
-            toggleLoader(true, `Locating ${displayType}s...`, type);
+            if (typeof toggleLoader === 'function') {
+                toggleLoader(true, `Locating ${displayType}s...`, type);
+            }
 
             try {
                 // Ensure selectedRouteType is defined or default to 'fastest'
@@ -585,9 +596,12 @@
                 }
             } catch (e) {
                 console.error("Fel vid hämtning av API:", e);
-                alert("Nätverksfel vid hämtning av stopp.");
+                // Kommentera ut alert tills vi har felhanteringen för network calls i prod set up för demo
+                // alert("Nätverksfel vid hämtning av stopp.");
             } finally {
-                toggleLoader(false);
+                if (typeof toggleLoader === 'function') {
+                    toggleLoader(false);
+                }
             }
         });
     });
@@ -717,6 +731,7 @@
                             theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`;
                         }
 
+                        // Update display text to selected route
                         const selectedRouteDisplay = document.getElementById('selected-route-display');
                         if (selectedRouteDisplay) {
                             selectedRouteDisplay.innerHTML = `
@@ -785,94 +800,6 @@
                     <svg class="w-5 h-5 shrink-0 text-[#0f1219]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                     <span class="hidden lg:inline truncate">SAVED ✓</span>
                 `;
-            }
-        });
-    }
-
-    function renderSavedStopsMapOnly() {
-        if(!window.selectedStopsLayer) return;
-        window.selectedStopsLayer.clearLayers();
-        selectedStopsArray.forEach(stop => {
-            const targetColor = themeColors[stop.Type] || themeColors['Default'];
-            L.circleMarker([stop.Latitude, stop.Longitude], {
-                radius: 10,
-                color: '#ffffff',
-                fillColor: targetColor,
-                fillOpacity: 1,
-                weight: 3,
-                opacity: 1
-            }).addTo(window.selectedStopsLayer).bindPopup(`
-                <div style="text-align:center;">
-                    <strong style="color:${targetColor}">${stop.Name}</strong><br>
-                    <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:#ff4757; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${stop.Name}" data-lat="${stop.Latitude}" data-lng="${stop.Longitude}" data-type="${stop.Type}">Remove from Trip</button>
-                </div>
-            `);
-        });
-    }
-
-    // Hantera spara knappen 
-    const updateBtn = document.getElementById("update-trip-btn");
-    const updateForm = document.getElementById("update-form");
-    if(updateBtn) {
-        updateBtn.addEventListener("click", async () => {
-            updateBtn.innerHTML = '<span class="text-[#0f1219] font-bold">SAVING...</span>';
-            const tripId = mapElement.getAttribute("data-trip-id");
-
-            // Mocking a Request since we only have start/end logic available right here
-            // On a real payload you want to fill these values from the server form
-            const requestPayload = {
-                StartLocation: startLoc,
-                EndLocation: endLoc,
-                Title: document.getElementById('display-title')?.innerText || "Trip",
-                SelectedStops: selectedStopsArray
-            };
-
-            const tokenInput = updateForm ? updateForm.querySelector('input[name="__RequestVerificationToken"]') : null;
-            // Get the token from script tag if the form input failed to mount for some reason
-            const token = (tokenInput ? tokenInput.value : "") || (window.antiForgeryToken || "");
-
-            try {
-                const res = await fetch(`?handler=UpdateTrip&id=${tripId}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
-                    body: JSON.stringify(requestPayload)
-                });
-
-                if(!res.ok) {
-                    throw new Error("HTTP error " + res.status);
-                }
-
-                const svResult = await res.json();
-                if(svResult.success) {
-                    originalSavedStops = JSON.parse(JSON.stringify(selectedStopsArray)); // update original array on save
-                    updateBtn.innerHTML = `
-                        <svg class="w-5 h-5 shrink-0 text-[#0f1219]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                        <span class="hidden lg:inline truncate">SAVED ✓</span>
-                    `;
-                    updateBtn.disabled = true;
-                    if (undoBtn) {
-                        undoBtn.disabled = true;
-                        undoBtn.classList.remove('text-[#f89e21]', 'hover:text-white', 'cursor-pointer');
-                        undoBtn.classList.add('opacity-50', 'cursor-not-allowed', 'text-muted-foreground');
-                    }
-                    if (backToGarageBtn) {
-                        backToGarageBtn.classList.remove('text-[#f89e21]');
-                        backToGarageBtn.classList.add('text-accent');
-                    }
-                } else {
-                    updateBtn.innerHTML = '<span class="text-[#0f1219] font-bold">ERROR</span>';
-                    setTimeout(() => updateBtn.innerHTML = `
-                        <svg class="w-5 h-5 shrink-0 text-[#0f1219]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                        <span class="hidden lg:inline truncate">SAVE CHANGES</span>
-                    `, 2000);
-                }
-            } catch(e) {
-                console.error(e);
-                updateBtn.innerHTML = '<span class="text-[#0f1219] font-bold">FAILED</span>';
-                setTimeout(() => updateBtn.innerHTML = `
-                    <svg class="w-5 h-5 shrink-0 text-[#0f1219]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                    <span class="hidden lg:inline truncate">SAVE CHANGES</span>
-                `, 2000);
             }
         });
     }

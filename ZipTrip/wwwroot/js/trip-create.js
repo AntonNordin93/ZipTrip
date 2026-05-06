@@ -237,6 +237,62 @@
                     attachStopButtons();
                     const gpsBtn = document.getElementById("start-gps-btn");
                     if (gpsBtn) gpsBtn.addEventListener("click", toggleNavigation);
+                    
+                    const mobileStartGpsBtn = document.getElementById("mobile-start-gps-btn");
+                    if (mobileStartGpsBtn) mobileStartGpsBtn.addEventListener("click", toggleNavigation);
+
+                    // Koppla Mobile Trip Menu (HAMBURGER i trip ready-läget)
+                    const mobileTripMenuBtn = document.getElementById('mobile-trip-menu-btn');
+                    const mobileTripMenu = document.getElementById('mobile-trip-menu');
+                    const closeMobileTripMenu = document.getElementById('close-mobile-trip-menu');
+                    
+                    if (mobileTripMenuBtn && mobileTripMenu) {
+                        // REMOVE standard eventlistener att det bara gör en sak
+                        const newTripMenuBtn = mobileTripMenuBtn.cloneNode(true);
+                        mobileTripMenuBtn.parentNode.replaceChild(newTripMenuBtn, mobileTripMenuBtn);
+                        
+                        newTripMenuBtn.addEventListener('click', () => {
+                            mobileTripMenu.classList.remove('hidden');
+                            
+                            // Flytta nedre actions till overlaysktionen (dropdowns) om de inte flyttats
+                            const tripOptions = document.getElementById('trip-options-container');
+                            const targetContainer = document.getElementById('mobile-trip-menu-content-container');
+                            if (tripOptions && targetContainer) {
+                                // Ta bort hidden lg:flex för att de ska synas i menyn
+                                tripOptions.classList.remove('hidden', 'lg:flex');
+                                tripOptions.classList.add('flex');
+                                targetContainer.appendChild(tripOptions);
+                            }
+                            
+                            void mobileTripMenu.offsetWidth;
+                            mobileTripMenu.classList.remove('translate-x-full');
+                            document.body.style.overflow = 'hidden';
+                        });
+                    }
+
+                    if (closeMobileTripMenu && mobileTripMenu) {
+                        const newCloseMobileTripMenu = closeMobileTripMenu.cloneNode(true);
+                        closeMobileTripMenu.parentNode.replaceChild(newCloseMobileTripMenu, closeMobileTripMenu);
+                        
+                        newCloseMobileTripMenu.addEventListener('click', () => {
+                            mobileTripMenu.classList.add('translate-x-full');
+                            
+                            setTimeout(() => {
+                                mobileTripMenu.classList.add('hidden');
+                                document.body.style.overflow = '';
+                                
+                                // Flytta tillbaka menyn EFTER animationen är klar så den inte syns blinka loss från UI
+                                const tripOptions = document.getElementById('trip-options-container');
+                                const detailsMenu = document.getElementById('details-menu');
+                                if(tripOptions && detailsMenu) {
+                                    tripOptions.classList.add('hidden', 'lg:flex');
+                                    tripOptions.classList.remove('flex');
+                                    // Append it back properly so it can be fetched next time
+                                    detailsMenu.appendChild(tripOptions);
+                                }
+                            }, 300);
+                        });
+                    }
 
                     // --- Helper att stänga alla popups ---
                     function closeAllDropdowns() {
@@ -516,7 +572,7 @@
                                 } else if(selectedType === 'Lodging') {
                                     btn.classList.add('bg-[#f24694]/10', 'border-[#f24694]');
                                     activeColorClass = 'text-[#f24694]';
-                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline stroke-linecap="round" stroke-linejoin="round" points="9 22 9 12 15 12 15 22"></polyline></svg>`;
+                                    theIcon = `<svg class="w-5 h-5 ${activeColorClass}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"></path><polyline stroke-linecap="round" stroke-linejoin="round" points="9 22 9 12 15 12 15 22"></polyline></svg>`;
                                 } else if(selectedType === 'RestArea') {
                                     btn.classList.add('bg-[#ff4757]/10', 'border-[#ff4757]');
                                     activeColorClass = 'text-[#ff4757]';
@@ -537,47 +593,51 @@
 
                     // SPARA RESA FUNKTION
                     const saveTripBtn = document.getElementById("save-trip-btn");
-                    if (saveTripBtn) {
-                        saveTripBtn.addEventListener('click', async () => {
-                            const originalHtml = saveTripBtn.innerHTML;
-                            saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">SAVING...</span>';
-                            saveTripBtn.disabled = true;
+                    const mobileSaveTripBtn = document.getElementById("mobile-save-trip-btn");
+                    
+                    const handleSaveTrip = async (btn) => {
+                        if (!btn) return;
+                        const originalHtml = btn.innerHTML;
+                        btn.innerHTML = '<span class="font-bold">SAVING...</span>';
+                        btn.disabled = true;
 
-                            try {
-                                const res = await fetch('?handler=SaveTrip', {
-                                    method: 'POST',
-                                    headers: { 
-                                        'Content-Type': 'application/json',
-                                        // Använd token vi sparat från ovan!
-                                        'RequestVerificationToken': antiForgeryToken
-                                    },
-                                    body: JSON.stringify(tripRequestPayload)
-                                });
+                        try {
+                            const res = await fetch('?handler=SaveTrip', {
+                                method: 'POST',
+                                headers: { 
+                                    'Content-Type': 'application/json',
+                                    'RequestVerificationToken': antiForgeryToken
+                                },
+                                body: JSON.stringify(tripRequestPayload)
+                            });
 
-                                const svResult = await res.json();
-                                if(svResult.success) {
-                                    saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">SAVED ✓</span>';
-                                    saveTripBtn.classList.replace("bg-primary/90", "bg-primary");
-                                } else {
-                                    if(svResult.message == "Not authenticated") {
-                                        alert("You must be logged in to save trips!");
-                                    }
-                                    saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">FAILED!</span>';
-                                    setTimeout(() => {
-                                        saveTripBtn.innerHTML = originalHtml;
-                                        saveTripBtn.disabled = false;
-                                    }, 2000);
+                            const svResult = await res.json();
+                            if(svResult.success) {
+                                btn.innerHTML = '<span class="font-bold">SAVED ✓</span>';
+                                btn.classList.replace("border-primary", "bg-primary");
+                                btn.classList.replace("text-primary", "text-[#0f1219]");
+                            } else {
+                                if(svResult.message == "Not authenticated") {
+                                    alert("You must be logged in to save trips!");
                                 }
-                            } catch(err) {
-                                console.error(err);
-                                saveTripBtn.innerHTML = '<span class="text-[#0f1219] font-bold">ERROR</span>';
+                                btn.innerHTML = '<span class="font-bold">FAILED!</span>';
                                 setTimeout(() => {
-                                        saveTripBtn.innerHTML = originalHtml;
-                                        saveTripBtn.disabled = false;
-                                    }, 2000);
+                                    btn.innerHTML = originalHtml;
+                                    btn.disabled = false;
+                                }, 2000);
                             }
-                        });
-                    }
+                        } catch(err) {
+                            console.error(err);
+                            btn.innerHTML = '<span class="font-bold">ERROR</span>';
+                            setTimeout(() => {
+                                    btn.innerHTML = originalHtml;
+                                    btn.disabled = false;
+                                }, 2000);
+                        }
+                    };
+
+                    if (saveTripBtn) saveTripBtn.addEventListener('click', () => handleSaveTrip(saveTripBtn));
+                    if (mobileSaveTripBtn) mobileSaveTripBtn.addEventListener('click', () => handleSaveTrip(mobileSaveTripBtn));
 
                 }
             } catch (err) { console.error(err); }

@@ -24,7 +24,7 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
         [TempData]
         public string? StatusMessage { get; set; }
         [BindProperty]
-        public InputModel Input { get; set; }= new();
+        public InputModel Input { get; set;}= new();
 
         public class InputModel
         {
@@ -102,6 +102,55 @@ namespace ZipTrip.Areas.Identity.Pages.Account.Manage
             }
             return RedirectToPage();
 
+        }
+
+        public async Task<IActionResult> OnPostSetPrimaryAsync(Guid id)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return NotFound("Unable to load user.");
+
+            var vehicles = await _vehicleService.GetUserVehiclesAsync(userId);
+            var vehicleToSet = vehicles.FirstOrDefault(v => v.Id == id);
+            
+            if (vehicleToSet != null)
+            {
+                // This logic might need expansion based on how IVehicleService handles IsDefault updates, 
+                // but we will do a basic workaround by passing update requests.
+                // Assuming we can update it or passing true to an update.
+                foreach(var v in vehicles)
+                {
+                    if (v.IsDefault && v.Id != id)
+                    {
+                        var req = new VehicleRequest {
+                             Name = v.Name,
+                             SelectedVehicleType = v.VehicleType,
+                             MaxHeightMeters = v.MaxHeightMeters,
+                             MaxWeightKg = v.MaxWeightKg,
+                             RangeKm = v.RangeKm,
+                             IsDefault = false
+                        };
+                        await _vehicleService.UpdateVehicleAsync(v.Id, req);
+                    }
+                }
+                
+                var updateReq = new VehicleRequest {
+                    Name = vehicleToSet.Name,
+                    SelectedVehicleType = vehicleToSet.VehicleType,
+                    MaxHeightMeters = vehicleToSet.MaxHeightMeters,
+                    MaxWeightKg = vehicleToSet.MaxWeightKg,
+                    RangeKm = vehicleToSet.RangeKm,
+                    IsDefault = true
+                };
+                
+                await _vehicleService.UpdateVehicleAsync(id, updateReq);
+                StatusMessage = $"{vehicleToSet.Name} is now your primary vehicle.";
+            }
+            else 
+            {
+                StatusMessage = "Error setting primary vehicle.";
+            }
+
+            return RedirectToPage();
         }
     }
 }

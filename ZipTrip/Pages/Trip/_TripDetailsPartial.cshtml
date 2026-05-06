@@ -36,7 +36,8 @@
     </div>
 
     <!-- Reducerar gap mellan modulerna -->
-    <div id="trip-options-container" class="mt-4 mb-2 flex-1 flex-col z-[80] gap-2 hidden lg:flex">
+    <!-- Force hidden on mobile, visible on desktop explicitly so we can fetch its contents purely for the mobile modal -->
+    <div id="trip-options-container" class="mt-4 mb-2 flex-1 hidden flex-col z-[80] gap-2 lg:flex">
 
         <!-- Vehicle Type Dropdown (Mobile & Desktop) -->
         <div class="relative w-full flex flex-col z-[90]">
@@ -270,29 +271,31 @@
 </div>
 
 <!-- Mobile Trip Menu Overlay -->
-<div id="mobile-trip-menu" class="lg:hidden fixed inset-0 bg-background/95 backdrop-blur-sm z-[100] hidden flex-col pt-20 px-6 transform translate-x-full transition-transform duration-300">
-    <div class="flex items-center justify-between border-b border-border pb-4 mb-4">
-        <span class="font-bold text-lg text-foreground">Trip Options</span>
-        <button id="close-mobile-trip-menu" class="text-foreground p-2">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-    </div>
-    
-    <div class="flex flex-col gap-4 overflow-y-auto pb-20">
-        <!-- The options containers will be cloned or moved here via JS, or we can just show the options container over the map -->
-    </div>
-    
-    <div class="mt-auto border-t border-border pt-4 pb-6 flex gap-2">
-        @if (User.Identity is { IsAuthenticated: true })
-        {
-            <button type="button" id="mobile-save-trip-btn" class="flex-1 h-12 bg-muted border border-primary text-primary font-bold rounded-lg transition-all flex justify-center items-center gap-2">
-                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                <span>Save</span>
+<div id="mobile-trip-menu" class="lg:hidden fixed inset-0 z-[100] hidden transform translate-x-full transition-transform duration-300">
+    <div class="flex flex-col h-full bg-background px-6 pt-10 pb-6 relative z-[101]">
+        <div class="flex justify-between items-center border-b border-border pb-4 mb-4">
+            <span class="font-bold text-xl text-foreground">Trip Options</span>
+            <button id="close-mobile-trip-menu" class="text-foreground p-2 -mr-2">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"></path></svg>
             </button>
-        }
-        <button type="button" id="mobile-start-gps-btn" class="flex-[2] h-12 bg-primary text-[#0f1219] font-bold rounded-lg shadow-[0_0_10px_rgba(24,219,103,0.4)] flex justify-center items-center gap-2">
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg>
-            <span>Start Nav</span>
-        </button>
+        </div>
+        
+        <div id="mobile-trip-menu-content-container" class="flex flex-col gap-4 overflow-y-auto pb-6 w-full flex-1">
+            <!-- The options containers will be cloned or moved here via JS -->
+        </div>
+        
+        <div class="mt-auto border-t border-border pt-4 pb-6 flex gap-2 shrink-0">
+            @if (User.Identity is { IsAuthenticated: true })
+            {
+                <button type="button" id="mobile-save-trip-btn" class="flex-1 h-14 bg-muted border border-primary text-primary font-bold rounded-xl transition-all flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    <span>Save</span>
+                </button>
+            }
+            <button type="button" id="mobile-start-gps-btn" class="flex-[2] h-14 bg-primary text-[#0f1219] font-bold rounded-xl shadow-[0_0_10px_rgba(24,219,103,0.4)] flex justify-center items-center gap-2">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg>
+                <span>Start Nav</span>
+            </button>
+        </div>
     </div>
 </div>

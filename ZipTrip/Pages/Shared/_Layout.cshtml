@@ -27,78 +27,85 @@
 
     @if (!removeHeader)
     {
-        <div class="contents">
-            <header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border transition-colors duration-500">
-                <nav aria-label="Main navigation" class="container mx-auto flex items-center justify-between h-16 px-4 relative">
-                    <a href="/" class="flex items-center gap-2" aria-label="ZipTrip Home">
-                        <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center" aria-hidden="true">
-                            <svg class="w-5 h-5 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                        </div>
-                        <span class="font-display text-xl font-bold text-primary tracking-wide">ZipTrip</span>
-                    </a>
+        <!-- Navbar should be high z, but not block fixed overlays -->
+        <header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border transition-colors duration-500">
+            <nav aria-label="Main navigation" class="container mx-auto flex items-center justify-between h-16 px-4 relative">
+                <a href="/" class="flex items-center gap-2" aria-label="ZipTrip Home">
+                    <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center" aria-hidden="true">
+                        <svg class="w-5 h-5 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <span class="font-display text-xl font-bold text-primary tracking-wide">ZipTrip</span>
+                </a>
 
-                    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground" role="list">
-                        <a href="/#features" class="hover:text-foreground transition-colors" role="listitem">Features</a>
-                        <a href="/#Vehicles" class="hover:text-foreground transition-colors" role="listitem">Vehicles</a>
-                        <a href="/#How" class="hover:text-foreground transition-colors" role="listitem">How It Works</a>
+                <div class="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground" role="list">
+                    <a href="/#features" class="hover:text-foreground transition-colors" role="listitem">Features</a>
+                    <a href="/#Vehicles" class="hover:text-foreground transition-colors" role="listitem">Vehicles</a>
+                    <a href="/#How" class="hover:text-foreground transition-colors" role="listitem">How It Works</a>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="hidden md:flex gap-3 items-center">
+                        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-md bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+                            <span id="theme-icon" class="text-sm">☀️</span>
+                        </button>
+                        <partial name="_LoginPartial" />
                     </div>
 
-                    <div class="flex items-center gap-3">
-                        <div class="hidden md:flex gap-3 items-center">
-                            <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-md bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
-                                <span id="theme-icon" class="text-sm">☀️</span>
-                            </button>
-                            <partial name="_LoginPartial" />
-                        </div>
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-btn" class="md:hidden w-10 h-10 relative flex items-center justify-center rounded-md bg-muted text-foreground hover:bg-foreground/10 z-[102]">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="hamburger-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        <svg class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="close-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+            </nav>
+        </header>
+    }
 
-                        <!-- Mobile menu button -->
-                        <button id="mobile-menu-btn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-md bg-muted text-foreground hover:bg-foreground/10 z-50">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="hamburger-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                            <svg class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="close-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <!-- Mobile Menu Panel MUST be direct child of body outside flow contexts to guarantee full screen visibility -->
+    @if (!removeHeader)
+    {
+        <div id="mobile-menu" class="hidden fixed inset-0 z-[9999] bg-background transform translate-x-full transition-transform duration-300">
+            <div class="flex flex-col h-full bg-background px-6 pt-24 pb-6 w-full">
+                <div class="flex justify-between items-center border-b border-border pb-4 mb-4">
+                    <span class="font-bold text-xl text-foreground">Menu</span>
+                </div>
+                
+                <div class="flex flex-col gap-6 overflow-y-auto pb-6 w-full flex-1">
+                    <div class="flex items-center justify-between border-b border-border pb-4">
+                        <span class="font-medium text-foreground">Theme</span>
+                        <button id="mobile-theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-md bg-muted text-foreground">
+                            <span id="mobile-theme-icon" class="text-xl">☀️</span>
                         </button>
                     </div>
-                </nav>
-                
-                <!-- Mobile Menu Overlay -->
-                <div id="mobile-menu" class="fixed inset-0 bg-background/95 backdrop-blur-sm z-40 hidden flex-col pt-20 px-6 transform translate-x-full transition-transform duration-300">
-                    <div class="flex flex-col gap-6 text-lg">
-                        <div class="flex items-center justify-between border-b border-border pb-4">
-                            <span class="font-medium text-foreground">Theme</span>
-                            <button id="mobile-theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-md bg-muted text-foreground">
-                                <span id="mobile-theme-icon" class="text-xl">☀️</span>
-                            </button>
-                        </div>
-                        
-                        <div class="flex flex-col gap-4 border-b border-border pb-4">
-                            <a href="/#features" class="font-medium hover:text-primary transition-colors text-foreground mobile-nav-link">Features</a>
-                            <a href="/#Vehicles" class="font-medium hover:text-primary transition-colors text-foreground mobile-nav-link">Vehicles</a>
-                            <a href="/#How" class="font-medium hover:text-primary transition-colors text-foreground mobile-nav-link">How It Works</a>
-                        </div>
+                    
+                    <div class="flex flex-col gap-4 border-b border-border pb-4">
+                        <a href="/#features" class="font-medium hover:text-primary transition-colors text-foreground mobile-nav-link text-lg">Features</a>
+                        <a href="/#Vehicles" class="font-medium hover:text-primary transition-colors text-foreground mobile-nav-link text-lg">Vehicles</a>
+                        <a href="/#How" class="font-medium hover:text-primary transition-colors text-foreground mobile-nav-link text-lg">How It Works</a>
+                    </div>
 
-                        <div class="mt-4 flex flex-col gap-4">
-                            @* Vi återanvänder logiken från _LoginPartial men anpassar utseendet för mobil *@
-                            @if (Context.User.Identity?.IsAuthenticated == true)
-                            {
-                                <a href="/Identity/Account/Manage" class="flex items-center gap-3 font-medium text-foreground p-3 rounded-lg bg-muted/50 mobile-nav-link">
-                                    <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                    Manage Account
-                                </a>
-                                <form class="m-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                                    <button type="submit" class="w-full flex items-center justify-center gap-2 rounded-lg text-base font-bold bg-primary text-[#0f1219] h-12 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] mt-2">Logout</button>
-                                </form>
-                            }
-                            else
-                            {
-                                <a href="/Identity/Account/Login" class="flex items-center justify-center gap-2 rounded-lg text-base font-bold bg-primary text-[#0f1219] h-12 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] mobile-nav-link">Login</a>
-                                <a href="/Identity/Account/Register" class="flex items-center justify-center gap-2 rounded-lg text-base font-bold bg-muted text-foreground h-12 border border-border mobile-nav-link">Register</a>
-                            }
-                        </div>
+                    <div class="mt-4 flex flex-col gap-4">
+                        @if (Context.User.Identity?.IsAuthenticated == true)
+                        {
+                            <a href="/Identity/Account/Manage" class="flex items-center justify-center gap-2 rounded-xl text-base font-bold bg-muted text-foreground border border-primary h-14 mobile-nav-link shadow-md">
+                                <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                Manage Account
+                            </a>
+                            <form class="m-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                                <button type="submit" class="w-full flex items-center justify-center gap-2 rounded-xl text-base font-bold bg-primary text-[#0f1219] h-14 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] mt-2">Logout</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a href="/Identity/Account/Login" class="flex items-center justify-center gap-2 rounded-xl text-base font-bold bg-primary text-[#0f1219] h-14 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] mobile-nav-link">Login</a>
+                            <a href="/Identity/Account/Register" class="flex items-center justify-center gap-2 rounded-xl text-base font-bold bg-muted text-foreground h-14 border border-border mobile-nav-link">Register</a>
+                        }
                     </div>
                 </div>
-            </header>
+            </div>
         </div>
     }
 
@@ -147,13 +154,15 @@
                 const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
                 if (mobileMenuBtn && mobileMenu) {
-                    mobileMenuBtn.addEventListener('click', () => {
+                    const toggleMenu = () => {
                         const isOpen = !mobileMenu.classList.contains('hidden');
                         
                         if (isOpen) {
                             // Close menu
                             mobileMenu.classList.add('translate-x-full');
-                            setTimeout(() => mobileMenu.classList.add('hidden'), 300);
+                            setTimeout(() => {
+                                mobileMenu.classList.add('hidden');
+                            }, 300);
                             hamburgerIcon.classList.remove('hidden');
                             closeIcon.classList.add('hidden');
                             document.body.style.overflow = '';
@@ -167,17 +176,14 @@
                             closeIcon.classList.remove('hidden');
                             document.body.style.overflow = 'hidden'; // Prevent scrolling
                         }
-                    });
+                    };
+
+                    mobileMenuBtn.addEventListener('click', toggleMenu);
                     
-                    // Close menu when clicking links
-                    mobileNavLinks.forEach(link => {
-                        link.addEventListener('click', () => {
-                            mobileMenu.classList.add('translate-x-full');
-                            setTimeout(() => mobileMenu.classList.add('hidden'), 300);
-                            hamburgerIcon.classList.remove('hidden');
-                            closeIcon.classList.add('hidden');
-                            document.body.style.overflow = '';
-                        });
+                    // Close menu when clicking on a link
+                    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+                    mobileLinks.forEach(link => {
+                        link.addEventListener('click', toggleMenu);
                     });
                 }
 
