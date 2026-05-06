@@ -418,6 +418,14 @@
                                   const routeResult = await routeRes.json();
                                   if(routeResult.success) {
                                       drawRoute(routeResult.geometry);
+                                      stopsLayer.clearLayers();
+                                      selectedStopsLayer.clearLayers();
+                                      selectedStopsArray = [];
+                                      window.selectedStopsArray = selectedStopsArray;
+                                      if(window.tripRequestPayloadRef) {
+                                          window.tripRequestPayloadRef.SelectedStops = selectedStopsArray;
+                                      }
+
                                       document.getElementById("display-distance").innerText = `${Math.round(routeResult.distanceKm)} km`;
 
                                       const durationEl = document.getElementById("display-time");
@@ -586,7 +594,7 @@
                 toggleLoader(true, `Locating ${displayType}s...`, type);
 
                 try {
-                    const res = await fetch(`?handler=FetchStops&start=${encodeURIComponent(currentStart)}&end=${encodeURIComponent(currentEnd)}&type=${type}`);
+                    const res = await fetch(`?handler=FetchStops&start=${encodeURIComponent(currentStart)}&end=${encodeURIComponent(currentEnd)}&type=${type}&routeType=${selectedRouteType}`);
                     const result = await res.json();
                     stopsLayer.clearLayers();
                     if (result.success && result.stops) {
@@ -594,6 +602,11 @@
 
                         result.stops.forEach(s => {
                             // Skapa en visuell snygg cirkel anpassad efter vald färg
+                            let isSelected = selectedStopsArray.some(x => x.Latitude === s.latitude && x.Longitude === s.longitude);
+                            let btnText = isSelected ? "Remove from Trip" : "Add to Trip";
+                            let btnColor = isSelected ? "#ff4757" : targetColor;
+                            let btnTextColor = isSelected ? "#fff" : "#000";
+
                             let marker = L.circleMarker([s.latitude, s.longitude], {
                                 radius: 8,
                                 color: targetColor,
@@ -606,7 +619,7 @@
                             .bindPopup(`
                                 <div style="text-align:center;">
                                     <strong style="color:${targetColor}">${s.name}</strong><br>
-                                    <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:${targetColor}; color:#000; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${s.name}" data-lat="${s.latitude}" data-lng="${s.longitude}" data-type="${type}">Add to Trip</button>
+                                    <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:${btnColor}; color:${btnTextColor}; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${s.name}" data-lat="${s.latitude}" data-lng="${s.longitude}" data-type="${type}">${btnText}</button>
                                 </div>
                             `);
                         });
@@ -616,7 +629,7 @@
         });
     }
 
-    // Lyssna på klick för "Add to Trip" i popups
+    // Lyssna på klick för "Add to Trip" och "Remove from Trip" i popups
     document.addEventListener('click', function(e) {
         if(e.target && e.target.classList.contains('add-stop-btn')) {
             const btn = e.target;
@@ -625,35 +638,73 @@
             const lng = parseFloat(btn.getAttribute('data-lng'));
             const type = btn.getAttribute('data-type');
 
-            // Spara i arrayen
-            selectedStopsArray.push({
-                Name: name,
-                Latitude: lat,
-                Longitude: lng,
-                Type: type
-            });
+            // Check if it already exists
+            const existingIndex = selectedStopsArray.findIndex(s => s.Latitude === lat && s.Longitude === lng);
+            if (existingIndex > -1) {
+                // Remove logic
+                selectedStopsArray.splice(existingIndex, 1);
 
-            const targetColor = themeColors[type] || themeColors['Default'];
+                // Re-draw selected stops
+                redrawSelectedStops();
 
-            // Rita en marker i selected lagret (lite större/tydligare)
-            L.circleMarker([lat, lng], {
-                radius: 10,
-                color: '#ffffff',
-                fillColor: targetColor,
-                fillOpacity: 1,
-                weight: 3,
-                opacity: 1
-            }).addTo(selectedStopsLayer).bindPopup(`<b>${name}</b> (Selected)`);
+                // Update popup to show Add
+                const targetColor = themeColors[type] || themeColors['Default'];
+                const parentDiv = btn.parentElement;
+                if(parentDiv) {
+                    parentDiv.innerHTML = `
+                        <strong style="color:${targetColor}">${name}</strong><br>
+                        <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:${targetColor}; color:#000; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${name}" data-lat="${lat}" data-lng="${lng}" data-type="${type}">Add to Trip</button>
+                    `;
+                }
 
-            // Stäng popupen
-            map.closePopup();
-            
+            } else {
+                // Add logic
+                selectedStopsArray.push({
+                    Name: name,
+                    Latitude: lat,
+                    Longitude: lng,
+                    Type: type
+                });
+
+                redrawSelectedStops();
+
+                // Update popup to show Remove
+                const targetColor = themeColors[type] || themeColors['Default'];
+                const parentDiv = btn.parentElement;
+                if(parentDiv) {
+                    parentDiv.innerHTML = `
+                        <strong style="color:${targetColor}">${name}</strong><br>
+                        <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:#ff4757; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${name}" data-lat="${lat}" data-lng="${lng}" data-type="${type}">Remove from Trip</button>
+                    `;
+                }
+            }
+
             // Uppdatera request payload med nya listan
             if(window.tripRequestPayloadRef) {
                 window.tripRequestPayloadRef.SelectedStops = selectedStopsArray;
             }
         }
     });
+
+    function redrawSelectedStops() {
+        selectedStopsLayer.clearLayers();
+        selectedStopsArray.forEach(stop => {
+            const targetColor = themeColors[stop.Type] || themeColors['Default'];
+            L.circleMarker([stop.Latitude, stop.Longitude], {
+                radius: 10,
+                color: '#ffffff',
+                fillColor: targetColor,
+                fillOpacity: 1,
+                weight: 3,
+                opacity: 1
+            }).addTo(selectedStopsLayer).bindPopup(`
+                <div style="text-align:center;">
+                    <strong style="color:${targetColor}">${stop.Name}</strong><br>
+                    <button class="add-stop-btn" style="margin-top:5px; padding:3px 8px; background-color:#ff4757; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;" data-name="${stop.Name}" data-lat="${stop.Latitude}" data-lng="${stop.Longitude}" data-type="${stop.Type}">Remove from Trip</button>
+                </div>
+            `);
+        });
+    }
 
     function drawRoute(geometry) {
         routeLayer.clearLayers();

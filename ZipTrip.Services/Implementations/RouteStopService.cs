@@ -31,8 +31,12 @@ namespace ZipTrip.Services.Implementations
 
             // 1. Skapa unik Cache-nyckel
             var firstPoint = routeGeometry.First();
+            var middlePoint = routeGeometry[routeGeometry.Count / 2];
             var lastPoint = routeGeometry.Last();
-            string cacheKey = $"Stops_{firstPoint.Latitude}_{firstPoint.Longitude}_{lastPoint.Latitude}_{lastPoint.Longitude}_{type}";
+
+            // Inkludera middlePoint i cachenyckeln för att garantera att olika rutter med
+            // samma start- och slutpunkter (t.ex. fastest vs scenic) får olika cache-resultat.
+            string cacheKey = $"Stops_{firstPoint.Latitude}_{firstPoint.Longitude}_{middlePoint.Latitude}_{middlePoint.Longitude}_{lastPoint.Latitude}_{lastPoint.Longitude}_{type}";
 
             // 2. Kolla Cache - Blixtsnabb laddning om datan redan finns!
             if (_cache.TryGetValue(cacheKey, out List<RouteStop>? cachedStops) && cachedStops != null)
