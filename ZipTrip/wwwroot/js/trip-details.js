@@ -187,7 +187,8 @@
     function closeAllDropdowns() {
         const containers = [
             { c: document.getElementById('routes-container'), i: document.getElementById('routes-chevron') },
-            { c: document.getElementById('stops-container'), i: document.getElementById('stops-chevron') }
+            { c: document.getElementById('stops-container'), i: document.getElementById('stops-chevron') },
+            { c: document.getElementById('vehicle-container'), i: document.getElementById('vehicle-chevron') }
         ];
 
         containers.forEach(x => {
@@ -195,6 +196,71 @@
                 x.c.classList.add('hidden');
                 if (x.i) x.i.style.transform = "rotate(0deg)";
             }
+        });
+    }
+
+    // DROPDOWN LOGIC FÖR VEHICLES
+    const toggleVehicleBtn = document.getElementById('toggle-vehicle-menu');
+    const vehicleContainer = document.getElementById('vehicle-container');
+    const vehicleChevron = document.getElementById('vehicle-chevron');
+    if(toggleVehicleBtn && vehicleContainer && vehicleChevron) {
+        toggleVehicleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = vehicleContainer.classList.contains('hidden');
+            closeAllDropdowns(); // Stäng andra!
+
+            if(isHidden) {
+                vehicleContainer.classList.remove('hidden');
+                vehicleChevron.style.transform = "rotate(180deg)";
+            } else {
+                vehicleContainer.classList.add('hidden');
+                vehicleChevron.style.transform = "rotate(0deg)";
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+           if(!toggleVehicleBtn.contains(e.target) && !vehicleContainer.contains(e.target) && !vehicleContainer.classList.contains('hidden')) {
+               vehicleContainer.classList.add('hidden');
+               vehicleChevron.style.transform = "rotate(0deg)";
+           }
+        });
+
+        // Hantera val av fordon
+        document.querySelectorAll('.vehicle-type-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Stäng dropdown
+                vehicleContainer.classList.add('hidden');
+                vehicleChevron.style.transform = "rotate(0deg)";
+
+                // Uppdatera visuell feedback på knappen
+                document.querySelectorAll('.vehicle-type-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                btn.classList.add('active');
+
+                // Hämta vald data
+                let selectedId = btn.getAttribute('data-id');
+                let selectedVal = btn.getAttribute('data-val');
+                let vehicleName = btn.querySelector('.font-medium').innerText;
+
+                // Uppdatera dold input (om det fanns en för sparande)
+                // document.getElementById('selected-vehicle-id').value = selectedId || '';
+                // document.getElementById('selected-vehicle-type').value = selectedVal || '';
+
+                // Klona SVG och sätt text
+                const svgClone = btn.querySelector('svg').cloneNode(true);
+                svgClone.className = btn.querySelector('.w-8').className.replace('w-8 h-8 rounded-md bg-card flex items-center justify-center', 'w-5 h-5').replace('group-hover:scale-110 transition-transform shadow-[0_0_10px_currentColor] shrink-0', '').trim();
+                
+                const selectedVehicleDisplay = document.getElementById('selected-vehicle-display');
+                if(selectedVehicleDisplay) {
+                    selectedVehicleDisplay.innerHTML = '';
+                    selectedVehicleDisplay.appendChild(svgClone);
+                    const span = document.createElement('span');
+                    span.innerText = vehicleName;
+                    selectedVehicleDisplay.appendChild(span);
+                }
+            });
         });
     }
 
@@ -354,6 +420,62 @@
                stopsChevron.style.transform = "rotate(0deg)";
            }
         });
+    }
+
+    // Mobile Trip Menu Logic
+    const mobileTripMenuBtn = document.getElementById('mobile-trip-menu-btn');
+    const mobileTripMenu = document.getElementById('mobile-trip-menu');
+    const closeMobileTripMenu = document.getElementById('close-mobile-trip-menu');
+    const tripOptionsContainer = document.getElementById('trip-options-container');
+    const mobileMenuContent = mobileTripMenu ? mobileTripMenu.querySelector('.overflow-y-auto') : null;
+    let isMobileMenuOpen = false;
+
+    if (mobileTripMenuBtn && mobileTripMenu && closeMobileTripMenu && tripOptionsContainer && mobileMenuContent) {
+        const toggleMobileTripMenu = () => {
+            isMobileMenuOpen = !isMobileMenuOpen;
+            if (isMobileMenuOpen) {
+                // Move options to mobile menu
+                mobileMenuContent.appendChild(tripOptionsContainer);
+                tripOptionsContainer.classList.remove('hidden', 'lg:flex');
+                tripOptionsContainer.classList.add('flex');
+                
+                mobileTripMenu.classList.remove('hidden');
+                // Trigger reflow
+                void mobileTripMenu.offsetWidth;
+                mobileTripMenu.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileTripMenu.classList.add('translate-x-full');
+                setTimeout(() => {
+                    mobileTripMenu.classList.add('hidden');
+                    // Move options back to original place
+                    document.getElementById('details-menu').insertBefore(tripOptionsContainer, document.getElementById('mobile-trip-menu'));
+                    tripOptionsContainer.classList.add('hidden', 'lg:flex');
+                    tripOptionsContainer.classList.remove('flex');
+                }, 300);
+                document.body.style.overflow = '';
+            }
+        };
+
+        mobileTripMenuBtn.addEventListener('click', toggleMobileTripMenu);
+        closeMobileTripMenu.addEventListener('click', toggleMobileTripMenu);
+        
+        // Link mobile buttons to desktop buttons
+        const mobileSaveBtn = document.getElementById('mobile-save-trip-btn');
+        const desktopSaveBtn = document.getElementById('save-trip-btn');
+        if (mobileSaveBtn && desktopSaveBtn) {
+            mobileSaveBtn.addEventListener('click', () => {
+                desktopSaveBtn.click();
+            });
+        }
+        
+        const mobileStartBtn = document.getElementById('mobile-start-gps-btn');
+        const desktopStartBtn = document.getElementById('start-gps-btn');
+        if (mobileStartBtn && desktopStartBtn) {
+            mobileStartBtn.addEventListener('click', () => {
+                desktopStartBtn.click();
+            });
+        }
     }
 
     // 3. Hantera knapptryckningarna för att hämta stopp
@@ -619,7 +741,7 @@
 
                       const startIcon = L.divIcon({
                             className: 'bg-transparent border-0',
-                            html: `<div style="color:#3b82f6; filter:drop-shadow(0 0 8px rgba(59,130,246,0.8));"><svg width="28" height="28" viewBox="0 0 24 24" fill="#0f1219" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg></div>`,
+                            html: `<div style="color:#3b82f6; filter:drop-shadow(0 0 8px rgba(59,130,246,0.8));"><svg width="28" height="28" viewBox="0 0 24 24" fill="#0f1219" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></div>`,
                             iconSize: [28, 28],
                             iconAnchor: [14, 14],
                             popupAnchor: [0, -14]

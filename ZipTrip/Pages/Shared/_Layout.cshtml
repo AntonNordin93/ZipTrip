@@ -47,16 +47,57 @@
                     </div>
 
                     <div class="flex items-center gap-3">
-                        <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-md bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
-                            <span id="theme-icon" class="text-sm">☀️</span>
-                        </button>
-                        <partial name="_LoginPartial" />
+                        <div class="hidden md:flex gap-3 items-center">
+                            <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-md bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+                                <span id="theme-icon" class="text-sm">☀️</span>
+                            </button>
+                            <partial name="_LoginPartial" />
+                        </div>
 
-                        <button id="mobile-menu-btn" class="md:hidden w-9 h-9 flex items-center justify-center rounded-md bg-muted text-foreground hover:bg-foreground/10">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        <!-- Mobile menu button -->
+                        <button id="mobile-menu-btn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-md bg-muted text-foreground hover:bg-foreground/10 z-50">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="hamburger-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                            <svg class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="close-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
                     </div>
                 </nav>
+                
+                <!-- Mobile Menu Overlay -->
+                <div id="mobile-menu" class="fixed inset-0 bg-background/95 backdrop-blur-sm z-40 hidden flex-col pt-20 px-6 transform translate-x-full transition-transform duration-300">
+                    <div class="flex flex-col gap-6 text-lg">
+                        <div class="flex items-center justify-between border-b border-border pb-4">
+                            <span class="font-medium text-foreground">Theme</span>
+                            <button id="mobile-theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-md bg-muted text-foreground">
+                                <span id="mobile-theme-icon" class="text-xl">☀️</span>
+                            </button>
+                        </div>
+                        
+                        <div class="flex flex-col gap-4 border-b border-border pb-4">
+                            <a href="/#features" class="font-medium hover:text-primary transition-colors text-foreground mobile-nav-link">Features</a>
+                            <a href="/#Vehicles" class="font-medium hover:text-primary transition-colors text-foreground mobile-nav-link">Vehicles</a>
+                            <a href="/#How" class="font-medium hover:text-primary transition-colors text-foreground mobile-nav-link">How It Works</a>
+                        </div>
+
+                        <div class="mt-4 flex flex-col gap-4">
+                            @* Vi återanvänder logiken från _LoginPartial men anpassar utseendet för mobil *@
+                            @if (Context.User.Identity?.IsAuthenticated == true)
+                            {
+                                <a href="/Identity/Account/Manage" class="flex items-center gap-3 font-medium text-foreground p-3 rounded-lg bg-muted/50 mobile-nav-link">
+                                    <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    Manage Account
+                                </a>
+                                <form class="m-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                                    <button type="submit" class="w-full flex items-center justify-center gap-2 rounded-lg text-base font-bold bg-primary text-[#0f1219] h-12 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] mt-2">Logout</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a href="/Identity/Account/Login" class="flex items-center justify-center gap-2 rounded-lg text-base font-bold bg-primary text-[#0f1219] h-12 shadow-[0_0_15px_hsl(150_100%_45%/0.3)] mobile-nav-link">Login</a>
+                                <a href="/Identity/Account/Register" class="flex items-center justify-center gap-2 rounded-lg text-base font-bold bg-muted text-foreground h-12 border border-border mobile-nav-link">Register</a>
+                            }
+                        </div>
+                    </div>
+                </div>
             </header>
         </div>
     }
@@ -94,27 +135,73 @@
             document.addEventListener('DOMContentLoaded', () => {
                 const themeToggleBtn = document.getElementById('theme-toggle');
                 const themeIcon = document.getElementById('theme-icon');
+                const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
+                const mobileThemeIcon = document.getElementById('mobile-theme-icon');
                 const htmlEl = document.documentElement;
+                
+                // Mobile menu
+                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                const mobileMenu = document.getElementById('mobile-menu');
+                const hamburgerIcon = document.getElementById('hamburger-icon');
+                const closeIcon = document.getElementById('close-icon');
+                const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
-                // Sätt rätt ikon vid sidladdning
-                if (htmlEl.classList.contains('dark')) {
-                    themeIcon.textContent = '☀️'; // Lyser upp alternativet att byta till light mode
-                } else {
-                    themeIcon.textContent = '🌙'; // Alternativet att byta till dark mode
+                if (mobileMenuBtn && mobileMenu) {
+                    mobileMenuBtn.addEventListener('click', () => {
+                        const isOpen = !mobileMenu.classList.contains('hidden');
+                        
+                        if (isOpen) {
+                            // Close menu
+                            mobileMenu.classList.add('translate-x-full');
+                            setTimeout(() => mobileMenu.classList.add('hidden'), 300);
+                            hamburgerIcon.classList.remove('hidden');
+                            closeIcon.classList.add('hidden');
+                            document.body.style.overflow = '';
+                        } else {
+                            // Open menu
+                            mobileMenu.classList.remove('hidden');
+                            // Trigger reflow
+                            void mobileMenu.offsetWidth;
+                            mobileMenu.classList.remove('translate-x-full');
+                            hamburgerIcon.classList.add('hidden');
+                            closeIcon.classList.remove('hidden');
+                            document.body.style.overflow = 'hidden'; // Prevent scrolling
+                        }
+                    });
+                    
+                    // Close menu when clicking links
+                    mobileNavLinks.forEach(link => {
+                        link.addEventListener('click', () => {
+                            mobileMenu.classList.add('translate-x-full');
+                            setTimeout(() => mobileMenu.classList.add('hidden'), 300);
+                            hamburgerIcon.classList.remove('hidden');
+                            closeIcon.classList.add('hidden');
+                            document.body.style.overflow = '';
+                        });
+                    });
                 }
 
+                // Sätt rätt ikon vid sidladdning
+                const setIcons = (isDark) => {
+                    if (themeIcon) themeIcon.textContent = isDark ? '☀️' : '🌙';
+                    if (mobileThemeIcon) mobileThemeIcon.textContent = isDark ? '☀️' : '🌙';
+                };
+
+                setIcons(htmlEl.classList.contains('dark'));
+                
+                const toggleTheme = () => {
+                    htmlEl.classList.toggle('dark');
+                    const isDark = htmlEl.classList.contains('dark');
+                    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                    setIcons(isDark);
+                };
+
                 if(themeToggleBtn) {
-                    themeToggleBtn.addEventListener('click', () => {
-                        // Byt klass på HTML-taggen
-                        htmlEl.classList.toggle('dark');
-                        const isDark = htmlEl.classList.contains('dark');
-                    
-                        // Spara valet till nästa gång
-                        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-                    
-                        // Byt ikonen
-                        themeIcon.textContent = isDark ? '☀️' : '🌙';
-                    });
+                    themeToggleBtn.addEventListener('click', toggleTheme);
+                }
+                
+                if (mobileThemeToggleBtn) {
+                    mobileThemeToggleBtn.addEventListener('click', toggleTheme);
                 }
             });
     </script>
