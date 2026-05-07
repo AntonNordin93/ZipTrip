@@ -487,7 +487,7 @@
                                     <span>${displayNavText} Route</span>
                                 `;
 
-                                // Stäng hela hamburgermenyn automatiskt vid ruttval i mobil vy
+                                // Stäng hela hamburgermenyn automatiskt vid ruttval i mobil vy (Omedelbart)
                                 if (window.innerWidth < 1024) {
                                     const mBtn = document.getElementById('mobile-trip-menu-btn');
                                     const mMenu = document.getElementById('mobile-trip-menu');
@@ -618,7 +618,7 @@
                                     `;
                                 }
 
-                                // Stäng hela hamburgermenyn automatiskt vid stop val i mobil vy
+                                // Stäng hela hamburgermenyn automatiskt vid stop val i mobil vy (Omedelbart)
                                 if (window.innerWidth < 1024) {
                                     const mBtnStop = document.getElementById('mobile-trip-menu-btn');
                                     const mMenuStop = document.getElementById('mobile-trip-menu');

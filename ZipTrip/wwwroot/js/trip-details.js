@@ -335,16 +335,15 @@
                     `;
                 }
 
-                // Make sure toggleLoader exists
-                if (typeof toggleLoader === 'function') {
-                    toggleLoader(true, `Calculating ${displayNavText} Route...`, selectedType);
-                }
-
-                // Stäng hela hamburgermenyn automatiskt vid ruttval i mobil vy
+                // Stäng hela hamburgermenyn automatiskt vid ruttval i mobil vy (Omedelbart)
                 const mBtn = document.getElementById('mobile-trip-menu-btn');
                 const mMenu = document.getElementById('mobile-trip-menu');
                 if (mBtn && mMenu && isMobileMenuOpen) {
                     mBtn.click();
+                }
+
+                if (typeof toggleLoader === 'function') {
+                    toggleLoader(true, `Calculating ${displayNavText} Route...`, selectedType);
                 }
 
                 try {
@@ -569,15 +568,15 @@
 
             const displayType = type === 'RestArea' ? 'Rest Area' : type;
 
-            if (typeof toggleLoader === 'function') {
-                toggleLoader(true, `Locating ${displayType}s...`, type);
-            }
-
-            // Stäng hela hamburgermenyn automatiskt vid stop val i mobil vy
+            // Stäng hela hamburgermenyn automatiskt vid stop val i mobil vy (Omedelbart)
             const mBtnStop = document.getElementById('mobile-trip-menu-btn');
             const mMenuStop = document.getElementById('mobile-trip-menu');
             if (mBtnStop && mMenuStop && isMobileMenuOpen) {
                 mBtnStop.click();
+            }
+
+            if (typeof toggleLoader === 'function') {
+                toggleLoader(true, `Locating ${displayType}s...`, type);
             }
 
             try {
