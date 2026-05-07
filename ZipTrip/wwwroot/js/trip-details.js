@@ -337,8 +337,7 @@
 
                 // Stäng hela hamburgermenyn automatiskt vid ruttval i mobil vy (Med en liten fördröjning så att användaren ser valet)
                 const mBtn = document.getElementById('mobile-trip-menu-btn');
-                const mMenu = document.getElementById('mobile-trip-menu');
-                if (mBtn && mMenu && isMobileMenuOpen) {
+                if (mBtn && isMobileMenuOpen) {
                     mBtn.click();
                 }
 
@@ -439,42 +438,23 @@
 
     // Mobile Trip Menu Logic
     const mobileTripMenuBtn = document.getElementById('mobile-trip-menu-btn');
-    const mobileTripMenu = document.getElementById('mobile-trip-menu');
-    const tripOptionsContainer = document.getElementById('trip-options-container');
-    const mobileMenuContent = mobileTripMenu ? mobileTripMenu.querySelector('.overflow-y-auto') : null;
     let isMobileMenuOpen = false;
 
-    if (mobileTripMenuBtn && mobileTripMenu && tripOptionsContainer && mobileMenuContent) {
+    if (mobileTripMenuBtn) {
         const toggleMobileTripMenu = () => {
             isMobileMenuOpen = !isMobileMenuOpen;
+            const tripOptions = document.getElementById('trip-options-container');
             const hamburgerIcon = document.getElementById('trip-hamburger-icon');
             const closeIcon = document.getElementById('trip-close-icon');
 
             if (isMobileMenuOpen) {
-                // Move options to mobile menu
-                mobileMenuContent.appendChild(tripOptionsContainer);
-                tripOptionsContainer.classList.remove('hidden', 'lg:flex');
-                tripOptionsContainer.classList.add('flex');
-
+                if (tripOptions) tripOptions.classList.remove('hidden');
                 if (hamburgerIcon) hamburgerIcon.classList.add('hidden');
                 if (closeIcon) closeIcon.classList.remove('hidden');
-
-                mobileTripMenu.classList.remove('hidden');
-                // Trigger reflow
-                void mobileTripMenu.offsetWidth;
-                mobileTripMenu.classList.remove('translate-x-full');
-                document.body.style.overflow = 'hidden';
             } else {
-                mobileTripMenu.classList.add('translate-x-full', 'hidden');
-
+                if (tripOptions) tripOptions.classList.add('hidden');
                 if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
                 if (closeIcon) closeIcon.classList.add('hidden');
-
-                document.body.style.overflow = '';
-                // Move options back to original place
-                document.getElementById('details-menu').appendChild(tripOptionsContainer);
-                tripOptionsContainer.classList.add('hidden', 'lg:flex');
-                tripOptionsContainer.classList.remove('flex');
             }
         };
 
@@ -565,8 +545,7 @@
 
             // Stäng hela hamburgermenyn automatiskt vid stop val i mobil vy (Omedelbart)
             const mBtnStop = document.getElementById('mobile-trip-menu-btn');
-            const mMenuStop = document.getElementById('mobile-trip-menu');
-            if (mBtnStop && mMenuStop && isMobileMenuOpen) {
+            if (mBtnStop && isMobileMenuOpen) {
                 mBtnStop.click();
             }
 

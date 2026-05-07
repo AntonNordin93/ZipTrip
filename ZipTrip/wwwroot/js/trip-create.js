@@ -243,47 +243,23 @@
 
                     // Koppla Mobile Trip Menu (HAMBURGER i trip ready-läget)
                     const mobileTripMenuBtn = document.getElementById('mobile-trip-menu-btn');
-                    const mobileTripMenu = document.getElementById('mobile-trip-menu');
                     let isMobileMenuOpen = false;
 
-                    if (mobileTripMenuBtn && mobileTripMenu) {
+                    if (mobileTripMenuBtn) {
                         const toggleMobileTripMenu = () => {
                             isMobileMenuOpen = !isMobileMenuOpen;
                             const tripOptions = document.getElementById('trip-options-container');
-                            const targetContainer = document.getElementById('mobile-trip-menu-content-container');
-                            const detailsMenu = document.getElementById('details-menu');
-
                             const hamburgerIcon = document.getElementById('trip-hamburger-icon');
                             const closeIcon = document.getElementById('trip-close-icon');
 
                             if (isMobileMenuOpen) {
-                                // Flytta nedre actions till overlaysktionen (dropdowns)
-                                if (tripOptions && targetContainer) {
-                                    tripOptions.classList.remove('hidden', 'lg:flex');
-                                    tripOptions.classList.add('flex');
-                                    targetContainer.appendChild(tripOptions);
-                                }
-
+                                if (tripOptions) tripOptions.classList.remove('hidden');
                                 if (hamburgerIcon) hamburgerIcon.classList.add('hidden');
                                 if (closeIcon) closeIcon.classList.remove('hidden');
-
-                                mobileTripMenu.classList.remove('hidden');
-                                void mobileTripMenu.offsetWidth; // Trigger reflow
-                                mobileTripMenu.classList.remove('translate-x-full');
-                                document.body.style.overflow = 'hidden';
                             } else {
-                                mobileTripMenu.classList.add('translate-x-full', 'hidden');
-                                document.body.style.overflow = '';
-
+                                if (tripOptions) tripOptions.classList.add('hidden');
                                 if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
                                 if (closeIcon) closeIcon.classList.add('hidden');
-
-                                // Flytta tillbaka menyn
-                                if(tripOptions && detailsMenu) {
-                                    tripOptions.classList.add('hidden', 'lg:flex');
-                                    tripOptions.classList.remove('flex');
-                                    detailsMenu.appendChild(tripOptions);
-                                }
                             }
                         };
 
@@ -481,8 +457,7 @@
                                 // Stäng hela hamburgermenyn automatiskt vid ruttval i mobil vy (Omedelbart)
                                 if (window.innerWidth < 1024) {
                                     const mBtn = document.getElementById('mobile-trip-menu-btn');
-                                    const mMenu = document.getElementById('mobile-trip-menu');
-                                    if (mBtn && mMenu && isMobileMenuOpen) {
+                                    if (mBtn && isMobileMenuOpen) {
                                         mBtn.click();
                                     }
                                 }
@@ -612,8 +587,7 @@
                                 // Stäng hela hamburgermenyn automatiskt vid stop val i mobil vy (Omedelbart)
                                 if (window.innerWidth < 1024) {
                                     const mBtnStop = document.getElementById('mobile-trip-menu-btn');
-                                    const mMenuStop = document.getElementById('mobile-trip-menu');
-                                    if (mBtnStop && mMenuStop && isMobileMenuOpen) {
+                                    if (mBtnStop && isMobileMenuOpen) {
                                         mBtnStop.click();
                                     }
                                 }
