@@ -279,23 +279,23 @@
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"></path></svg>
             </button>
         </div>
-        
+
         <div id="mobile-trip-menu-content-container" class="flex flex-col gap-4 overflow-y-auto pb-6 w-full flex-1">
             <!-- The options containers will be cloned or moved here via JS -->
         </div>
-        
-        <div class="mt-auto border-t border-border pt-4 pb-6 flex gap-2 shrink-0">
+
+        <div class="mt-auto border-t border-border pt-4 pb-6 flex flex-col gap-2 shrink-0">
+            <button type="button" id="mobile-start-gps-btn" class="w-full h-12 bg-primary text-[#0f1219] font-bold rounded-xl shadow-[0_0_10px_rgba(24,219,103,0.4)] flex justify-center items-center gap-2 transition-all hover:scale-[1.02]">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg>
+                <span>Start Navigation</span>
+            </button>
             @if (User.Identity is { IsAuthenticated: true })
             {
-                <button type="button" id="mobile-save-trip-btn" class="flex-1 h-14 bg-muted border border-primary text-primary font-bold rounded-xl transition-all flex justify-center items-center gap-2">
+                <button type="button" id="mobile-save-trip-btn" class="w-full h-12 bg-muted border border-primary text-primary font-bold rounded-xl transition-all flex justify-center items-center gap-2 hover:bg-primary/10">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                    <span>Save</span>
+                    <span>Save Trip</span>
                 </button>
             }
-            <button type="button" id="mobile-start-gps-btn" class="flex-[2] h-14 bg-primary text-[#0f1219] font-bold rounded-xl shadow-[0_0_10px_rgba(24,219,103,0.4)] flex justify-center items-center gap-2">
-                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 22l10-3 10 3L12 2z"></path></svg>
-                <span>Start Nav</span>
-            </button>
         </div>
     </div>
 </div>

@@ -245,53 +245,64 @@
                     const mobileTripMenuBtn = document.getElementById('mobile-trip-menu-btn');
                     const mobileTripMenu = document.getElementById('mobile-trip-menu');
                     const closeMobileTripMenu = document.getElementById('close-mobile-trip-menu');
-                    
-                    if (mobileTripMenuBtn && mobileTripMenu) {
-                        // REMOVE standard eventlistener att det bara gör en sak
-                        const newTripMenuBtn = mobileTripMenuBtn.cloneNode(true);
-                        mobileTripMenuBtn.parentNode.replaceChild(newTripMenuBtn, mobileTripMenuBtn);
-                        
-                        newTripMenuBtn.addEventListener('click', () => {
-                            mobileTripMenu.classList.remove('hidden');
-                            
-                            // Flytta nedre actions till overlaysktionen (dropdowns) om de inte flyttats
+                    let isMobileMenuOpen = false;
+
+                    if (mobileTripMenuBtn && mobileTripMenu && closeMobileTripMenu) {
+                        const toggleMobileTripMenu = () => {
+                            isMobileMenuOpen = !isMobileMenuOpen;
                             const tripOptions = document.getElementById('trip-options-container');
                             const targetContainer = document.getElementById('mobile-trip-menu-content-container');
-                            if (tripOptions && targetContainer) {
-                                // Ta bort hidden lg:flex för att de ska synas i menyn
-                                tripOptions.classList.remove('hidden', 'lg:flex');
-                                tripOptions.classList.add('flex');
-                                targetContainer.appendChild(tripOptions);
-                            }
-                            
-                            void mobileTripMenu.offsetWidth;
-                            mobileTripMenu.classList.remove('translate-x-full');
-                            document.body.style.overflow = 'hidden';
-                        });
-                    }
+                            const detailsMenu = document.getElementById('details-menu');
 
-                    if (closeMobileTripMenu && mobileTripMenu) {
+                            if (isMobileMenuOpen) {
+                                // Flytta nedre actions till overlaysktionen (dropdowns)
+                                if (tripOptions && targetContainer) {
+                                    tripOptions.classList.remove('hidden', 'lg:flex');
+                                    tripOptions.classList.add('flex');
+                                    targetContainer.appendChild(tripOptions);
+                                }
+
+                                mobileTripMenu.classList.remove('hidden');
+                                void mobileTripMenu.offsetWidth; // Trigger reflow
+                                mobileTripMenu.classList.remove('translate-x-full');
+                                document.body.style.overflow = 'hidden';
+                            } else {
+                                mobileTripMenu.classList.add('translate-x-full');
+                                setTimeout(() => {
+                                    mobileTripMenu.classList.add('hidden');
+                                    document.body.style.overflow = '';
+
+                                    // Flytta tillbaka menyn
+                                    if(tripOptions && detailsMenu) {
+                                        tripOptions.classList.add('hidden', 'lg:flex');
+                                        tripOptions.classList.remove('flex');
+                                        detailsMenu.appendChild(tripOptions);
+                                    }
+                                }, 300);
+                            }
+                        };
+
+                        // REMOVE standard eventlisteners att det bara gör en sak
+                        const newTripMenuBtn = mobileTripMenuBtn.cloneNode(true);
+                        mobileTripMenuBtn.parentNode.replaceChild(newTripMenuBtn, mobileTripMenuBtn);
+                        newTripMenuBtn.addEventListener('click', toggleMobileTripMenu);
+
                         const newCloseMobileTripMenu = closeMobileTripMenu.cloneNode(true);
                         closeMobileTripMenu.parentNode.replaceChild(newCloseMobileTripMenu, closeMobileTripMenu);
-                        
-                        newCloseMobileTripMenu.addEventListener('click', () => {
-                            mobileTripMenu.classList.add('translate-x-full');
-                            
-                            setTimeout(() => {
-                                mobileTripMenu.classList.add('hidden');
-                                document.body.style.overflow = '';
-                                
-                                // Flytta tillbaka menyn EFTER animationen är klar så den inte syns blinka loss från UI
-                                const tripOptions = document.getElementById('trip-options-container');
-                                const detailsMenu = document.getElementById('details-menu');
-                                if(tripOptions && detailsMenu) {
-                                    tripOptions.classList.add('hidden', 'lg:flex');
-                                    tripOptions.classList.remove('flex');
-                                    // Append it back properly so it can be fetched next time
-                                    detailsMenu.appendChild(tripOptions);
-                                }
-                            }, 300);
-                        });
+                        newCloseMobileTripMenu.addEventListener('click', toggleMobileTripMenu);
+
+                        // Sync mobile menu buttons mapping
+                        const mobileSaveBtn = document.getElementById('mobile-save-trip-btn');
+                        const mobileStartBtn = document.getElementById('mobile-start-gps-btn');
+                        const desktopSaveBtn = document.getElementById('save-trip-btn');
+                        const desktopStartBtn = document.getElementById('start-gps-btn');
+
+                        if (mobileSaveBtn && desktopSaveBtn) {
+                            mobileSaveBtn.addEventListener('click', () => desktopSaveBtn.click());
+                        }
+                        if (mobileStartBtn && desktopStartBtn) {
+                            mobileStartBtn.addEventListener('click', () => desktopStartBtn.click());
+                        }
                     }
 
                     // --- Helper att stänga alla popups ---

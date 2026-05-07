@@ -447,7 +447,7 @@
                 mobileMenuContent.appendChild(tripOptionsContainer);
                 tripOptionsContainer.classList.remove('hidden', 'lg:flex');
                 tripOptionsContainer.classList.add('flex');
-                
+
                 mobileTripMenu.classList.remove('hidden');
                 // Trigger reflow
                 void mobileTripMenu.offsetWidth;
@@ -457,12 +457,12 @@
                 mobileTripMenu.classList.add('translate-x-full');
                 setTimeout(() => {
                     mobileTripMenu.classList.add('hidden');
+                    document.body.style.overflow = '';
                     // Move options back to original place
-                    document.getElementById('details-menu').insertBefore(tripOptionsContainer, document.getElementById('mobile-trip-menu'));
+                    document.getElementById('details-menu').appendChild(tripOptionsContainer);
                     tripOptionsContainer.classList.add('hidden', 'lg:flex');
                     tripOptionsContainer.classList.remove('flex');
                 }, 300);
-                document.body.style.overflow = '';
             }
         };
 
