@@ -335,7 +335,7 @@
                     `;
                 }
 
-                // Stäng hela hamburgermenyn automatiskt vid ruttval i mobil vy (Omedelbart)
+                // Stäng hela hamburgermenyn automatiskt vid ruttval i mobil vy (Med en liten fördröjning så att användaren ser valet)
                 const mBtn = document.getElementById('mobile-trip-menu-btn');
                 const mMenu = document.getElementById('mobile-trip-menu');
                 if (mBtn && mMenu && isMobileMenuOpen) {
@@ -440,12 +440,11 @@
     // Mobile Trip Menu Logic
     const mobileTripMenuBtn = document.getElementById('mobile-trip-menu-btn');
     const mobileTripMenu = document.getElementById('mobile-trip-menu');
-    const closeMobileTripMenu = document.getElementById('close-mobile-trip-menu');
     const tripOptionsContainer = document.getElementById('trip-options-container');
     const mobileMenuContent = mobileTripMenu ? mobileTripMenu.querySelector('.overflow-y-auto') : null;
     let isMobileMenuOpen = false;
 
-    if (mobileTripMenuBtn && mobileTripMenu && closeMobileTripMenu && tripOptionsContainer && mobileMenuContent) {
+    if (mobileTripMenuBtn && mobileTripMenu && tripOptionsContainer && mobileMenuContent) {
         const toggleMobileTripMenu = () => {
             isMobileMenuOpen = !isMobileMenuOpen;
             const hamburgerIcon = document.getElementById('trip-hamburger-icon');
@@ -466,25 +465,21 @@
                 mobileTripMenu.classList.remove('translate-x-full');
                 document.body.style.overflow = 'hidden';
             } else {
-                mobileTripMenu.classList.add('translate-x-full');
+                mobileTripMenu.classList.add('translate-x-full', 'hidden');
 
                 if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
                 if (closeIcon) closeIcon.classList.add('hidden');
 
-                setTimeout(() => {
-                    mobileTripMenu.classList.add('hidden');
-                    document.body.style.overflow = '';
-                    // Move options back to original place
-                    document.getElementById('details-menu').appendChild(tripOptionsContainer);
-                    tripOptionsContainer.classList.add('hidden', 'lg:flex');
-                    tripOptionsContainer.classList.remove('flex');
-                }, 300);
+                document.body.style.overflow = '';
+                // Move options back to original place
+                document.getElementById('details-menu').appendChild(tripOptionsContainer);
+                tripOptionsContainer.classList.add('hidden', 'lg:flex');
+                tripOptionsContainer.classList.remove('flex');
             }
         };
 
         mobileTripMenuBtn.addEventListener('click', toggleMobileTripMenu);
-        closeMobileTripMenu.addEventListener('click', toggleMobileTripMenu);
-        
+
         // Link mobile buttons to desktop buttons
         const mobileSaveBtn = document.getElementById('mobile-save-trip-btn');
         const desktopSaveBtn = document.getElementById('save-trip-btn');

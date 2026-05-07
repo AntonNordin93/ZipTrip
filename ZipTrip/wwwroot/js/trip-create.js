@@ -244,10 +244,9 @@
                     // Koppla Mobile Trip Menu (HAMBURGER i trip ready-läget)
                     const mobileTripMenuBtn = document.getElementById('mobile-trip-menu-btn');
                     const mobileTripMenu = document.getElementById('mobile-trip-menu');
-                    const closeMobileTripMenu = document.getElementById('close-mobile-trip-menu');
                     let isMobileMenuOpen = false;
 
-                    if (mobileTripMenuBtn && mobileTripMenu && closeMobileTripMenu) {
+                    if (mobileTripMenuBtn && mobileTripMenu) {
                         const toggleMobileTripMenu = () => {
                             isMobileMenuOpen = !isMobileMenuOpen;
                             const tripOptions = document.getElementById('trip-options-container');
@@ -273,22 +272,18 @@
                                 mobileTripMenu.classList.remove('translate-x-full');
                                 document.body.style.overflow = 'hidden';
                             } else {
-                                mobileTripMenu.classList.add('translate-x-full');
+                                mobileTripMenu.classList.add('translate-x-full', 'hidden');
+                                document.body.style.overflow = '';
 
                                 if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
                                 if (closeIcon) closeIcon.classList.add('hidden');
 
-                                setTimeout(() => {
-                                    mobileTripMenu.classList.add('hidden');
-                                    document.body.style.overflow = '';
-
-                                    // Flytta tillbaka menyn
-                                    if(tripOptions && detailsMenu) {
-                                        tripOptions.classList.add('hidden', 'lg:flex');
-                                        tripOptions.classList.remove('flex');
-                                        detailsMenu.appendChild(tripOptions);
-                                    }
-                                }, 300);
+                                // Flytta tillbaka menyn
+                                if(tripOptions && detailsMenu) {
+                                    tripOptions.classList.add('hidden', 'lg:flex');
+                                    tripOptions.classList.remove('flex');
+                                    detailsMenu.appendChild(tripOptions);
+                                }
                             }
                         };
 
@@ -296,10 +291,6 @@
                         const newTripMenuBtn = mobileTripMenuBtn.cloneNode(true);
                         mobileTripMenuBtn.parentNode.replaceChild(newTripMenuBtn, mobileTripMenuBtn);
                         newTripMenuBtn.addEventListener('click', toggleMobileTripMenu);
-
-                        const newCloseMobileTripMenu = closeMobileTripMenu.cloneNode(true);
-                        closeMobileTripMenu.parentNode.replaceChild(newCloseMobileTripMenu, closeMobileTripMenu);
-                        newCloseMobileTripMenu.addEventListener('click', toggleMobileTripMenu);
 
                         // Sync mobile menu buttons mapping
                         const mobileSaveBtn = document.getElementById('mobile-save-trip-btn');
