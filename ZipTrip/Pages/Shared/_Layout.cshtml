@@ -67,7 +67,7 @@
     <!-- Mobile Menu Panel MUST be direct child of body outside flow contexts to guarantee full screen visibility -->
     @if (!removeHeader)
     {
-        <div id="mobile-menu" class="hidden fixed inset-0 z-[9999] bg-background transform translate-x-full transition-transform duration-300">
+        <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-background transform translate-x-full transition-transform duration-300">
             <div class="flex flex-col h-full bg-background px-6 pt-24 pb-6 w-full">
                 <div class="flex justify-between items-center border-b border-border pb-4 mb-4">
                     <span class="font-bold text-xl text-foreground">Menu</span>
@@ -159,6 +159,7 @@
                         
                         if (isOpen) {
                             // Close menu
+                            mobileMenu.classList.remove('translate-x-0');
                             mobileMenu.classList.add('translate-x-full');
                             setTimeout(() => {
                                 mobileMenu.classList.add('hidden');
@@ -172,6 +173,7 @@
                             // Trigger reflow
                             void mobileMenu.offsetWidth;
                             mobileMenu.classList.remove('translate-x-full');
+                            mobileMenu.classList.add('translate-x-0');
                             hamburgerIcon.classList.add('hidden');
                             closeIcon.classList.remove('hidden');
                             document.body.style.overflow = 'hidden'; // Prevent scrolling
