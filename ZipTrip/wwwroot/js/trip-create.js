@@ -254,6 +254,9 @@
                             const targetContainer = document.getElementById('mobile-trip-menu-content-container');
                             const detailsMenu = document.getElementById('details-menu');
 
+                            const hamburgerIcon = document.getElementById('trip-hamburger-icon');
+                            const closeIcon = document.getElementById('trip-close-icon');
+
                             if (isMobileMenuOpen) {
                                 // Flytta nedre actions till overlaysktionen (dropdowns)
                                 if (tripOptions && targetContainer) {
@@ -262,12 +265,19 @@
                                     targetContainer.appendChild(tripOptions);
                                 }
 
+                                if (hamburgerIcon) hamburgerIcon.classList.add('hidden');
+                                if (closeIcon) closeIcon.classList.remove('hidden');
+
                                 mobileTripMenu.classList.remove('hidden');
                                 void mobileTripMenu.offsetWidth; // Trigger reflow
                                 mobileTripMenu.classList.remove('translate-x-full');
                                 document.body.style.overflow = 'hidden';
                             } else {
                                 mobileTripMenu.classList.add('translate-x-full');
+
+                                if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
+                                if (closeIcon) closeIcon.classList.add('hidden');
+
                                 setTimeout(() => {
                                     mobileTripMenu.classList.add('hidden');
                                     document.body.style.overflow = '';
@@ -477,6 +487,15 @@
                                     <span>${displayNavText} Route</span>
                                 `;
 
+                                // Stäng hela hamburgermenyn automatiskt vid ruttval i mobil vy
+                                if (window.innerWidth < 1024) {
+                                    const mBtn = document.getElementById('mobile-trip-menu-btn');
+                                    const mMenu = document.getElementById('mobile-trip-menu');
+                                    if (mBtn && mMenu && isMobileMenuOpen) {
+                                        mBtn.click();
+                                    }
+                                }
+
                                 // Request new route calculation!
                                 toggleLoader(true, `Calculating ${displayNavText} Route...`, selectedType);
                                 try {
@@ -597,6 +616,15 @@
                                         ${theIcon}
                                         <span class="${activeColorClass}">${displayNavText}</span>
                                     `;
+                                }
+
+                                // Stäng hela hamburgermenyn automatiskt vid stop val i mobil vy
+                                if (window.innerWidth < 1024) {
+                                    const mBtnStop = document.getElementById('mobile-trip-menu-btn');
+                                    const mMenuStop = document.getElementById('mobile-trip-menu');
+                                    if (mBtnStop && mMenuStop && isMobileMenuOpen) {
+                                        mBtnStop.click();
+                                    }
                                 }
                             });
                         });

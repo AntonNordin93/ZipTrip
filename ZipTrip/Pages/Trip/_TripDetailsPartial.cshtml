@@ -16,8 +16,9 @@
         </div>
         <div class="flex flex-col items-end lg:items-start lg:w-full space-y-1">
             <button type="button" onclick="window.location.reload()" class="text-[10px] font-bold text-accent hover:text-white transition-colors cursor-pointer uppercase underline">&larr; BACK/EDIT</button>
-            <button type="button" id="mobile-trip-menu-btn" class="lg:hidden w-8 h-8 rounded bg-muted text-foreground flex items-center justify-center">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            <button type="button" id="mobile-trip-menu-btn" class="lg:hidden w-10 h-10 rounded-md bg-transparent text-[#18db67] flex items-center justify-center transition-colors">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="trip-hamburger-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                <svg class="w-8 h-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="trip-close-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <div id="desktop-trip-actions" class="hidden lg:flex flex-col lg:w-full lg:space-y-1">
                 @if (User.Identity is { IsAuthenticated: true })
@@ -275,7 +276,7 @@
     <div class="flex flex-col h-full bg-background px-6 pt-10 pb-6 relative z-[101]">
         <div class="flex justify-between items-center border-b border-border pb-4 mb-4">
             <span class="font-bold text-xl text-foreground">Trip Options</span>
-            <button id="close-mobile-trip-menu" class="text-foreground p-2 -mr-2">
+            <button id="close-mobile-trip-menu" class="text-foreground p-2 -mr-2 flex lg:hidden">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"></path></svg>
             </button>
         </div>
