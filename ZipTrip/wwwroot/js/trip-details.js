@@ -335,7 +335,7 @@
                     `;
                 }
 
-                // Stäng hela hamburgermenyn automatiskt vid ruttval i mobil vy (Med en liten fördröjning så att användaren ser valet)
+                // Stäng hela hamburgermenyn automatiskt vid ruttval i mobil vy
                 const mBtn = document.getElementById('mobile-trip-menu-btn');
                 if (mBtn && isMobileMenuOpen) {
                     mBtn.click();
@@ -449,12 +449,24 @@
 
             if (isMobileMenuOpen) {
                 if (tripOptions) tripOptions.classList.remove('hidden');
-                if (hamburgerIcon) hamburgerIcon.classList.add('hidden');
-                if (closeIcon) closeIcon.classList.remove('hidden');
+                if (hamburgerIcon) {
+                    hamburgerIcon.classList.add('opacity-0', 'scale-50', 'hidden');
+                    hamburgerIcon.classList.remove('opacity-100', 'scale-100');
+                }
+                if (closeIcon) {
+                    closeIcon.classList.remove('hidden', 'opacity-0', 'scale-50');
+                    closeIcon.classList.add('opacity-100', 'scale-100');
+                }
             } else {
                 if (tripOptions) tripOptions.classList.add('hidden');
-                if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
-                if (closeIcon) closeIcon.classList.add('hidden');
+                if (hamburgerIcon) {
+                    hamburgerIcon.classList.remove('hidden', 'opacity-0', 'scale-50');
+                    hamburgerIcon.classList.add('opacity-100', 'scale-100');
+                }
+                if (closeIcon) {
+                    closeIcon.classList.add('opacity-0', 'scale-50', 'hidden');
+                    closeIcon.classList.remove('opacity-100', 'scale-100');
+                }
             }
         };
 

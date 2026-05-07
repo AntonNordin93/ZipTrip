@@ -2160,6 +2160,10 @@
     --tw-shadow: 0 0 10px var(--tw-shadow-color, rgba(24,219,103,0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .shadow-\[0_0_10px_rgba\(24\,219\,103\,0\.2\)\] {
+    --tw-shadow: 0 0 10px var(--tw-shadow-color, rgba(24,219,103,0.2));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   .shadow-\[0_0_10px_rgba\(24\,219\,103\,0\.3\)\] {
     --tw-shadow: 0 0 10px var(--tw-shadow-color, rgba(24,219,103,0.3));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -2210,6 +2214,10 @@
   }
   .shadow-\[0_0_15px_rgba\(240\,51\,51\,0\.4\)\] {
     --tw-shadow: 0 0 15px var(--tw-shadow-color, rgba(240,51,51,0.4));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[4px_0_24px_rgba\(0\,0\,0\,0\.4\)\] {
+    --tw-shadow: 4px 0 24px var(--tw-shadow-color, rgba(0,0,0,0.4));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .shadow-inner {
@@ -3244,6 +3252,11 @@
       width: calc(var(--spacing) * 5);
     }
   }
+  .lg\:w-\[400px\] {
+    @media (width >= 64rem) {
+      width: 400px;
+    }
+  }
   .lg\:w-full {
     @media (width >= 64rem) {
       width: 100%;
@@ -3264,9 +3277,19 @@
       flex-direction: row;
     }
   }
+  .lg\:items-center {
+    @media (width >= 64rem) {
+      align-items: center;
+    }
+  }
   .lg\:items-start {
     @media (width >= 64rem) {
       align-items: flex-start;
+    }
+  }
+  .lg\:gap-0 {
+    @media (width >= 64rem) {
+      gap: calc(var(--spacing) * 0);
     }
   }
   .lg\:space-y-1 {
@@ -3309,6 +3332,11 @@
       padding: calc(var(--spacing) * 6);
     }
   }
+  .lg\:pr-1 {
+    @media (width >= 64rem) {
+      padding-right: calc(var(--spacing) * 1);
+    }
+  }
   .lg\:text-2xl {
     @media (width >= 64rem) {
       font-size: var(--text-2xl);
@@ -3339,6 +3367,12 @@
       line-height: var(--tw-leading, var(--text-sm--line-height));
     }
   }
+  .lg\:text-xs {
+    @media (width >= 64rem) {
+      font-size: var(--text-xs);
+      line-height: var(--tw-leading, var(--text-xs--line-height));
+    }
+  }
   .xl\:block {
     @media (width >= 80rem) {
       display: block;
@@ -3352,6 +3386,11 @@
   .xl\:w-1\/4 {
     @media (width >= 80rem) {
       width: calc(1 / 4 * 100%);
+    }
+  }
+  .xl\:w-\[450px\] {
+    @media (width >= 80rem) {
+      width: 450px;
     }
   }
   .xl\:w-auto {
